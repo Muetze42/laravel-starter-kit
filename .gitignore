@@ -6,6 +6,7 @@
 /storage/*.key
 /storage/pail
 /vendor
+/storage/clockwork
 .env
 .env.backup
 .env.production
@@ -14,10 +15,15 @@
 Homestead.json
 Homestead.yaml
 npm-debug.log
+package.lock
 yarn-error.log
+yarn.lock
 /auth.json
 /.fleet
 /.idea
 /.nova
 /.vscode
 /.zed
+/package-lock.json
+/yarn.lock
+.codebuddy

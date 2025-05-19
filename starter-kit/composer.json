@@ -1,0 +1,15 @@
+{
+    "type": "project",
+    "require": {
+        "php": "^8.2",
+        "laravel/prompts": "^0.3.5",
+        "illuminate/filesystem": "^12.14",
+        "league/flysystem": "^3.29",
+        "illuminate/support": "^12.14"
+    },
+    "autoload": {
+        "psr-4": {
+            "StarterKit\\": "src/"
+        }
+    }
+}

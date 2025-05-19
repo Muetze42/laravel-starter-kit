@@ -1,23 +1,38 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "norman-huth/laravel-starter-kit",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "laravel/tinker": "^2.10.1",
+        "norman-huth/php-library": "^2.36",
+        "sentry/sentry-laravel": "^4.13"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.23",
+        "barryvdh/laravel-ide-helper": "^3.5",
+        "brianium/paratest": "^7.8",
+        "driftingly/rector-laravel": "^2.0",
+        "fakerphp/faker": "^1.24",
+        "infection/infection": "^0.29.14",
+        "itsgoingd/clockwork": "^5.3",
+        "larastan/larastan": "^3.4",
         "laravel/pail": "^1.2.2",
-        "laravel/pint": "^1.13",
-        "laravel/sail": "^1.41",
+        "laravel/pint": "^1.22",
+        "laravel/sail": "^1.42",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.6",
-        "phpunit/phpunit": "^11.5.3"
+        "norman-huth/find-command": "^1.2",
+        "nunomaduro/collision": "^8.8",
+        "phpmd/phpmd": "^2.15",
+        "phpunit/phpunit": "^11.5.3",
+        "rector/rector": "^2.0",
+        "roave/security-advisories": "dev-latest"
     },
     "autoload": {
         "psr-4": {
@@ -40,20 +55,50 @@
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php ./kit.php --ansi"
         ],
         "post-create-project-cmd": [
-            "@php artisan key:generate --ansi",
-            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-            "@php artisan migrate --graceful --ansi"
+            "@php artisan key:generate --ansi"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite"
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"pnpm run dev\" --names=server,queue,logs,vite"
+        ],
+        "phpmd": "./vendor/bin/phpmd app,bootstrap,config,database,routes ansi phpmd.xml",
+        "pint": "./vendor/bin/pint --ansi",
+        "rector": "./vendor/bin/rector --ansi",
+        "stan": "./vendor/bin/phpstan analyse -v --ansi",
+        "mutation": "@php vendor/bin/infection --threads=$(nproc) --ansi",
+        "checks": [
+            "@stan",
+            "@phpmd",
+            "@rector",
+            "@pint"
+        ],
+        "full-checks": [
+            "@checks",
+            "@mutation"
         ],
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"
+        ]
+    },
+    "scripts-descriptions": {
+        "phpmd": "Look for several potential problems within the source",
+        "pint": "Fix code style issues",
+        "rector": "Instant Upgrades and Automated Refactoring Code",
+        "stan": "Run static analysis to find bugs",
+        "checks": "Running all analysis and fixer tools",
+        "mutation": "Run mutation testing using Infection with parallel threads"
+    },
+    "scripts-aliases": {
+        "checks": [
+            "c"
+        ],
+        "full-checks": [
+            "fc"
         ]
     },
     "extra": {
@@ -66,6 +111,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
+            "infection/extension-installer": true,
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
         }

@@ -115,4 +115,17 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Using a Global to Address
+    |--------------------------------------------------------------------------
+    |
+    | You may wish for all emails sent by your application to be sent to
+    | the same address. Here you may specify a receiver that is used globally
+    | for all emails that are sent by your application for local environment.
+    |
+    */
+
+    'always_to' => env('MAIL_ALWAYS_TO'),
+
 ];
