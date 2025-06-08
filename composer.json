@@ -30,6 +30,7 @@
         "norman-huth/find-command": "^1.2",
         "nunomaduro/collision": "^8.8",
         "phpmd/phpmd": "^2.15",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpunit/phpunit": "^11.5.3",
         "rector/rector": "^2.0",
         "roave/security-advisories": "dev-latest"
@@ -69,7 +70,7 @@
         "pint": "./vendor/bin/pint --ansi",
         "rector": "./vendor/bin/rector --ansi",
         "stan": "./vendor/bin/phpstan analyse -v --ansi",
-        "mutation": "@php vendor/bin/infection --threads=$(nproc) --ansi",
+        "mutation": "@php vendor/bin/infection --configuration=.infection.json --threads=$(nproc) --ansi",
         "checks": [
             "@stan",
             "@phpmd",
