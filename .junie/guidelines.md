@@ -83,3 +83,9 @@ In the Assert phase, perform these assertions when applicable:
 - Always test **happy path** and **failure path** for each feature
 - Avoid relying on global state in tests — reset database and cache before each test class
 - For Laravel feature tests, prefer `assertExactJson()` where possible to avoid false positives
+
+
+## MCP
+
+- Context7 should use for Next.js, Shadcn UI, Tailwind CSS, React, Vue.js, Laravel, Filament, Flux UI, Laravel Livewire,
+  Laravel Pulse, Inertia.js, Laravel Medialibrary
