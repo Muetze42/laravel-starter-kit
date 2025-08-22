@@ -86,7 +86,7 @@
         ],
         "test": [
             "@php artisan config:clear --ansi",
-            "@php artisan test -parallel"
+            "@php artisan test --parallel"
         ]
     },
     "scripts-descriptions": {
