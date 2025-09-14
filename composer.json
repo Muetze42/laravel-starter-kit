@@ -10,32 +10,30 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "laravel/framework": "^12.0",
+        "laravel/framework": "^12.28",
         "laravel/tinker": "^2.10.1",
-        "norman-huth/php-library": "^2.36",
-        "sentry/sentry-laravel": "^4.13",
-        "thecodingmachine/safe": "^3.3"
+        "norman-huth/php-library": "^2.47",
+        "sentry/sentry-laravel": "^4.16"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^3.5",
+        "barryvdh/laravel-ide-helper": "^3.6",
         "brianium/paratest": "^7.8",
         "driftingly/rector-laravel": "^2.0",
         "fakerphp/faker": "^1.24",
         "infection/infection": "^0.29.14",
         "itsgoingd/clockwork": "^5.3",
-        "larastan/larastan": "^3.4",
-        "laravel/pail": "^1.2.2",
+        "larastan/larastan": "^3.7",
+        "laravel/pail": "^1.2",
         "laravel/pint": "^1.24",
-        "laravel/sail": "^1.41",
+        "laravel/sail": "^1.45",
         "mockery/mockery": "^1.6",
         "norman-huth/find-command": "^1.2",
         "nunomaduro/collision": "^8.8",
         "phpmd/phpmd": "^2.15",
         "phpstan/phpstan-deprecation-rules": "^2.0",
-        "phpunit/phpunit": "^11.5.3",
-        "rector/rector": "^2.0",
-        "roave/security-advisories": "dev-latest",
-        "thecodingmachine/phpstan-safe-rule": "^1.4"
+        "phpunit/phpunit": "^11.5",
+        "rector/rector": "^2.1",
+        "roave/security-advisories": "dev-latest"
     },
     "autoload": {
         "psr-4": {

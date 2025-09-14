@@ -8,6 +8,7 @@ use Rector\Config\RectorConfig;
 use Rector\EarlyReturn\Rector\Return_\ReturnBinaryOrToEarlyReturnRector;
 use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
+use RectorLaravel\Rector\If_\ThrowIfRector;
 use RectorLaravel\Set\LaravelSetList;
 
 return RectorConfig::configure()
@@ -107,6 +108,13 @@ return RectorConfig::configure()
          * @see https://getrector.com/rule-detail/return-binary-or-to-early-return-rector
          */
         ReturnBinaryOrToEarlyReturnRector::class,
+
+        /**
+         * Change if throw to throw_if
+         *
+         * @see https://getrector.com/rule-detail/throw-if-rector
+         */
+        ThrowIfRector::class,
 
         /**
          * Files.
