@@ -51,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function configureDevAlwaysToMail(): void
     {
-        if (! $this->app->environment('local')) {
+        if (! $this->app->environment(['local', 'staging'])) {
             return;
         }
 
