@@ -67,7 +67,7 @@
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"pnpm run dev\" --names=server,queue,logs,vite"
         ],
         "phpmd": "./vendor/bin/phpmd app,bootstrap,config,database,routes ansi phpmd.xml",
-        "pint": "./vendor/bin/pint --ansi",
+        "lint": "./vendor/bin/pint --parallel --ansi",
         "rector": "./vendor/bin/rector --ansi",
         "safe": "./vendor/bin/rector app --config vendor/thecodingmachine/safe/rector-migrate.php --ansi",
         "stan": "./vendor/bin/phpstan analyse -v --ansi",
@@ -76,7 +76,7 @@
             "@stan",
             "@phpmd",
             "@rector",
-            "@pint"
+            "@lint"
         ],
         "full-checks": [
             "@checks",
@@ -89,7 +89,7 @@
     },
     "scripts-descriptions": {
         "phpmd": "Look for several potential problems within the source",
-        "pint": "Fix code style issues",
+        "lint": "Fix code style issues",
         "rector": "Instant Upgrades and Automated Refactoring Code",
         "stan": "Run static analysis to find bugs",
         "checks": "Running all analysis and fixer tools",
