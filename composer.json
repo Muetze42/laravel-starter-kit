@@ -69,14 +69,13 @@
         "phpmd": "./vendor/bin/phpmd app,bootstrap,config,database,routes ansi phpmd.xml",
         "lint": "./vendor/bin/pint --parallel --ansi",
         "rector": "./vendor/bin/rector --ansi",
-        "safe": "./vendor/bin/rector app --config vendor/thecodingmachine/safe/rector-migrate.php --ansi",
-        "stan": "./vendor/bin/phpstan analyse -v --ansi",
+        "analyse": "./vendor/bin/phpstan analyse -v --ansi",
         "mutation": "@php vendor/bin/infection --configuration=.infection.json --threads=$(nproc) --ansi",
         "checks": [
-            "@stan",
-            "@phpmd",
             "@rector",
-            "@lint"
+            "@lint",
+            "@analyse",
+            "@phpmd"
         ],
         "full-checks": [
             "@checks",
@@ -91,7 +90,7 @@
         "phpmd": "Look for several potential problems within the source",
         "lint": "Fix code style issues",
         "rector": "Instant Upgrades and Automated Refactoring Code",
-        "stan": "Run static analysis to find bugs",
+        "analyse": "Run static analysis to find bugs",
         "checks": "Running all analysis and fixer tools",
         "mutation": "Run mutation testing using Infection with parallel threads"
     },
