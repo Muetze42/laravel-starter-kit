@@ -21,17 +21,17 @@
     <arg value="s"/>
 
     <!-- Our base rule: set to PSR12 -->
-    <rule ref="PSR12">
-        <exclude name="PSR12.Traits.UseDeclaration.MultipleImport" />
-        <exclude name="PSR12.Operators.OperatorSpacing.NoSpaceBefore" />
-        <exclude name="PSR12.Operators.OperatorSpacing.NoSpaceAfter" />
-        <exclude name="PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine" />
-    </rule>
+<!--    <rule ref="PSR12">-->
+<!--        <exclude name="PSR12.Traits.UseDeclaration.MultipleImport" />-->
+<!--        <exclude name="PSR12.Operators.OperatorSpacing.NoSpaceBefore" />-->
+<!--        <exclude name="PSR12.Operators.OperatorSpacing.NoSpaceAfter" />-->
+<!--        <exclude name="PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine" />-->
+<!--    </rule>-->
 
     <rule ref="Generic.Files.LineLength">
         <properties>
-            <property name="lineLimit" value="150"/>
-            <property name="absoluteLineLimit" value="200"/>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="150"/>
             <property name="ignoreComments" value="true" />
         </properties>
     </rule>
