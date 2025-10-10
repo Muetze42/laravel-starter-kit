@@ -59,7 +59,9 @@ class AppServiceProvider extends ServiceProvider
             return;
         }
 
-        Mail::alwaysTo($address);
+        if (is_string($address)) {
+            Mail::alwaysTo($address);
+        }
     }
 
     /**

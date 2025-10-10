@@ -92,6 +92,7 @@
         "rector": "Instant Upgrades and Automated Refactoring Code",
         "analyse": "Run static analysis to find bugs",
         "checks": "Running all analysis and fixer tools",
+        "full-checks": "Running all analysis and fixer tools and infection",
         "mutation": "Run mutation testing using Infection with parallel threads"
     },
     "scripts-aliases": {
