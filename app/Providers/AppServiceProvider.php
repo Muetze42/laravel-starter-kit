@@ -71,7 +71,9 @@ class AppServiceProvider extends ServiceProvider
     {
         // \Illuminate\Support\Facades\Http::globalRequestMiddleware(
         //     fn (\GuzzleHttp\Psr7\Request $request) => $request->withHeader(
-        //         'User-Agent', config('app.name') . ' ' . config('app.env'),
+        //         'User-Agent',
+        //         \Illuminate\Support\Facades\Config::string('app.name') . ' '
+        //         . \Illuminate\Support\Facades\Config::string('app.env'),
         //     )
         // );
     }
