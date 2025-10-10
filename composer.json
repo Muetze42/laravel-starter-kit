@@ -10,9 +10,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "laravel/framework": "^12.28",
+        "laravel/framework": "^12.33",
         "laravel/tinker": "^2.10.1",
-        "norman-huth/php-library": "^2.47",
+        "norman-huth/php-library": "^2.48",
         "sentry/sentry-laravel": "^4.16"
     },
     "require-dev": {
@@ -24,15 +24,14 @@
         "itsgoingd/clockwork": "^5.3",
         "larastan/larastan": "^3.7",
         "laravel/pail": "^1.2",
-        "laravel/pint": "^1.24",
-        "laravel/sail": "^1.45",
+        "laravel/pint": "^1.25",
         "mockery/mockery": "^1.6",
         "norman-huth/find-command": "^1.2",
         "nunomaduro/collision": "^8.8",
         "phpmd/phpmd": "^2.15",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpunit/phpunit": "^11.5",
-        "rector/rector": "^2.1",
+        "rector/rector": "^2.2",
         "roave/security-advisories": "dev-latest"
     },
     "autoload": {
@@ -67,10 +66,11 @@
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"pnpm run dev\" --names=server,queue,logs,vite"
         ],
         "phpmd": "./vendor/bin/phpmd app,bootstrap,config,database,routes ansi phpmd.xml",
-        "lint": "./vendor/bin/pint --parallel --ansi",
+        "pint": "./vendor/bin/pint --parallel --ansi",
         "rector": "./vendor/bin/rector --ansi",
         "analyse": "./vendor/bin/phpstan analyse -v --ansi",
         "mutation": "@php vendor/bin/infection --configuration=.infection.json --threads=$(nproc) --ansi",
+        "lint": ["@pint"],
         "checks": [
             "@rector",
             "@lint",
@@ -88,6 +88,7 @@
     },
     "scripts-descriptions": {
         "phpmd": "Look for several potential problems within the source",
+        "pint": "Run Laravel Pint CS Fixer",
         "lint": "Fix code style issues",
         "rector": "Instant Upgrades and Automated Refactoring Code",
         "analyse": "Run static analysis to find bugs",
