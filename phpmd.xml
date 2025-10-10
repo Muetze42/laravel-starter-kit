@@ -32,7 +32,15 @@
     <rule ref="rulesets/controversial.xml"/>
 
     <!-- Design Rules -->
-    <rule ref="rulesets/design.xml"/>
+    <rule ref="rulesets/design.xml">
+        <exclude name="CouplingBetweenObjects"/>
+    </rule>
+    <rule ref="rulesets/design.xml/CouplingBetweenObjects">
+        <priority>1</priority>
+        <properties>
+            <property name="maximum" value="15" />
+        </properties>
+    </rule>
 
     <!-- Naming Rules -->
     <rule ref="rulesets/naming.xml">
