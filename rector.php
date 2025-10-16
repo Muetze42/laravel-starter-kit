@@ -10,6 +10,7 @@ use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
 use Rector\Strict\Rector\If_\BooleanInIfConditionRuleFixerRector;
 use RectorLaravel\Rector\If_\ThrowIfRector;
+use RectorLaravel\Rector\StaticCall\DispatchToHelperFunctionsRector;
 use RectorLaravel\Set\LaravelSetList;
 
 return RectorConfig::configure()
@@ -95,6 +96,13 @@ return RectorConfig::configure()
          * @see https://getrector.com/rule-detail/rename-variable-to-match-method-call-return-type-rector
          */
         RenameVariableToMatchMethodCallReturnTypeRector::class,
+
+        /**
+         * Use the event or dispatch helpers instead of the static dispatch method.
+         *
+         * @see https://getrector.com/rule-detail/dispatch-to-helper-functions-rector
+         */
+        DispatchToHelperFunctionsRector::class,
 
         /**
          * Fixer for PHPStan reports by strict type rule - 'PHPStan\Rules\BooleansInConditions\BooleanInIfConditionRule'
