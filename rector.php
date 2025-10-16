@@ -8,6 +8,7 @@ use Rector\Config\RectorConfig;
 use Rector\EarlyReturn\Rector\Return_\ReturnBinaryOrToEarlyReturnRector;
 use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
+use Rector\Strict\Rector\If_\BooleanInIfConditionRuleFixerRector;
 use RectorLaravel\Rector\If_\ThrowIfRector;
 use RectorLaravel\Set\LaravelSetList;
 
@@ -93,7 +94,14 @@ return RectorConfig::configure()
          *
          * @see https://getrector.com/rule-detail/rename-variable-to-match-method-call-return-type-rector
          */
-        // RenameVariableToMatchMethodCallReturnTypeRector::class,
+        RenameVariableToMatchMethodCallReturnTypeRector::class,
+
+        /**
+         * Fixer for PHPStan reports by strict type rule - 'PHPStan\Rules\BooleansInConditions\BooleanInIfConditionRule'
+         *
+         * @see https://getrector.com/rule-detail/boolean-in-if-condition-rule-fixer-rector
+         */
+        BooleanInIfConditionRuleFixerRector::class,
 
         /**
          * Rename variable to match new ClassType.
@@ -123,7 +131,7 @@ return RectorConfig::configure()
         __DIR__ . '/bootstrap/cache/*',
     ])
     ->withImportNames(
-        importDocBlockNames: false,
+        importDocBlockNames: true,
         removeUnusedImports: true
     );
 // ->withTypeCoverageLevel(0)
