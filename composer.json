@@ -9,18 +9,18 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "laravel/framework": "^12.33",
-        "laravel/tinker": "^2.10.1",
-        "norman-huth/php-library": "^2.48",
-        "sentry/sentry-laravel": "^4.16"
+        "php": "^8.4",
+        "laravel/framework": "^12.36",
+        "laravel/tinker": "^2.10",
+        "norman-huth/php-library": "^2.49",
+        "sentry/sentry-laravel": "^4.18"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.6",
         "brianium/paratest": "^7.8",
-        "driftingly/rector-laravel": "^2.0",
+        "driftingly/rector-laravel": "^2.1",
         "fakerphp/faker": "^1.24",
-        "infection/infection": "^0.29.14",
+        "infection/infection": "^0.29",
         "itsgoingd/clockwork": "^5.3",
         "larastan/larastan": "^3.7",
         "laravel/pail": "^1.2",
@@ -28,7 +28,6 @@
         "mockery/mockery": "^1.6",
         "norman-huth/find-command": "^1.2",
         "nunomaduro/collision": "^8.8",
-        "phpmd/phpmd": "^2.15",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpunit/phpunit": "^11.5",
         "rector/rector": "^2.2",
@@ -65,7 +64,6 @@
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"pnpm run dev\" --names=server,queue,logs,vite"
         ],
-        "phpmd": "./vendor/bin/phpmd app,bootstrap,config,database,routes ansi phpmd.xml",
         "pint": "./vendor/bin/pint --parallel --ansi",
         "rector": "./vendor/bin/rector --ansi",
         "analyse": "./vendor/bin/phpstan analyse -v --ansi",
@@ -74,8 +72,7 @@
         "checks": [
             "@rector",
             "@lint",
-            "@analyse",
-            "@phpmd"
+            "@analyse"
         ],
         "full-checks": [
             "@checks",
@@ -87,7 +84,6 @@
         ]
     },
     "scripts-descriptions": {
-        "phpmd": "Look for several potential problems within the source",
         "pint": "Run Laravel Pint CS Fixer",
         "lint": "Fix code style issues",
         "rector": "Instant Upgrades and Automated Refactoring Code",
