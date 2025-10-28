@@ -7,8 +7,14 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 use Rector\EarlyReturn\Rector\Return_\ReturnBinaryOrToEarlyReturnRector;
 use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
+use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
-use Rector\Strict\Rector\If_\BooleanInIfConditionRuleFixerRector;
+use Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchMethodCallReturnTypeRector;
+use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
+use Rector\Php81\Rector\Array_\FirstClassCallableRector;
+use Rector\PHPUnit\Set\PHPUnitSetList;
+use Rector\Set\ValueObject\LevelSetList;
+use Rector\Transform\Rector\FuncCall\FuncCallToStaticCallRector;
 use RectorLaravel\Rector\If_\ThrowIfRector;
 use RectorLaravel\Rector\StaticCall\DispatchToHelperFunctionsRector;
 use RectorLaravel\Set\LaravelSetList;
@@ -18,12 +24,12 @@ return RectorConfig::configure()
         __DIR__ . '/app',
         __DIR__ . '/bootstrap',
         __DIR__ . '/config',
+        __DIR__ . '/database',
         __DIR__ . '/routes',
+        __DIR__ . '/support',
         __DIR__ . '/tests',
     ])
-    // uncomment to reach your current PHP version
-    // ->withPhpSets()
-    ->withComposerBased(phpunit: true)
+    ->withComposerBased(phpunit: true, laravel: true)
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
@@ -33,12 +39,15 @@ return RectorConfig::configure()
         naming: true,
         instanceOf: true,
         earlyReturn: true,
-        strictBooleans: true,
+        // strictBooleans: true,
         carbon: true,
         // rectorPreset: true,
         phpunitCodeQuality: true
     )
     ->withSets([
+        LevelSetList::UP_TO_PHP_84,
+        PHPUnitSetList::PHPUNIT_110,
+
         /**
          * Converts uses of things like `$app['config']` to `$app->make('config')`.
          */
@@ -105,13 +114,6 @@ return RectorConfig::configure()
         DispatchToHelperFunctionsRector::class,
 
         /**
-         * Fixer for PHPStan reports by strict type rule - 'PHPStan\Rules\BooleansInConditions\BooleanInIfConditionRule'
-         *
-         * @see https://getrector.com/rule-detail/boolean-in-if-condition-rule-fixer-rector
-         */
-        BooleanInIfConditionRuleFixerRector::class,
-
-        /**
          * Rename variable to match new ClassType.
          *
          * @see https://getrector.com/rule-detail/rename-variable-to-match-new-type-rector
@@ -133,13 +135,49 @@ return RectorConfig::configure()
         ThrowIfRector::class,
 
         /**
+         * Rename param to match ClassType
+         *
+         * @see https://getrector.com/rule-detail/rename-param-to-match-type-rector
+         */
+        RenameParamToMatchTypeRector::class,
+
+        /**
+         * Renames value variable name in foreach loop to match method type
+         *
+         * @see https://getrector.com/rule-detail/rename-foreach-value-variable-to-match-method-call-return-type-rector
+         */
+        RenameForeachValueVariableToMatchMethodCallReturnTypeRector::class,
+
+        /**
+         * Use the static factory method instead of global factory function.
+         *
+         * @see https://getrector.com/rule-detail/factory-func-call-to-static-call-rector
+         */
+        FuncCallToStaticCallRector::class,
+
+        /**
+         * Change closure to arrow function.
+         *
+         * @see https://getrector.com/rule-detail/closure-to-arrow-function-rector
+         */
+        ClosureToArrowFunctionRector::class,
+
+        /**
+         * Upgrade array callable to first class callable.
+         *
+         * @see https://getrector.com/rule-detail/first-class-callable-rector
+         */
+        FirstClassCallableRector::class,
+
+        /**
          * Files.
          */
         __DIR__ . '/bootstrap/providers.php',
         __DIR__ . '/bootstrap/cache/*',
+        // __DIR__ . '/database/seeders/*',
     ])
     ->withImportNames(
-        importDocBlockNames: true,
+        // importDocBlockNames: false,
         removeUnusedImports: true
     );
 // ->withTypeCoverageLevel(0)
