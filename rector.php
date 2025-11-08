@@ -26,7 +26,7 @@ return RectorConfig::configure()
         __DIR__ . '/config',
         __DIR__ . '/database',
         __DIR__ . '/routes',
-        __DIR__ . '/support',
+        // __DIR__ . '/support',
         __DIR__ . '/tests',
     ])
     ->withComposerBased(phpunit: true, laravel: true)
