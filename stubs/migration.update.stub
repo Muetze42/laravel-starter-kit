@@ -11,7 +11,7 @@ return new class () extends Migration
      */
     public function up(): void
     {
-        Schema::table('{{ table }}', function (Blueprint $table) {
+        Schema::table('{{ table }}', static function (Blueprint $table) {
             //$table->string('new_column')->after('name');
             //$table->boolean('new_bool')->default(false)->after('');
         });
