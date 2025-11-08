@@ -50,7 +50,11 @@
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
+        "post-install-cmd": [
+            "@php artisan system:check-requirements --ansi"
+        ],
         "post-update-cmd": [
+            "@php artisan system:check-requirements --ansi",
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-root-package-install": [
