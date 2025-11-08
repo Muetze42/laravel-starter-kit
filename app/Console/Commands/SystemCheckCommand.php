@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
+use Livewire\Features\SupportFileUploads\FileUploadConfiguration;
 use Livewire\Livewire;
 use RuntimeException;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -166,7 +167,15 @@ class SystemCheckCommand extends Command
         }
 
         if (class_exists(Livewire::class)) {
-            $rules = config('livewire.temporary_file_upload.rules');
+            $rules = FileUploadConfiguration::rules();
+
+            $maxFileSize = $this->extractMaxFileSizes($rules);
+
+            if ($maxFileSize < $minUploadSize) {
+                $this->error('The Livewire `temporary_file_upload.rules` configuration is too low.');
+                $this->hasError = true;
+            }
+
             $maxFileSize = $this->extractMaxFileSizes($rules);
 
             if ($maxFileSize < $minUploadSize) {
