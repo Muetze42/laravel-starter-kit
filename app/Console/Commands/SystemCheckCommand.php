@@ -190,8 +190,12 @@ class SystemCheckCommand extends Command
      *
      * @param  array<string, mixed>  $rules
      */
-    protected function extractMaxFileSizes(array $rules): ?int
+    protected function extractMaxFileSizes(?array $rules): ?int
     {
+        if (empty($rules)) {
+            return null;
+        }
+
         $maxSizes = [];
 
         foreach ($rules as $rule) {
