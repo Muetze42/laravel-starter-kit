@@ -11,6 +11,7 @@ use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
 use Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchMethodCallReturnTypeRector;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
+use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php81\Rector\Array_\FirstClassCallableRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\LevelSetList;
@@ -168,6 +169,13 @@ return RectorConfig::configure()
          * @see https://getrector.com/rule-detail/first-class-callable-rector
          */
         FirstClassCallableRector::class,
+
+        /**
+         * Change simple property init and assign to constructor promotion.
+         *
+         * @see https://getrector.com/rule-detail/class-property-assign-to-constructor-promotion-rector
+         */
+        ClassPropertyAssignToConstructorPromotionRector::class,
 
         /**
          * Files.
