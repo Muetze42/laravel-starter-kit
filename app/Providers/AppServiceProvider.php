@@ -69,13 +69,13 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function configureHttpClient(): void
     {
-        // \Illuminate\Support\Facades\Http::globalRequestMiddleware(
-        //     fn (\GuzzleHttp\Psr7\Request $request) => $request->withHeader(
-        //         'User-Agent',
-        //         \Illuminate\Support\Facades\Config::string('app.name') . ' '
-        //         . \Illuminate\Support\Facades\Config::string('app.env'),
-        //     )
-        // );
+        // \Illuminate\Support\Facades\Http::globalOptions([
+        //     'headers' => [
+        //         'User-Agent' => \Illuminate\Support\Facades\Config::string('app.name') . ' ' .
+        //             \Illuminate\Support\Facades\Config::string('app.env'),
+        //         'X-Environment' => config('app.env'),
+        //     ],
+        // ]);
     }
 
     /**
