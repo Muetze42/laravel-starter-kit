@@ -126,7 +126,7 @@ class SystemCheckCommand extends Command
         $memoryLimit = $this->getPhpIniOption('memory_limit');
         $minMemoryLimit = $this->minMemoryLimit();
 
-        if ($memoryLimit < $minMemoryLimit) {
+        if ($memoryLimit < $minMemoryLimit && $memoryLimit !== -1) {
             $this->error('The `memory_limit` PHP setting is too low.');
 
             $this->hasError = true;
