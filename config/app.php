@@ -69,6 +69,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Schedule Timezone
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the timezone for all scheduled tasks. This will
+    | override the application timezone for the scheduler only. If not set,
+    | scheduled tasks will use the application timezone defined above.
+    |
+    */
+
+    'schedule_timezone' => 'Europe/Berlin',
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Locale Configuration
     |--------------------------------------------------------------------------
     |
