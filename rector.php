@@ -18,6 +18,7 @@ use Rector\Set\ValueObject\LevelSetList;
 use Rector\Transform\Rector\FuncCall\FuncCallToStaticCallRector;
 use RectorLaravel\Rector\If_\ThrowIfRector;
 use RectorLaravel\Rector\StaticCall\DispatchToHelperFunctionsRector;
+use RectorLaravel\Set\LaravelLevelSetList;
 use RectorLaravel\Set\LaravelSetList;
 
 return RectorConfig::configure()
@@ -48,6 +49,7 @@ return RectorConfig::configure()
     ->withSets([
         LevelSetList::UP_TO_PHP_84,
         PHPUnitSetList::PHPUNIT_110,
+        LaravelLevelSetList::UP_TO_LARAVEL_120,
 
         /**
          * Converts uses of things like `$app['config']` to `$app->make('config')`.
@@ -85,6 +87,11 @@ return RectorConfig::configure()
         LaravelSetList::LARAVEL_FACADE_ALIASES_TO_FULL_NAMES,
 
         /**
+         * Makes working with Laravel Factories easier and more IDE friendly.
+         */
+        // LaravelSetList::LARAVEL_FACTORIES,
+
+        /**
          * Replaces `abort()`, `report()`, `throw` statements inside conditions with `abort_if()`, `report_if()`, `throw_if()` function calls.
          */
         LaravelSetList::LARAVEL_IF_HELPERS,
@@ -98,6 +105,11 @@ return RectorConfig::configure()
          * Migrates Eloquent legacy model factories (with closures) into class based factories.
          */
         LaravelSetList::LARAVEL_LEGACY_FACTORIES_TO_CLASSES,
+
+        /**
+         * Improves Laravel testing by converting deprecated methods and adding better assertions.
+         */
+        LaravelSetList::LARAVEL_TESTING,
     ])
     ->withSkip([
         /**
@@ -176,6 +188,11 @@ return RectorConfig::configure()
          * @see https://getrector.com/rule-detail/class-property-assign-to-constructor-promotion-rector
          */
         ClassPropertyAssignToConstructorPromotionRector::class,
+
+        /**
+         * Adds type hints and generic return types to improve Laravel code type safety.
+         */
+        LaravelSetList::LARAVEL_TYPE_DECLARATIONS,
 
         /**
          * Files.
