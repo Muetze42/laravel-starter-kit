@@ -11,10 +11,10 @@
     "require": {
         "php": "^8.4",
         "ext-pdo": "*",
-        "laravel/framework": "^12.37",
+        "laravel/framework": "^12.40",
         "laravel/tinker": "^2.10",
         "norman-huth/php-library": "^2.51",
-        "sentry/sentry-laravel": "^4.18"
+        "sentry/sentry-laravel": "^4.19"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.6",
@@ -26,7 +26,7 @@
         "larastan/larastan": "^3.8",
         "laravel/boost": "^1.8",
         "laravel/pail": "^1.2",
-        "laravel/pint": "^1.25",
+        "laravel/pint": "^1.26",
         "mockery/mockery": "^1.6",
         "norman-huth/find-command": "^1.2",
         "nunomaduro/collision": "^8.8",
