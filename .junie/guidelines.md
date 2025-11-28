@@ -181,6 +181,11 @@ This application is a Laravel application and its main Laravel ecosystems packag
     - <code-snippet>public function __construct(public GitHub $github) { }</code-snippet>
 - Do not allow empty `__construct()` methods with zero parameters.
 
+### Visibility & Extensibility
+- Never use `private` - only `protected` or `public`.
+- In factory methods (`make()`, `fromX()`) always return `static` instead of `self` so child classes are instantiated correctly.
+- Design classes to be extensible (interfaces, traits, overridable methods).
+
 ### Type Declarations
 - Always use explicit return type declarations for methods and functions.
 - Use appropriate PHP type hints for method parameters.
