@@ -58,7 +58,7 @@
         "post-update-cmd": [
             "@php artisan system:check-requirements --ansi",
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
-            "@php artisan boost:install --ignore-guidelines --silent --ansi"
+            "@ai-mcp"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
@@ -75,6 +75,7 @@
         "rector": "./vendor/bin/rector --ansi",
         "analyse": "./vendor/bin/phpstan analyse -v --ansi",
         "mutation": "@php vendor/bin/infection --configuration=.infection.json --threads=$(nproc) --ansi",
+        "ai-mcp": "@php artisan boost:install --ignore-guidelines --silent --ansi",
         "lint": ["@pint"],
         "checks": [
             "@rector",
@@ -91,13 +92,14 @@
         ]
     },
     "scripts-descriptions": {
-        "pint": "Run Laravel Pint CS Fixer",
-        "lint": "Fix code style issues",
-        "rector": "Instant Upgrades and Automated Refactoring Code",
+        "ai-mcp": "Install MCP server configuration",
         "analyse": "Run static analysis to find bugs",
         "checks": "Running all analysis and fixer tools",
         "full-checks": "Running all analysis and fixer tools and infection",
-        "mutation": "Run mutation testing using Infection with parallel threads"
+        "lint": "Fix code style issues",
+        "mutation": "Run mutation testing using Infection with parallel threads",
+        "pint": "Run Laravel Pint CS Fixer",
+        "rector": "Instant Upgrades and Automated Refactoring Code"
     },
     "scripts-aliases": {
         "checks": [
