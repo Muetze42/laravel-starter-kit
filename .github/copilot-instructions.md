@@ -88,8 +88,11 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - Do not allow empty `__construct()` methods with zero parameters.
 
 ### Type Declarations
+- Type hints are MANDATORY for all method parameters, return types, and class properties.
 - Always use explicit return type declarations for methods and functions.
 - Use appropriate PHP type hints for method parameters.
+- Never use `mixed` unless absolutely necessary - prefer union types or specific types.
+- Use `void` return type for methods that do not return a value.
 
 <code-snippet name="Explicit Return Types and Method Params" lang="php">
 protected function isAccessible(User $user, ?string $path = null): bool
