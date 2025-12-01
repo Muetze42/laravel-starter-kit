@@ -123,6 +123,9 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - There MUST be a package/second-level namespace in relation with the PSR or PER that covers the code.
 - Implementations of a given PSR or PER SHOULD declare a `provides` key in their `composer.json` file in the form `psr/<package>-implementation` with a version number that matches the PSR being implemented. For example, `"psr/<package>-implementation": "1.0.0"`.
 
+### Static Analysis
+- NEVER use `@phpstan-ignore`, `@phpstan-ignore-next-line`, `@phpstan-ignore-line` or any other PHPStan/Larastan error suppression annotations. All errors must be fixed properly.
+
 
 === laravel/core rules ===
 
