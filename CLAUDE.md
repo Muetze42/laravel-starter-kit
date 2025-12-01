@@ -81,6 +81,8 @@ This application is a Laravel application and its main Laravel ecosystems packag
 ## PHP
 
 - Always use curly braces for control structures, even if it has one line.
+- Generate Enums always in the folder `app/Enums`, not in the main `app/` folder, unless instructed differently.
+- Import all classes with `use` and reference only their short names; no fully-qualified class names in code.
 
 ### Visibility & Extensibility
 
@@ -115,6 +117,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 ## Enums
 - Typically, keys in an Enum should be TitleCase. For example: `FavoritePerson`, `BestLake`, `Monthly`.
+- If a PHP Enum exists for a domain concept, always use its cases (or their `->value`) instead of raw strings everywhere — routes, middleware, migrations, seeds, configs, and UI defaults.
 
 ### PSR Naming Conventions
 - Interfaces MUST be suffixed by `Interface`: e.g. `Psr\Foo\BarInterface`.
@@ -144,6 +147,13 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - Avoid `DB::`; prefer `Model::query()`. Generate code that leverages Laravel's ORM capabilities rather than bypassing them.
 - Generate code that prevents N+1 query problems by using eager loading.
 - Use Laravel's query builder for very complex database operations.
+- For DB pivot tables, use correct alphabetical order, like `project_role` instead of `role_project`.
+
+### Eloquent Observers
+- Eloquent Observers should be registered in Eloquent Models with PHP Attributes, and not in AppServiceProvider. Example: `#[ObservedBy([UserObserver::class])]` with `use Illuminate\Database\Eloquent\Attributes\ObservedBy;` on top.
+
+### Livewire
+- In Livewire projects, don't use Livewire Volt. Only Livewire class components.
 
 ### Model Creation
 - When creating new models, create useful factories and seeders for them too. Ask the user if they need any other things, using `list-artisan-commands` to check the available options to `php artisan make:model`.

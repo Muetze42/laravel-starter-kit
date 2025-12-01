@@ -39,6 +39,7 @@
 - For DB pivot tables, use correct alphabetical order, like "project_role" instead of "role_project"
 - I am using Laravel Herd locally, so always assume that the main URL of the project is `http://[folder_name].test`
 - **Eloquent Observers** should be registered in Eloquent Models with PHP Attributes, and not in AppServiceProvider. Example: `#[ObservedBy([UserObserver::class])]` with `use Illuminate\Database\Eloquent\Attributes\ObservedBy;` on top
+- In Livewire projects, don't use Livewire Volt. Only Livewire class components.
 - When generating Controllers, put validation in Form Request classes
 - Aim for "slim" Controllers and put larger logic pieces in Service classes
 - Use Laravel helpers instead of `use` section classes whenever possible. Examples: use `auth()->id()` instead of `Auth::id()` and adding `Auth` in the `use` section. Another example: use `redirect()->route()` instead of `Redirect::route()`.
@@ -175,6 +176,8 @@ This application is a Laravel application and its main Laravel ecosystems packag
 ## PHP
 
 - Always use curly braces for control structures, even if it has one line.
+- Generate Enums always in the folder `app/Enums`, not in the main `app/` folder, unless instructed differently.
+- Import all classes with `use` and reference only their short names; no fully-qualified class names in code.
 
 ### Constructors
 - Use PHP 8 constructor property promotion in `__construct()`.
@@ -208,6 +211,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 ## Enums
 - Typically, keys in an Enum should be TitleCase. For example: `FavoritePerson`, `BestLake`, `Monthly`.
+- If a PHP Enum exists for a domain concept, always use its cases (or their `->value`) instead of raw strings everywhere — routes, middleware, migrations, seeds, configs, and UI defaults.
 
 ### PSR Naming Conventions
 - Interfaces MUST be suffixed by `Interface`: e.g. `Psr\Foo\BarInterface`.
