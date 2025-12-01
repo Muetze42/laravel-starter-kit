@@ -1,3 +1,54 @@
+# Custom Project Guidelines
+
+These guidelines are maintained separately from Laravel Boost and will persist across updates.
+
+## PHP
+
+### Enums Location
+- Generate Enums always in the folder `app/Enums`, not in the main `app/` folder, unless instructed differently.
+
+### Imports
+- Import all classes with `use` and reference only their short names; no fully-qualified class names in code.
+
+### Visibility & Extensibility
+- Never use `private` - only `protected` or `public`.
+- In factory methods (`make()`, `fromX()`) always return `static` instead of `self` so child classes are instantiated correctly.
+- Design classes to be extensible (interfaces, traits, overridable methods).
+
+### Type Declarations
+- Type hints are MANDATORY for all method parameters, return types, and class properties.
+- Never use `mixed` unless absolutely necessary - prefer union types or specific types.
+- Use `void` return type for methods that do not return a value.
+
+### Enums Usage
+- If a PHP Enum exists for a domain concept, always use its cases (or their `->value`) instead of raw strings everywhere — routes, middleware, migrations, seeds, configs, and UI defaults.
+
+### PSR Naming Conventions
+- Interfaces MUST be suffixed by `Interface`: e.g. `Psr\Foo\BarInterface`.
+- Abstract classes MUST be prefixed by `Abstract`: e.g. `Psr\Foo\AbstractBar`.
+- Traits MUST be suffixed by `Trait`: e.g. `Psr\Foo\BarTrait`.
+- PSR-1, 4, and 12 MUST be followed.
+- For code released as part of a PSR, the vendor namespace MUST be `Psr` and the Composer package name MUST be `psr/<package>` (e.g., `psr/log`).
+- For code released as part of a PER or any other Auxiliary Resources, the vendor namespace MUST be `Fig` and the Composer package name MUST be `fig/<package>` (e.g., `fig/cache-util`).
+- There MUST be a package/second-level namespace in relation with the PSR or PER that covers the code.
+- Implementations of a given PSR or PER SHOULD declare a `provides` key in their `composer.json` file in the form `psr/<package>-implementation` with a version number that matches the PSR being implemented. For example, `"psr/<package>-implementation": "1.0.0"`.
+
+### Static Analysis
+- NEVER use `@phpstan-ignore`, `@phpstan-ignore-next-line`, `@phpstan-ignore-line` or any other PHPStan/Larastan error suppression annotations. All errors must be fixed properly.
+
+## Laravel
+
+### Database
+- For DB pivot tables, use correct alphabetical order, like `project_role` instead of `role_project`.
+
+### Eloquent Observers
+- Eloquent Observers should be registered in Eloquent Models with PHP Attributes, and not in AppServiceProvider. Example: `#[ObservedBy([UserObserver::class])]` with `use Illuminate\Database\Eloquent\Attributes\ObservedBy;` on top.
+
+### Livewire
+- In Livewire projects, don't use Livewire Volt. Only Livewire class components.
+
+---
+
 <laravel-boost-guidelines>
 === foundation rules ===
 
@@ -81,26 +132,15 @@ This application is a Laravel application and its main Laravel ecosystems packag
 ## PHP
 
 - Always use curly braces for control structures, even if it has one line.
-- Generate Enums always in the folder `app/Enums`, not in the main `app/` folder, unless instructed differently.
-- Import all classes with `use` and reference only their short names; no fully-qualified class names in code.
 
 ### Constructors
 - Use PHP 8 constructor property promotion in `__construct()`.
     - <code-snippet>public function __construct(public GitHub $github) { }</code-snippet>
 - Do not allow empty `__construct()` methods with zero parameters.
 
-### Visibility & Extensibility
-
-- Never use `private` - only `protected` or `public`.
-- In factory methods (`make()`, `fromX()`) always return `static` instead of `self` so child classes are instantiated correctly.
-- Design classes to be extensible (interfaces, traits, overridable methods).
-
 ### Type Declarations
-- Type hints are MANDATORY for all method parameters, return types, and class properties.
 - Always use explicit return type declarations for methods and functions.
 - Use appropriate PHP type hints for method parameters.
-- Never use `mixed` unless absolutely necessary - prefer union types or specific types.
-- Use `void` return type for methods that do not return a value.
 
 <code-snippet name="Explicit Return Types and Method Params" lang="php">
 protected function isAccessible(User $user, ?string $path = null): bool
@@ -117,20 +157,6 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 ## Enums
 - Typically, keys in an Enum should be TitleCase. For example: `FavoritePerson`, `BestLake`, `Monthly`.
-- If a PHP Enum exists for a domain concept, always use its cases (or their `->value`) instead of raw strings everywhere — routes, middleware, migrations, seeds, configs, and UI defaults.
-
-### PSR Naming Conventions
-- Interfaces MUST be suffixed by `Interface`: e.g. `Psr\Foo\BarInterface`.
-- Abstract classes MUST be prefixed by `Abstract`: e.g. `Psr\Foo\AbstractBar`.
-- Traits MUST be suffixed by `Trait`: e.g. `Psr\Foo\BarTrait`.
-- PSR-1, 4, and 12 MUST be followed.
-- For code released as part of a PSR, the vendor namespace MUST be `Psr` and the Composer package name MUST be `psr/<package>` (e.g., `psr/log`).
-- For code released as part of a PER or any other Auxiliary Resources, the vendor namespace MUST be `Fig` and the Composer package name MUST be `fig/<package>` (e.g., `fig/cache-util`).
-- There MUST be a package/second-level namespace in relation with the PSR or PER that covers the code.
-- Implementations of a given PSR or PER SHOULD declare a `provides` key in their `composer.json` file in the form `psr/<package>-implementation` with a version number that matches the PSR being implemented. For example, `"psr/<package>-implementation": "1.0.0"`.
-
-### Static Analysis
-- NEVER use `@phpstan-ignore`, `@phpstan-ignore-next-line`, `@phpstan-ignore-line` or any other PHPStan/Larastan error suppression annotations. All errors must be fixed properly.
 
 
 === laravel/core rules ===
@@ -147,13 +173,6 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - Avoid `DB::`; prefer `Model::query()`. Generate code that leverages Laravel's ORM capabilities rather than bypassing them.
 - Generate code that prevents N+1 query problems by using eager loading.
 - Use Laravel's query builder for very complex database operations.
-- For DB pivot tables, use correct alphabetical order, like `project_role` instead of `role_project`.
-
-### Eloquent Observers
-- Eloquent Observers should be registered in Eloquent Models with PHP Attributes, and not in AppServiceProvider. Example: `#[ObservedBy([UserObserver::class])]` with `use Illuminate\Database\Eloquent\Attributes\ObservedBy;` on top.
-
-### Livewire
-- In Livewire projects, don't use Livewire Volt. Only Livewire class components.
 
 ### Model Creation
 - When creating new models, create useful factories and seeders for them too. Ask the user if they need any other things, using `list-artisan-commands` to check the available options to `php artisan make:model`.
