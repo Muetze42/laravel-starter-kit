@@ -14,7 +14,7 @@
         "laravel/framework": "^12.40",
         "laravel/tinker": "^2.10",
         "norman-huth/php-library": "^2.51",
-        "sentry/sentry-laravel": "^4.19"
+        "sentry/sentry-laravel": "^4.20"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.6",
@@ -50,7 +50,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan development:ai-background-update --ansi"
         ],
         "post-install-cmd": [
             "@php artisan system:check-requirements --ansi"
@@ -75,7 +76,6 @@
         "rector": "./vendor/bin/rector --ansi",
         "analyse": "./vendor/bin/phpstan analyse -v --ansi",
         "mutation": "@php vendor/bin/infection --configuration=.infection.json --threads=$(nproc) --ansi",
-        "ai-mcp": "@php artisan boost:install --ignore-guidelines --silent --ansi",
         "lint": ["@pint"],
         "checks": [
             "@rector",
@@ -92,7 +92,6 @@
         ]
     },
     "scripts-descriptions": {
-        "ai-mcp": "Install MCP server configuration",
         "analyse": "Run static analysis to find bugs",
         "checks": "Running all analysis and fixer tools",
         "full-checks": "Running all analysis and fixer tools and infection",
