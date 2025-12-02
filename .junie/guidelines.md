@@ -90,6 +90,8 @@ These guidelines are maintained separately from Laravel Boost and will persist a
 ## Laravel instructions
 
 - For DB pivot tables, use correct alphabetical order, like "project_role" instead of "role_project"
+- Don't add `::query()` when running Eloquent `create()` statements. Use `User::create()` instead of `User::query()->create()`
+- NEVER use `where()` with `like` or `ilike` operators. Always use the `whereLike()` method instead. Use `User::whereLike('name', '%norman%')` instead of `User::where('name', 'like', '%norman%')` or `User::where('name', 'ilike', '%norman%')`
 - I am using Laravel Herd locally, so always assume that the main URL of the project is `http://[folder_name].test`
 - **Eloquent Observers** should be registered in Eloquent Models with PHP Attributes, and not in AppServiceProvider. Example: `#[ObservedBy([UserObserver::class])]` with `use Illuminate\Database\Eloquent\Attributes\ObservedBy;` on top
 - In Livewire projects, don't use Livewire Volt. Only Livewire class components.

@@ -47,6 +47,10 @@ These guidelines are maintained separately from Laravel Boost and will persist a
 ### Database
 - For DB pivot tables, use correct alphabetical order, like `project_role` instead of `role_project`.
 
+### Eloquent Model Operations
+- Don't add `::query()` when running Eloquent `create()` statements. Use `User::create()` instead of `User::query()->create()`.
+- NEVER use `where()` with `like` or `ilike` operators. Always use the `whereLike()` method instead. Use `User::whereLike('name', '%norman%')` instead of `User::where('name', 'like', '%norman%')` or `User::where('name', 'ilike', '%norman%')`.
+
 ### Eloquent Observers
 - Eloquent Observers should be registered in Eloquent Models with PHP Attributes, and not in AppServiceProvider. Example: `#[ObservedBy([UserObserver::class])]` with `use Illuminate\Database\Eloquent\Attributes\ObservedBy;` on top.
 
