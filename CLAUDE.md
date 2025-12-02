@@ -36,6 +36,12 @@ These guidelines are maintained separately from Laravel Boost and will persist a
 ### Static Analysis
 - NEVER use `@phpstan-ignore`, `@phpstan-ignore-next-line`, `@phpstan-ignore-line` or any other PHPStan/Larastan error suppression annotations. All errors must be fixed properly.
 
+### Control Flow
+- NEVER use `else` or `elseif` statements. Use early returns, guard clauses, or ternary operators instead.
+
+### Variable Naming
+- All variable names MUST be at least 3 characters long. Avoid single-letter or two-letter variable names like `$i`, `$id`, `$db`.
+
 ## Laravel
 
 ### Database

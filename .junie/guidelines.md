@@ -82,6 +82,8 @@ These guidelines are maintained separately from Laravel Boost and will persist a
 - Remove unused imports, variables, and dead code.
 - Never suppress PHPStan/Larastan errors with `@phpstan-ignore-next-line` unless there is no other possible fix and document the reason
 - Avoid using `isset()` for null checks; prefer strict comparisons where possible
+- NEVER use `else` or `elseif` statements. Use early returns, guard clauses, or ternary operators instead.
+- All variable names MUST be at least 3 characters long. Avoid single-letter or two-letter variable names like `$i`, `$id`, `$db`.
 
 ---
 
