@@ -11,8 +11,8 @@ These guidelines are maintained separately from Laravel Boost and will persist a
 - Import all classes with `use` and reference only their short names; no fully-qualified class names in code.
 
 ### Visibility & Extensibility
-- Never use `private` - only `protected` or `public`.
-- Never use `final` on classes - all classes should be extensible.
+- **Default to `protected`** over `private` for extensibility.
+- **Default to extensible classes** over `final`.
 - In factory methods (`make()`, `fromX()`) always return `static` instead of `self` so child classes are instantiated correctly.
 - Design classes to be extensible (interfaces, traits, overridable methods).
 
