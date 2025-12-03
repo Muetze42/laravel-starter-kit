@@ -12,6 +12,7 @@ These guidelines are maintained separately from Laravel Boost and will persist a
 
 ### Visibility & Extensibility
 - Never use `private` - only `protected` or `public`.
+- Never use `final` on classes - all classes should be extensible.
 - In factory methods (`make()`, `fromX()`) always return `static` instead of `self` so child classes are instantiated correctly.
 - Design classes to be extensible (interfaces, traits, overridable methods).
 
@@ -36,6 +37,9 @@ These guidelines are maintained separately from Laravel Boost and will persist a
 ### Static Analysis
 - NEVER use `@phpstan-ignore`, `@phpstan-ignore-next-line`, `@phpstan-ignore-line` or any other PHPStan/Larastan error suppression annotations. All errors must be fixed properly.
 
+### Match Operator
+- In PHP, use `match` operator over `switch` whenever possible.
+
 ## Laravel
 
 ### Database
@@ -43,6 +47,13 @@ These guidelines are maintained separately from Laravel Boost and will persist a
 
 ### Eloquent Observers
 - Eloquent Observers should be registered in Eloquent Models with PHP Attributes, and not in AppServiceProvider. Example: `#[ObservedBy([UserObserver::class])]` with `use Illuminate\Database\Eloquent\Attributes\ObservedBy;` on top.
+
+### Eloquent Models - Fillable Properties
+- NEVER add foreign key columns to the `$fillable` array. Foreign keys should only be set through relationships or explicit assignment, not mass assignment.
+- Example: For a `user_id` foreign key, do NOT include it in `$fillable`. Instead, use `$model->user()->associate($user)` or `$model->user_id = $user->id`.
+
+### Laravel Helpers
+- Use Laravel helpers instead of `use` section classes whenever possible. Examples: use `auth()->id()` instead of `Auth::id()` and adding `Auth` in the `use` section. Another example: use `redirect()->route()` instead of `Redirect::route()`.
 
 ### Livewire
 - In Livewire projects, don't use Livewire Volt. Only Livewire class components.
@@ -83,7 +94,12 @@ These guidelines are maintained separately from Laravel Boost and will persist a
 - Never suppress PHPStan/Larastan errors with `@phpstan-ignore-next-line` unless there is no other possible fix and document the reason
 - Avoid using `isset()` for null checks; prefer strict comparisons where possible
 - NEVER use `else` or `elseif` statements. Use early returns, guard clauses, or ternary operators instead.
-- All variable names MUST be at least 3 characters long. Avoid single-letter or two-letter variable names like `$i`, `$id`, `$db`.
+- All variable names MUST be at least 3 characters long, with the following exceptions:
+  - `$id`, `$fp` are allowed for identifiers and file pointers
+  - `$i`, `$j` are allowed as loop counters
+  - `$x`, `$y`, `$z` are allowed for coordinates or mathematical calculations
+  - `$io` is allowed for Input/Output streams
+  - `$to`, `$cc`, `$bcc` are allowed in email contexts
 
 ---
 
