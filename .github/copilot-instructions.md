@@ -51,6 +51,13 @@ These guidelines are maintained separately from Laravel Boost and will persist a
   - `$io` is allowed for Input/Output streams
   - `$to`, `$cc`, `$bcc` are allowed in email contexts
 
+## Blade
+
+### Component Attributes
+- For dynamic/boolean attributes in Blade components, use `:attribute="$value"` syntax (short for `v-bind:attribute`).
+- NEVER use `@if` directly within component attributes - this does not work.
+- Example: Use `:clearable="$nullable"` instead of `@if($nullable) clearable @endif`.
+
 ## Laravel
 
 ### Database

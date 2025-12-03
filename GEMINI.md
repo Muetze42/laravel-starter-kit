@@ -88,6 +88,13 @@ Route::get('/shop/categories/{shopCategory}', [ShopCategoryController::class, 's
   3. `vendor/bin/pint --dirty` - Final code formatting (Rector changes need reformatting)
 - Rector automatically applies modern PHP patterns and Laravel best practices.
 
+## Blade
+
+### Component Attributes
+- For dynamic/boolean attributes in Blade components, use `:attribute="$value"` syntax (short for `v-bind:attribute`).
+- NEVER use `@if` directly within component attributes - this does not work.
+- Example: Use `:clearable="$nullable"` instead of `@if($nullable) clearable @endif`.
+
 ---
 
 <laravel-boost-guidelines>

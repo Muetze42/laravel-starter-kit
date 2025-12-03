@@ -67,6 +67,13 @@ Route::get('/shop/categories/{shopCategory}', [ShopCategoryController::class, 's
 ### Livewire
 - In Livewire projects, don't use Livewire Volt. Only Livewire class components.
 
+## Blade
+
+### Component Attributes
+- For dynamic/boolean attributes in Blade components, use `:attribute="$value"` syntax (short for `v-bind:attribute`).
+- NEVER use `@if` directly within component attributes - this does not work.
+- Example: Use `:clearable="$nullable"` instead of `@if($nullable) clearable @endif`.
+
 ---
 
 ## General code instructions
