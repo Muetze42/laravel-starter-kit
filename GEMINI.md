@@ -81,6 +81,13 @@ Route::get('/shop/categories/{shopCategory}', [ShopCategoryController::class, 's
 ### Livewire
 - In Livewire projects, don't use Livewire Volt. Only Livewire class components.
 
+### Code Quality
+- Before finalizing PHP changes, run code quality tools in this order:
+  1. `vendor/bin/pint --dirty` - Initial code formatting
+  2. `vendor/bin/rector` - Automated refactoring and code upgrades
+  3. `vendor/bin/pint --dirty` - Final code formatting (Rector changes need reformatting)
+- Rector automatically applies modern PHP patterns and Laravel best practices.
+
 ---
 
 <laravel-boost-guidelines>
