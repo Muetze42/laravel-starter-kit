@@ -55,6 +55,15 @@ These guidelines are maintained separately from Laravel Boost and will persist a
 ### Laravel Helpers
 - Use Laravel helpers instead of `use` section classes whenever possible. Examples: use `auth()->id()` instead of `Auth::id()` and adding `Auth` in the `use` section. Another example: use `redirect()->route()` instead of `Redirect::route()`.
 
+
+### Routing
+- Always constrain numeric route parameters with `->where('parameter', '[0-9]+')` to prevent conflicts with other routes and avoid unexpected behavior.
+
+<code-snippet name="Numeric Route Parameter Constraint" lang="php">
+Route::get('/shop/categories/{shopCategory}', [ShopCategoryController::class, 'show'])
+    ->where('shopCategory', '[0-9]+');
+</code-snippet>
+
 ### Livewire
 - In Livewire projects, don't use Livewire Volt. Only Livewire class components.
 
@@ -100,6 +109,9 @@ These guidelines are maintained separately from Laravel Boost and will persist a
   - `$x`, `$y`, `$z` are allowed for coordinates or mathematical calculations
   - `$io` is allowed for Input/Output streams
   - `$to`, `$cc`, `$bcc` are allowed in email contexts
+
+<project-guidelines>
+</project-guidelines>
 
 ---
 
@@ -367,3 +379,6 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - To run all tests in a file: `php artisan test tests/Feature/ExampleTest.php`.
 - To filter on a particular test name: `php artisan test --filter=testName` (recommended after making a change to a related file).
 </laravel-boost-guidelines>
+
+<project-guidelines>
+</project-guidelines>
