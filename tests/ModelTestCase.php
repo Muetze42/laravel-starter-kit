@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 // phpcs:ignoreFile
 
 namespace Tests;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Override;
 
 abstract class ModelTestCase extends TestCase
 {
@@ -14,11 +17,12 @@ abstract class ModelTestCase extends TestCase
     /**
      * Setup the test environment.
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
         $class = class_basename(static::class);
-        $this->instance = app('App\Models\\' . substr($class, 0, -4));
+        $this->instance = resolve('App\Models\\' . substr($class, 0, -4));
     }
 
     protected function resource(): Model

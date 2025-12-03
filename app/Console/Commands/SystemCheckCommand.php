@@ -106,12 +106,12 @@ class SystemCheckCommand extends Command
      */
     protected function checkBinaries(): void
     {
-        foreach ($this->requiredBinaries as $binary) {
-            $result = Process::run(PHP_OS_FAMILY === 'Windows' ? 'where ' . $binary : 'command -v ' . $binary);
+        foreach ($this->requiredBinaries as $requiredBinary) {
+            $result = Process::run(PHP_OS_FAMILY === 'Windows' ? 'where ' . $requiredBinary : 'command -v ' . $requiredBinary);
 
             if (! $result->successful()) {
                 $this->error(
-                    sprintf('The required binary `%s` is not installed or not available in PATH.', $binary)
+                    sprintf('The required binary `%s` is not installed or not available in PATH.', $requiredBinary)
                 );
                 $this->hasError = true;
             }
@@ -138,9 +138,9 @@ class SystemCheckCommand extends Command
      */
     protected function checkPhpExtensions(): void
     {
-        foreach ($this->requiredPhpExtensions as $extension) {
-            if (! extension_loaded($extension)) {
-                $this->error(sprintf('The PHP extension `%s` is not installed.', $extension));
+        foreach ($this->requiredPhpExtensions as $requiredPhpExtension) {
+            if (! extension_loaded($requiredPhpExtension)) {
+                $this->error(sprintf('The PHP extension `%s` is not installed.', $requiredPhpExtension));
 
                 $this->hasError = true;
             }
@@ -166,7 +166,7 @@ class SystemCheckCommand extends Command
             $this->hasError = true;
         }
 
-        if (class_exists(Livewire::class)) {
+        if (class_exists(Livewire::class) && class_exists(FileUploadConfiguration::class)) {
             $rules = FileUploadConfiguration::rules();
 
             $maxFileSize = $this->extractMaxFileSizes($rules);
@@ -201,7 +201,7 @@ class SystemCheckCommand extends Command
      */
     protected function extractMaxFileSizes(?array $rules): ?int
     {
-        if (empty($rules)) {
+        if ($rules === null || $rules === []) {
             return null;
         }
 

@@ -2,5 +2,6 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    // NormanHuth\Library\Providers\MigrationServiceProvider::class,
+    App\Providers\FrontendServiceProvider::class,
+    App\Providers\HttpClientProvider::class,
 ];

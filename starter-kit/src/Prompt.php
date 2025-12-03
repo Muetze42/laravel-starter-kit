@@ -5,7 +5,6 @@
 namespace StarterKit;
 
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\NoReturn;

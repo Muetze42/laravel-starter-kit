@@ -5,16 +5,16 @@ namespace App\Providers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Override;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
+    #[Override]
     public function register(): void
     {
         //
@@ -27,11 +27,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureCommands();
         $this->configureDevAlwaysToMail();
-        $this->configureHttpClient();
         $this->configureModels();
         $this->configureRateLimiter();
-        $this->configureUrlGenerator();
-        $this->configureVitePrefetchingStrategy();
 
         $this->definingDefaultPasswordRules();
 
@@ -65,20 +62,6 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Configure the application's commands.
-     */
-    protected function configureHttpClient(): void
-    {
-        // \Illuminate\Support\Facades\Http::globalOptions([
-        //     'headers' => [
-        //         'User-Agent' => \Illuminate\Support\Facades\Config::string('app.name') . ' ' .
-        //             \Illuminate\Support\Facades\Config::string('app.env'),
-        //         'X-Environment' => config('app.env'),
-        //     ],
-        // ]);
-    }
-
-    /**
      * Configure the application's models.
      */
     protected function configureModels(): void
@@ -96,27 +79,6 @@ class AppServiceProvider extends ServiceProvider
         //     return \Illuminate\Cache\RateLimiting\Limit::perMinute(60)
         //         ->by($request->user()?->id ?: $request->ip());
         // });
-    }
-
-    /**
-     * Configure the application's URL Generator.
-     */
-    protected function configureUrlGenerator(): void
-    {
-        if (! $this->app->isLocal()) {
-            URL::forceScheme('https');
-        }
-    }
-
-    /**
-     * Configure the application's Vite prefetching strategy.
-     *
-     * @see https://github.com/laravel/framework/pull/52462
-     */
-    protected function configureVitePrefetchingStrategy(): void
-    {
-        // Vite::useWaterfallPrefetching(10);
-        Vite::useAggressivePrefetching();
     }
 
     /**

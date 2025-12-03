@@ -1,13 +1,12 @@
 <?php
 
+use App\Http\Middleware\PreventRequestsDuringMaintenanceMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use NormanHuth\Library\Http\Middleware\PreventRequestsDuringMaintenanceMiddleware;
-use NormanHuth\Library\Lib\CommandRegistry;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -26,7 +25,6 @@ return Application::configure(basePath: dirname(__DIR__))
             PreventRequestsDuringMaintenanceMiddleware::class
         );
     })
-    ->withCommands(CommandRegistry::devCommands())
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(function (Request $request): bool {
             return $request->expectsJson() || $request->is('api') || $request->is('api/*');

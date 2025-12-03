@@ -13,7 +13,6 @@
         "ext-pdo": "*",
         "laravel/framework": "^12.40",
         "laravel/tinker": "^2.10",
-        "norman-huth/php-library": "^2.51",
         "sentry/sentry-laravel": "^4.20"
     },
     "require-dev": {
@@ -72,6 +71,11 @@
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"pnpm run dev\" --names=server,queue,logs,vite"
         ],
+        "ide-helper": [
+            "@php artisan ide-helper:models --nowrite --ansi",
+            "@php artisan ide-helper:generate --ansi",
+            "@php artisan ide-helper:meta --ansi"
+        ],
         "pint": "./vendor/bin/pint --parallel --ansi",
         "rector": "./vendor/bin/rector --ansi",
         "analyse": "./vendor/bin/phpstan analyse -v --ansi",
@@ -95,6 +99,7 @@
         "analyse": "Run static analysis to find bugs",
         "checks": "Running all analysis and fixer tools",
         "full-checks": "Running all analysis and fixer tools and infection",
+        "ide-helper": "Generate IDE helper files",
         "lint": "Fix code style issues",
         "mutation": "Run mutation testing using Infection with parallel threads",
         "pint": "Run Laravel Pint CS Fixer",
