@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'context7' => [
+        'key' => env('CONTEXT7_KEY'),
+    ],
+
 ];
