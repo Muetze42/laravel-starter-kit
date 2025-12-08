@@ -11,7 +11,7 @@
     "require": {
         "php": "^8.4",
         "ext-pdo": "*",
-        "laravel/framework": "^12.40",
+        "laravel/framework": "^12.41",
         "laravel/tinker": "^2.10",
         "sentry/sentry-laravel": "^4.20"
     },
@@ -58,8 +58,7 @@
         ],
         "post-update-cmd": [
             "@php artisan system:check-requirements --ansi",
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
-            "@ai-mcp"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
