@@ -138,9 +138,6 @@ Route::get('/shop/categories/{shopCategory}', [ShopCategoryController::class, 's
   3. `vendor/bin/pint --dirty` - Final code formatting (Rector changes need reformatting)
 - Rector automatically applies modern PHP patterns and Laravel best practices.
 
-<project-guidelines>
-</project-guidelines>
-
 ---
 
 ## Laravel instructions
