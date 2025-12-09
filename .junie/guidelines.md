@@ -131,13 +131,6 @@ Route::get('/shop/categories/{shopCategory}', [ShopCategoryController::class, 's
   - `$io` is allowed for Input/Output streams
   - `$to`, `$cc`, `$bcc` are allowed in email contexts
 
-### Code Quality
-- Before finalizing PHP changes, run code quality tools in this order:
-  1. `vendor/bin/pint --dirty` - Initial code formatting
-  2. `vendor/bin/rector` - Automated refactoring and code upgrades
-  3. `vendor/bin/pint --dirty` - Final code formatting (Rector changes need reformatting)
-- Rector automatically applies modern PHP patterns and Laravel best practices.
-
 ---
 
 ## Laravel instructions
@@ -198,6 +191,12 @@ In the Assert phase, perform these assertions when applicable:
 
 - Context7 should use for Next.js, Shadcn UI, Tailwind CSS, React, Vue.js, Laravel, Filament, Flux UI, Laravel Livewire,
   Laravel Pulse, Inertia.js, Laravel Medialibrary
+
+### Code Quality
+- Before finalizing PHP changes, run code quality tools in this order:
+    1. `vendor/bin/rector` - Automated refactoring and code upgrades
+    2. `vendor/bin/pint --dirty` - Final code formatting (Rector changes need reformatting)
+- Rector automatically applies modern PHP patterns and Laravel best practices.
 
 ===
 
