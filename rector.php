@@ -12,7 +12,6 @@ use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
 use Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchMethodCallReturnTypeRector;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
-use Rector\Php81\Rector\Array_\FirstClassCallableRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Transform\Rector\FuncCall\FuncCallToStaticCallRector;
@@ -174,13 +173,6 @@ return RectorConfig::configure()
          * @see https://getrector.com/rule-detail/closure-to-arrow-function-rector
          */
         ClosureToArrowFunctionRector::class,
-
-        /**
-         * Upgrade array callable to first class callable.
-         *
-         * @see https://getrector.com/rule-detail/first-class-callable-rector
-         */
-        FirstClassCallableRector::class,
 
         /**
          * Change simple property init and assign to constructor promotion.
