@@ -95,6 +95,12 @@ Route::get('/shop/categories/{shopCategory}', [ShopCategoryController::class, 's
 @endforeach
 ```
 
+### Request Validation (CRITICAL)
+- **ALL incoming requests MUST be fully validated.** Server-side validation is MANDATORY - never trust client input.
+- In Controllers: ALWAYS use FormRequest classes for validation. NEVER access request parameters directly without validation.
+- In Livewire components: ALWAYS use `$this->validate()` or Livewire's `#[Validate]` attributes. Process ONLY validated data - never use `$this->property` directly for database operations without prior validation.
+- NEVER silently ignore or convert invalid input (e.g., using `$request->integer()` to convert invalid strings to 0). Invalid input MUST return proper validation errors (HTTP 422).
+
 ### Code Quality
 - Before finalizing PHP changes, run code quality tools in this order:
   1. `vendor/bin/rector` - Automated refactoring and code upgrades
