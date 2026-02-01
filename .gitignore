@@ -29,5 +29,5 @@ pnpm-workspace.yaml
 package.lock
 /.junie/mcp/mcp.json
 /.mcp.json
-/.ai/
+/.ai/mcp
 /.claude/commands/*.md
