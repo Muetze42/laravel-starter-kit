@@ -7,5 +7,5 @@
         "claude_code",
         "phpstorm"
     ],
-    "guidelines": []
+    "guidelines": true
 }

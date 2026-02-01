@@ -48,12 +48,13 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
         }
 
         $arguments = [
+            '--guidelines' => true,
             '--silent' => true,
             '--ansi' => true,
         ];
 
-        if (is_file(base_path('.mcp.json'))) {
-            $arguments['--ignore-mcp'] = true;
+        if (! is_file(base_path('.mcp.json'))) {
+            $arguments['--mcp'] = true;
         }
 
         // $this->call('boost:install --silent');

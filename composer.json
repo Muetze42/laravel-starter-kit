@@ -23,7 +23,7 @@
         "infection/infection": "^0.29",
         "itsgoingd/clockwork": "^5.3",
         "larastan/larastan": "^3.9",
-        "laravel/boost": "^1.8",
+        "laravel/boost": "^2.0",
         "laravel/pail": "^1.2",
         "laravel/pint": "^1.27",
         "mockery/mockery": "^1.6",
