@@ -11,8 +11,8 @@
     "require": {
         "php": "^8.4",
         "ext-pdo": "*",
-        "laravel/framework": "^12.44",
-        "laravel/tinker": "^2.10",
+        "laravel/framework": "^12.49",
+        "laravel/tinker": "^2.11",
         "sentry/sentry-laravel": "^4.20"
     },
     "require-dev": {
@@ -22,16 +22,16 @@
         "fakerphp/faker": "^1.24",
         "infection/infection": "^0.29",
         "itsgoingd/clockwork": "^5.3",
-        "larastan/larastan": "^3.8",
+        "larastan/larastan": "^3.9",
         "laravel/boost": "^1.8",
         "laravel/pail": "^1.2",
-        "laravel/pint": "^1.26",
+        "laravel/pint": "^1.27",
         "mockery/mockery": "^1.6",
         "norman-huth/find-command": "^1.2",
         "nunomaduro/collision": "^8.8",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpunit/phpunit": "^11.5",
-        "rector/rector": "^2.2",
+        "rector/rector": "^2.3",
         "roave/security-advisories": "dev-latest",
         "spatie/laravel-ray": "^1.43"
     },
@@ -80,7 +80,9 @@
         "rector": "./vendor/bin/rector --ansi",
         "analyse": "./vendor/bin/phpstan analyse -v --ansi",
         "mutation": "@php vendor/bin/infection --configuration=.infection.json --threads=$(nproc) --ansi",
-        "lint": ["@pint"],
+        "lint": [
+            "@pint"
+        ],
         "checks": [
             "@rector",
             "@lint",
