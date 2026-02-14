@@ -1,11 +1,16 @@
 {
     "agents": [
         "claude_code",
-        "phpstorm"
+        "junie"
     ],
-    "editors": [
-        "claude_code",
-        "phpstorm"
+    "guidelines": true,
+    "herd_mcp": false,
+    "mcp": true,
+    "packages": [
+        "spatie/laravel-ray"
     ],
-    "guidelines": true
+    "sail": false,
+    "skills": [
+        "debugging-output-and-previewing-html-using-ray"
+    ]
 }

@@ -1,9 +1,5 @@
 <laravel-boost-guidelines>
-=== .ai/foo rules ===
-
-# Custom Project Guidelines
-
-These guidelines are maintained separately from Laravel Boost and will persist across updates.
+=== .ai/core rules ===
 
 ## PHP
 
@@ -31,6 +27,14 @@ These guidelines are maintained separately from Laravel Boost and will persist a
 ### Enums Usage
 
 - If a PHP Enum exists for a domain concept, always use its cases (or their `->value`) instead of raw strings everywhere — routes, middleware, migrations, seeds, configs, and UI defaults.
+
+### Constants
+
+- NEVER use class constants (`const`) in Laravel projects
+- Use `config()` for configuration values
+- Use Enums for fixed sets of values
+- Use database settings for user-configurable values
+- Class constants make values hard to override and test
 
 ### Match Operator
 
@@ -112,25 +116,6 @@ Route::get('/shop/categories/{shopCategory}', [ShopCategoryController::class, 's
     ->where('shopCategory', '[0-9]+');
 </code-snippet>
 
-### Livewire
-
-- In Livewire projects, don't use Livewire Volt. Only Livewire class components.
-
-### Livewire Loops
-
-- **ALWAYS** add `wire:key` to the first element inside `@foreach` loops in Livewire components.
-- The key must be unique for each iteration.
-- Use the item's ID if available: `wire:key="{{ $post->id }}"`.
-- If no ID exists, use the loop index: `@foreach($items as $key => $item)` then `wire:key="{{ $key }}"`.
-- Example:
-```blade
-@foreach($posts as $post)
-    <div wire:key="{{ $post->id }}">
-        ...
-    </div>
-@endforeach
-```
-
 ### Request Validation (CRITICAL)
 
 - **ALL incoming requests MUST be fully validated.** Server-side validation is MANDATORY - never trust client input.
@@ -153,6 +138,99 @@ Route::get('/shop/categories/{shopCategory}', [ShopCategoryController::class, 's
 - NEVER use `@if` directly within component attributes - this does not work.
 - Example: Use `:clearable="$nullable"` instead of `@if($nullable) clearable @endif`.
 
+=== .ai/flux-ui rules ===
+
+## Flux UI Component Library
+
+### Documentation
+
+- Full Flux Pro documentation is located in `/docs/flux-pro/`
+- Component references: `/docs/flux-pro/components/`
+- Layout documentation: `/docs/flux-pro/layouts/`
+- Additional guides: `/docs/flux-pro/guides/`
+- **Always check the documentation before implementing** - never guess attributes or usage
+- Read the component's full documentation file, not just the first example
+
+### Styling Guidelines
+
+- Flux UI provides pre-styled components with built-in colors, backgrounds, and styles
+- **Do not set custom colors or text colors** unless explicitly required to stand out
+- **Text elements (headings, text, labels) have no color variants** - use them as-is
+- Interactive components (buttons, badges, etc.) use semantic variants when documented (e.g., `variant="primary"`, `variant="danger"`)
+- Trust the component defaults - they're designed to work together
+- Avoid custom CSS classes on Flux components unless absolutely necessary
+
+### Layout Structure
+
+- **Never wrap page content in `<div>` containers**
+- Use `<flux:main>` for full-width layouts
+- Use `<flux:main container>` for centered, max-width layouts
+- Follow Flux's layout patterns from `/docs/flux-pro/layouts/`
+
+### Component Usage
+
+- Check `/docs/flux-pro/components/[component-name]` for complete component documentation
+- **Each component has a reference table listing all available attributes** - use it
+- Only use attributes that are listed in the reference table
+- Follow the documented examples exactly - syntax matters
+- If a feature isn't in the reference table, it doesn't exist - ask before assuming
+
+### Livewire Integration
+
+- Flux components work seamlessly with Livewire
+- Use `wire:model`, `wire:click` etc. as shown in component examples
+
+=== .ai/livewire rules ===
+
+### Livewire
+
+- In Livewire projects, don't use Livewire Volt. Only Livewire class components.
+
+### Livewire Loops
+
+- **ALWAYS** add `wire:key` to the first element inside `@foreach` loops in Livewire components.
+- The key must be unique for each iteration.
+- Use the item's ID if available: `wire:key="{{ $post->id }}"`.
+- If no ID exists, use the loop index: `@foreach($items as $key => $item)` then `wire:key="{{ $key }}"`.
+- Example:
+```blade
+@foreach($posts as $post)
+    <div wire:key="{{ $post->id }}">
+        ...
+    </div>
+@endforeach
+```
+
+=== .ai/project rules ===
+
+## Code Formatting
+
+- Follow all formatting rules defined in `.editorconfig`
+- Use the configured tab size for indentation
+- Never assume or override indentation settings
+
+## Project Documentation
+
+### Location
+
+- All project documentation belongs in `/docs` as Markdown files
+
+### What to Document
+
+- Significant changes and feature implementations
+- Architectural decisions and rationale
+- API integrations and third-party service configurations
+- Complex business logic or workflows
+- Development guidelines and conventions
+- Troubleshooting guides and common issues
+- Any information that would help developers or Claude Code understand the project
+
+### Documentation Standards
+
+- Write clear, concise Markdown
+- Keep documentation up-to-date when making related code changes
+- Documentation should be useful for both human developers and AI assistants
+
 === foundation rules ===
 
 # Laravel Boost Guidelines
@@ -163,7 +241,7 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
-- php - 8.4.17
+- php - 8.4.18
 - laravel/framework (LARAVEL) - v12
 - laravel/prompts (PROMPTS) - v0
 - larastan/larastan (LARASTAN) - v3
@@ -175,6 +253,8 @@ This application is a Laravel application and its main Laravel ecosystems packag
 ## Skills Activation
 
 This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
+
+- `debugging-output-and-previewing-html-using-ray` — Use when user says &quot;send to Ray,&quot; &quot;show in Ray,&quot; &quot;debug in Ray,&quot; &quot;log to Ray,&quot; &quot;display in Ray,&quot; or wants to visualize data, debug output, or show diagrams in the Ray desktop application.
 
 ## Conventions
 
