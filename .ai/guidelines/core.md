@@ -1,7 +1,3 @@
-# Custom Project Guidelines
-
-These guidelines are maintained separately from Laravel Boost and will persist across updates.
-
 ## PHP
 
 ### Enums Location
