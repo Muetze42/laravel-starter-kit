@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+@import '../fonts/inter/web/inter.css';
+@import '../fonts/jet-brains-mono/webfonts/jetbrains-mono.css';
+
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
