@@ -20,6 +20,13 @@
 ### Enums Usage
 - If a PHP Enum exists for a domain concept, always use its cases (or their `->value`) instead of raw strings everywhere — routes, middleware, migrations, seeds, configs, and UI defaults.
 
+### Constants
+- NEVER use class constants (`const`) in Laravel projects
+- Use `config()` for configuration values
+- Use Enums for fixed sets of values
+- Use database settings for user-configurable values
+- Class constants make values hard to override and test
+
 ### Match Operator
 - In PHP, use `match` operator over `switch` whenever possible.
 
