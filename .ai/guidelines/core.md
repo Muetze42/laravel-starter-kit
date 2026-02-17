@@ -100,6 +100,10 @@ Route::get('/shop/categories/{shopCategory}', [ShopCategoryController::class, 's
 - In Livewire components: ALWAYS use `$this->validate()` or Livewire's `#[Validate]` attributes. Process ONLY validated data - never use `$this->property` directly for database operations without prior validation.
 - NEVER silently ignore or convert invalid input (e.g., using `$request->integer()` to convert invalid strings to 0). Invalid input MUST return proper validation errors (HTTP 422).
 
+### Logging
+- NEVER add `Log::` statements, `logger()` calls, or any other logging without explicit instruction.
+- Do not pollute the application log with debug output, info messages, or temporary logging.
+
 ### Code Quality
 - Before finalizing PHP changes, run code quality tools in this order:
     1. `vendor/bin/rector` - Automated refactoring and code upgrades
