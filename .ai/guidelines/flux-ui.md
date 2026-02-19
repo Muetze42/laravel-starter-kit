@@ -29,6 +29,9 @@
 - Follow the documented examples exactly - syntax matters
 - If a feature isn't in the reference table, it doesn't exist - ask before assuming
 
+### Tables
+- **NEVER use `align` on `<flux:table.column>`** - only use `align` on `<flux:table.cell>`
+
 ### Livewire Integration
 - Flux components work seamlessly with Livewire
 - Use `wire:model`, `wire:click` etc. as shown in component examples
