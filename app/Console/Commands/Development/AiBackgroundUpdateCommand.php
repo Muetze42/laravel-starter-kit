@@ -4,6 +4,7 @@ namespace App\Console\Commands\Development;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
+use Illuminate\Support\Composer;
 use Illuminate\Support\Facades\Artisan;
 use JsonException;
 use Laravel\Boost\Boost;
@@ -41,8 +42,10 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
      *
      * @throws JsonException
      */
-    public function handle(): void
+    public function handle(Composer $composer): void
     {
+        dd($composer->findComposer());
+
         if (! class_exists(Boost::class)) {
             return;
         }
