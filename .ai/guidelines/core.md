@@ -40,9 +40,6 @@
 - There MUST be a package/second-level namespace in relation with the PSR or PER that covers the code.
 - Implementations of a given PSR or PER SHOULD declare a `provides` key in their `composer.json` file in the form `psr/<package>-implementation` with a version number that matches the PSR being implemented. For example, `"psr/<package>-implementation": "1.0.0"`.
 
-### Static Analysis
-- NEVER use `@phpstan-ignore`, `@phpstan-ignore-next-line`, `@phpstan-ignore-line` or any other PHPStan/Larastan error suppression annotations. All errors must be fixed properly.
-
 ### Control Flow
 - NEVER use `else` or `elseif` statements. Use early returns, guard clauses, or ternary operators instead.
 
@@ -103,12 +100,6 @@ Route::get('/shop/categories/{shopCategory}', [ShopCategoryController::class, 's
 ### Logging
 - NEVER add `Log::` statements, `logger()` calls, or any other logging without explicit instruction.
 - Do not pollute the application log with debug output, info messages, or temporary logging.
-
-### Code Quality
-- Before finalizing PHP changes, run code quality tools in this order:
-    1. `vendor/bin/rector` - Automated refactoring and code upgrades
-    2. `vendor/bin/pint --dirty` - Final code formatting (Rector changes need reformatting)
-- Rector automatically applies modern PHP patterns and Laravel best practices.
 
 ## Blade
 
