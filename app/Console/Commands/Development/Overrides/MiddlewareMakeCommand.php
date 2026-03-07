@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Console\Commands\Development;
+namespace App\Console\Commands\Development\Overrides;
 
 use App\Console\Commands\Concerns\ArgumentNameSuffixTrait;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Foundation\Console\ProviderMakeCommand as Command;
+use Illuminate\Routing\Console\MiddlewareMakeCommand as Command;
 use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'make:provider')]
-class ProviderMakeCommand extends Command
+#[AsCommand(name: 'make:middleware')]
+class MiddlewareMakeCommand extends Command
 {
     use ArgumentNameSuffixTrait;
 

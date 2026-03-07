@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Console\Commands\Development;
+namespace App\Console\Commands\Development\Overrides;
 
 use App\Console\Commands\Concerns\ArgumentNameSuffixTrait;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Foundation\Console\EventMakeCommand as Command;
+use Illuminate\Foundation\Console\JobMakeCommand as Command;
 use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'make:event')]
-class EventMakeCommand extends Command
+#[AsCommand(name: 'make:job')]
+class JobMakeCommand extends Command
 {
     use ArgumentNameSuffixTrait;
 

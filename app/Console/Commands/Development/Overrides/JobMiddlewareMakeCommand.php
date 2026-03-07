@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Development;
+namespace App\Console\Commands\Development\Overrides;
 
 use App\Console\Commands\Concerns\ArgumentNameSuffixTrait;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
