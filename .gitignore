@@ -27,7 +27,13 @@ yarn-error.log
 .php-cs-fixer.cache
 pnpm-workspace.yaml
 package.lock
+
+# AI
 /.junie/mcp/mcp.json
 /.mcp.json
 /.ai/mcp
 /.claude/commands/*.md
+/AGENTS.md
+/.claude
+/.junie
+/CLAUDE.md
