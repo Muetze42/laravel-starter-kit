@@ -11,7 +11,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Request;
-use Override;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 abstract class TestCase extends BaseTestCase
@@ -22,7 +21,6 @@ abstract class TestCase extends BaseTestCase
     /**
      * Setup the test environment.
      */
-    #[Override]
     protected function setUp(): void
     {
         $this->setUpFaker();

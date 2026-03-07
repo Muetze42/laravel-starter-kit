@@ -1,11 +1,18 @@
 {
     "agents": [
         "claude_code",
-        "junie"
+        "junie",
+        "amp",
+        "codex",
+        "cursor",
+        "gemini",
+        "copilot",
+        "opencode"
     ],
     "guidelines": true,
     "herd_mcp": false,
     "mcp": true,
+    "nightwatch_mcp": false,
     "packages": [
         "spatie/laravel-ray"
     ],

@@ -27,13 +27,21 @@ yarn-error.log
 .php-cs-fixer.cache
 pnpm-workspace.yaml
 package.lock
-
-# AI
+# AI Agents (Files generate by Laravel Boost)
+/.agents/
+/.ai/mcp
+/.amp/
+/.claude
+/.claude/commands/*.md
+/.codex/
+/.cursor/
+/.gemini/
+/.github/skills/
+/.junie
 /.junie/mcp/mcp.json
 /.mcp.json
-/.ai/mcp
-/.claude/commands/*.md
 /AGENTS.md
-/.claude
-/.junie
 /CLAUDE.md
+/GEMINI.md
+/opencode.json
+/.ai/guidelines/analysis-and-security.md
