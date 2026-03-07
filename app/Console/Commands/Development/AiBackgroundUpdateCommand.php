@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 use JsonException;
 use Laravel\Boost\Boost;
+use Laravel\Boost\Install\ThirdPartyPackage;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Illuminate\Filesystem\join_paths;
@@ -63,16 +64,6 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
      * The Composer instance.
      */
     protected Composer $composer;
-
-    /**
-     * Boost packages mapped to their associated skill name.
-     *
-     * @var array<string, string>
-     */
-    protected array $boostPackageSkills = [
-        'spatie/laravel-ray' => 'debugging-output-and-previewing-html-using-ray',
-        'spatie/laravel-permission' => 'laravel-permission-development',
-    ];
 
     /**
      * The resolved Composer packages from application and global lock files.
@@ -129,27 +120,14 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
         $initPackages = $packages;
         $initSkills = $skills;
 
-        foreach ($this->boostPackageSkills as $package => $skill) {
-            if (! $this->hasAnyApplicationComposerPackage($package)) {
-                if (in_array($package, $packages, true)) {
-                    $packages = array_values(array_diff($packages, [$package]));
-                }
+        $discoveredPackages = ThirdPartyPackage::discover();
 
-                if (in_array($skill, $skills, true)) {
-                    $skills = array_values(array_diff($skills, [$skill]));
-                }
-
-                continue;
-            }
-
-            if (! in_array($package, $packages, true)) {
-                $packages[] = $package;
-            }
-
-            if (! in_array($skill, $skills, true)) {
-                $skills[] = $skill;
-            }
-        }
+        $packages = $discoveredPackages->keys()->values()->all();
+        $skills = $discoveredPackages
+            ->filter(fn (ThirdPartyPackage $pkg): bool => $pkg->hasSkills)
+            ->flatMap(fn (ThirdPartyPackage $pkg): array => $this->discoverPackageSkills($pkg->name))
+            ->values()
+            ->all();
 
         sort($packages);
         sort($skills);
@@ -161,6 +139,25 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
         data_set($data, 'packages', $packages);
         data_set($data, 'skills', $skills);
         File::put($file, json_encode($data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
+    }
+
+    /**
+     * Discover skill names from a package's Boost skills directory.
+     *
+     * @return string[]
+     */
+    protected function discoverPackageSkills(string $package): array
+    {
+        $skillsPath = base_path(sprintf('vendor/%s/resources/boost/skills', $package));
+
+        if (! File::isDirectory($skillsPath)) {
+            return [];
+        }
+
+        return collect(File::directories($skillsPath))
+            ->map(static fn (string $path): string => basename($path))
+            ->values()
+            ->all();
     }
 
     /**
