@@ -16,7 +16,7 @@ class SystemCheckCommand extends Command
     /**
      * The minimum upload size.
      */
-    protected ?string $minUploadSize = '100M';
+    protected ?string $minUploadSize = '2M';
 
     /**
      * The minimum memory limit.

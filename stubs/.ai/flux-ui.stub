@@ -1,13 +1,5 @@
 ## Flux UI Component Library
 
-### Documentation
-- Full Flux Pro documentation is located in `/docs/flux-pro/`
-- Component references: `/docs/flux-pro/components/`
-- Layout documentation: `/docs/flux-pro/layouts/`
-- Additional guides: `/docs/flux-pro/guides/`
-- **Always check the documentation before implementing** - never guess attributes or usage
-- Read the component's full documentation file, not just the first example
-
 ### Styling Guidelines
 - Flux UI provides pre-styled components with built-in colors, backgrounds, and styles
 - **Do not set custom colors or text colors** unless explicitly required to stand out

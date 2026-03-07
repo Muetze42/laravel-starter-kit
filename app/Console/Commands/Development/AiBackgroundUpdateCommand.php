@@ -13,6 +13,8 @@ use JsonException;
 use Laravel\Boost\Boost;
 use Symfony\Component\Console\Attribute\AsCommand;
 
+use function Illuminate\Filesystem\join_paths;
+
 #[AsCommand(name: 'development:ai-background-update')]
 class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInput
 {
@@ -45,9 +47,32 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
     protected $description = 'Sync AI guidelines and MCP server data';
 
     /**
+     * Guidelines mapped to the packages that trigger their generation.
+     *
+     * @var array{
+     *     flux-ui: array{'livewire/flux', 'livewire/flux-pro'},
+     *     livewire: array{'livewire/livewire'}
+     * }
+     */
+    protected array $packageGuidelines = [
+        'flux-ui' => ['livewire/flux', 'livewire/flux-pro'],
+        'livewire' => ['livewire/livewire'],
+    ];
+
+    /**
      * The Composer instance.
      */
     protected Composer $composer;
+
+    /**
+     * Boost packages mapped to their associated skill name.
+     *
+     * @var array<string, string>
+     */
+    protected array $boostPackageSkills = [
+        'spatie/laravel-ray' => 'debugging-output-and-previewing-html-using-ray',
+        'spatie/laravel-permission' => 'laravel-permission-development',
+    ];
 
     /**
      * The resolved Composer packages from application and global lock files.
@@ -75,8 +100,87 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
         $this->composer->setWorkingPath(base_path());
 
         $this->resolveComposerPackages();
+
+        File::ensureDirectoryExists($this->targetDirectory());
+
         $this->addAnalysisAndSecurityChecks();
+        $this->resolvePackageGuidelines();
+        $this->resolveBoostPackageGuidelines();
         $this->runningBoost();
+    }
+
+    /**
+     * @throws FileNotFoundException
+     * @throws JsonException
+     */
+    protected function resolveBoostPackageGuidelines(): void
+    {
+        $file = base_path('boost.json');
+
+        if (! File::exists($file)) {
+            return;
+        }
+
+        $data = File::json($file);
+        /** @var string[] $packages */
+        $packages = data_get($data, 'packages', []);
+        /** @var string[] $skills */
+        $skills = data_get($data, 'skills', []);
+        $initPackages = $packages;
+        $initSkills = $skills;
+
+        foreach ($this->boostPackageSkills as $package => $skill) {
+            if (! $this->hasAnyApplicationComposerPackage($package)) {
+                if (in_array($package, $packages, true)) {
+                    $packages = array_values(array_diff($packages, [$package]));
+                }
+
+                if (in_array($skill, $skills, true)) {
+                    $skills = array_values(array_diff($skills, [$skill]));
+                }
+
+                continue;
+            }
+
+            if (! in_array($package, $packages, true)) {
+                $packages[] = $package;
+            }
+
+            if (! in_array($skill, $skills, true)) {
+                $skills[] = $skill;
+            }
+        }
+
+        sort($packages);
+        sort($skills);
+
+        if ($packages == $initPackages && $skills == $initSkills) {
+            return;
+        }
+
+        data_set($data, 'packages', $packages);
+        data_set($data, 'skills', $skills);
+        File::put($file, json_encode($data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
+    }
+
+    /**
+     * Sync package-specific guideline files based on installed dependencies.
+     *
+     * @throws FileNotFoundException
+     */
+    protected function resolvePackageGuidelines(): void
+    {
+        foreach ($this->packageGuidelines as $guideline => $packages) {
+            $this->packageGuideline($guideline, $packages);
+        }
+    }
+
+    /**
+     * Get the target directory path for generated guideline files.
+     */
+    protected function targetDirectory(string $path = ''): string
+    {
+        return join_paths(base_path('.ai/guidelines'), $path);
     }
 
     /**
@@ -104,9 +208,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
      */
     protected function addAnalysisAndSecurityChecks(): void
     {
-        $stub = base_path('stubs/.ai/analysis-and-security.stub');
-
-        $contents = $this->getStubContents($stub);
+        $contents = $this->getStubContents('analysis-and-security.stub');
 
         if ($contents === false) {
             return;
@@ -146,13 +248,13 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
             $checks[] = '- Rector automatically applies modern PHP patterns and Laravel best practices.';
         }
 
-        if ($phpStan && $modeContent = $this->getStubContents(base_path('stubs/.ai/analysis-and-security/phpstan.stub'))) {
+        if ($phpStan && $modeContent = $this->getStubContents('analysis-and-security/phpstan.stub')) {
             $checks[] = "\n" . $modeContent;
         }
 
         $contents = str_replace(['{{checks}}', '{{ checks }}'], implode("\n", $checks), $contents);
 
-        File::put(base_path('.ai/guidelines/analysis-and-security.md'), $contents . "\n");
+        File::put($this->targetDirectory('analysis-and-security.md'), $contents . "\n");
     }
 
     /**
@@ -162,6 +264,14 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
      */
     protected function getStubContents(string $stub): string|false
     {
+        if (! str_ends_with($stub, '.stub')) {
+            $stub .= '.stub';
+        }
+
+        if (! File::exists($stub)) {
+            $stub = base_path(join_paths('stubs/.ai', $stub));
+        }
+
         if (! File::exists($stub)) {
             $this->components->warn(sprintf('Stub %s not found.', $stub));
 
@@ -311,6 +421,31 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
         }
 
         return $this->composer->findComposer();
+    }
+
+    /**
+     * Create or remove a guideline file based on whether its packages are installed.
+     *
+     * @param  string|string[]  $packages
+     *
+     * @throws FileNotFoundException
+     */
+    protected function packageGuideline(string $guideline, string|array $packages): void
+    {
+        $filename = pathinfo($guideline, PATHINFO_FILENAME);
+        $target = $this->targetDirectory($filename . '.md');
+
+        if (! $this->hasAnyApplicationComposerPackage($packages)) {
+            if (File::exists($target)) {
+                File::delete($target);
+            }
+
+            return;
+        }
+
+        if ($contents = $this->getStubContents($filename)) {
+            File::put($target, $contents);
+        }
     }
 
     /**
