@@ -2,7 +2,7 @@
 
 - Before finalizing PHP changes, run code quality tools in this order:
     1. `vendor/bin/rector` - Automated refactoring and code upgrades
-    2. `vendor/bin/phpstan analyse` - Static analysis to catch type errors and bugs
+    2. `vendor/bin/phpstan analyse --error-format=json` - Static analysis to catch type errors and bugs
     3. `vendor/bin/pint --dirty` - Final code formatting (Rector changes need reformatting)
 - Rector automatically applies modern PHP patterns and Laravel best practices.
 
