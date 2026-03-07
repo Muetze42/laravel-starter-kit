@@ -154,7 +154,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
         sort($packages);
         sort($skills);
 
-        if ($packages == $initPackages && $skills == $initSkills) {
+        if ($packages === $initPackages && $skills === $initSkills) {
             return;
         }
 
