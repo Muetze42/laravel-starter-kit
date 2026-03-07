@@ -1,3 +1,9 @@
+## Error Handling
+
+- Do NOT wrap code in try-catch blocks unless there is a specific, justified reason to handle the exception.
+- Let exceptions bubble up naturally — Laravel's exception handler takes care of reporting and rendering.
+- Do NOT clutter the log with unnecessary `Log::` statements, `logger()` calls, or debug output. Only log when explicitly instructed.
+
 ## Code Formatting
 
 - Follow all formatting rules defined in `.editorconfig`
