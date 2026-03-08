@@ -101,6 +101,8 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
     }
 
     /**
+     * Sync third-party packages and their skills in boost.json.
+     *
      * @throws FileNotFoundException
      * @throws JsonException
      */
@@ -155,7 +157,26 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
         }
 
         return collect(File::directories($skillsPath))
-            ->map(static fn (string $path): string => basename($path))
+            ->map(function (string $skillDir): ?string {
+                $skillFile = collect(['SKILL.blade.php', 'SKILL.md'])
+                    ->map(fn (string $filename): string => $skillDir . '/' . $filename)
+                    ->first(fn (string $path): bool => File::exists($path));
+
+                if ($skillFile === null) {
+                    return null;
+                }
+
+                /** @noinspection PhpParamsInspection */
+                $content = File::get($skillFile);
+
+                if (preg_match('/^---\s*\n(.*?)\n---\s*\n/s', $content, $matches)
+                    && preg_match('/^name:\s*(.+)$/m', $matches[1], $nameMatch)) {
+                    return Str::trim($nameMatch[1]);
+                }
+
+                return null;
+            })
+            ->filter()
             ->values()
             ->all();
     }
@@ -194,7 +215,12 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
             return;
         }
 
-        $this->call('boost:update');
+        $this->call('boost:install', [
+            '--no-interaction' => true,
+            '--guidelines' => true,
+            '--skills' => true,
+            '--mcp' => true,
+        ]);
         $this->mcpServers();
     }
 
