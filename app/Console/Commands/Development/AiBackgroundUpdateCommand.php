@@ -124,10 +124,23 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
 
         $discoveredPackages = ThirdPartyPackage::discover();
 
-        $packages = $discoveredPackages->keys()->values()->all();
+        /** @var string[] $excludedGuidelines */
+        $excludedGuidelines = config('boost.guidelines.exclude', []);
+
+        $packages = $discoveredPackages
+            ->reject(fn (ThirdPartyPackage $pkg, string $name): bool => in_array($name, $excludedGuidelines, true))
+            ->keys()
+            ->values()
+            ->all();
+
+        /** @var string[] $excludedSkills */
+        $excludedSkills = config('boost.skills.exclude', []);
+
         $skills = $discoveredPackages
+            ->reject(fn (ThirdPartyPackage $pkg, string $name): bool => in_array($name, $excludedGuidelines, true))
             ->filter(fn (ThirdPartyPackage $pkg): bool => $pkg->hasSkills)
             ->flatMap(fn (ThirdPartyPackage $pkg): array => $this->discoverPackageSkills($pkg->name))
+            ->reject(fn (string $skill): bool => in_array($skill, $excludedSkills, true))
             ->values()
             ->all();
 
