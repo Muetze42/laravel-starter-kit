@@ -22,6 +22,7 @@ return new class() extends Migration
             $table->rememberToken();
             // $table->timestamp('active_at', precision: 3)->nullable();
             $table->timestamps(precision: 3);
+            // $table->softDeletes(precision: 3);
         });
 
         Schema::create('password_reset_tokens', static function (Blueprint $table): void {
