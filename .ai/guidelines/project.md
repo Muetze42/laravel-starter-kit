@@ -1,3 +1,9 @@
+## Language Convention
+- Route names, URI segments, and all routing identifiers MUST be in English unless explicitly instructed otherwise.
+- Examples: `user.profile.edit`, `/orders/create` (CORRECT)
+- Examples: `benutzer.profil.bearbeiten`, `/bestellungen/erstellen` (WRONG)
+- Review this convention when starting a new application — some projects may require localized routes.
+
 ## Error Handling
 
 - Do NOT wrap code in try-catch blocks unless there is a specific, justified reason to handle the exception.

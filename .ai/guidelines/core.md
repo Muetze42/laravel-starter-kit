@@ -62,6 +62,13 @@
 ### Database
 - For DB pivot tables, use correct alphabetical order, like `project_role` instead of `role_project`.
 
+### English Language (CRITICAL)
+- ALL code artifacts MUST be written in English unless explicitly instructed otherwise.
+- This applies to: class names, method names, variable names, database column names, table names, enum cases, comments, PHPDoc blocks, Blade components, and any other identifiers.
+- NEVER create classes, methods, columns, or routes in other languages (e.g., German, French).
+- Examples: `OrderStatus`, `published`, `UserController` (CORRECT)
+- Examples: `BestellungStatus`, `veroeffentlicht`, `BenutzerController` (WRONG)
+
 ### Database Migrations - Column Naming
 - Boolean columns MUST follow Laravel naming conventions WITHOUT the `is_` prefix.
 - Examples: `active`, `verified`, `published`, `enabled` (CORRECT)
