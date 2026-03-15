@@ -83,7 +83,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
      */
     public function handle(Composer $composer): void
     {
-        if (! class_exists(Boost::class)) {
+        if (! $this->shouldRunCommand()) {
             return;
         }
 
@@ -98,6 +98,36 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
         $this->resolvePackageGuidelines();
         $this->resolveBoostPackageGuidelines();
         $this->runningBoost();
+    }
+
+    /**
+     * Determine whether the command should run based on environment prerequisites.
+     */
+    protected function shouldRunCommand(): bool
+    {
+        if (! class_exists(Boost::class)) {
+            return false;
+        }
+
+        if (! File::exists(base_path('.env'))) {
+            $this->components->warn('The .env file is missing. Please create it before running this command.');
+
+            return false;
+        }
+
+        if (! config('app.key')) {
+            $this->components->warn('The application key is missing. Please generate it before running this command.');
+
+            return false;
+        }
+
+        if (app()->isProduction()) {
+            $this->components->warn('This command is not intended for production environments.');
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -222,12 +252,6 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
      */
     protected function runningBoost(): void
     {
-        if (app()->isProduction() && ! File::exists(base_path('.env'))) {
-            $this->components->warn('Boost cannot run because the .env file is missing.');
-
-            return;
-        }
-
         $this->call('boost:install', [
             '--no-interaction' => true,
             '--guidelines' => true,
