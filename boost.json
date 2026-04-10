@@ -1,0 +1,24 @@
+{
+    "agents": [
+        "claude_code",
+        "codex",
+        "amp",
+        "cursor",
+        "gemini",
+        "copilot",
+        "opencode",
+        "junie"
+    ],
+    "guidelines": true,
+    "mcp": true,
+    "nightwatch_mcp": false,
+    "packages": [
+        "spatie/laravel-ray"
+    ],
+    "sail": false,
+    "skills": [
+        "laravel-best-practices",
+        "tailwindcss-development",
+        "debugging-output-and-previewing-html-using-ray"
+    ]
+}

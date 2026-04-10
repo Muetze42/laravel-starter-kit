@@ -1,0 +1,11 @@
+### PHPStan / Larastan
+
+- This project uses Larastan (PHPStan for Laravel) at **level 8** — the strictest level.
+- Configuration is in `phpstan.neon` at the project root.
+- Run with: `vendor/bin/phpstan analyse`
+- All PHPStan errors MUST be fixed properly — NEVER suppress them with annotations.
+- NEVER use `@phpstan-ignore`, `@phpstan-ignore-next-line`, `@phpstan-ignore-line` or any other error suppression annotations.
+- NEVER add entries to `ignoreErrors` in `phpstan.neon` to bypass errors.
+- Ensure all method parameters, return types, and properties have correct type declarations to satisfy level 8.
+- Use PHPDoc `@var`, `@param`, `@return` annotations with precise types (array shapes, generics) when PHP's type system is insufficient for PHPStan.
+- Prefer union types over `mixed` — PHPStan level 8 flags `mixed` usage.

@@ -1,0 +1,4 @@
+## Code Quality
+
+- Before finalizing PHP changes, run code quality and security tools in this order:
+{{checks}}
