@@ -21,6 +21,9 @@
 - Methods and properties MUST include a short PHPDoc summary sentence.
 - Keep PHPDoc summaries to a single short sentence. Do not write multiple sentences, paragraphs, or long multi-line explanations.
 - PHPDoc blocks MUST use precise type information when PHP type declarations are insufficient.
+- Preserve existing PHPDoc blocks when editing files.
+- Existing PHPDoc may be refined or made more specific when it improves accuracy or clarity.
+- NEVER remove existing PHPDoc blocks when editing files.
 - Do not add empty PHPDoc blocks or redundant descriptions that add no value.
 
 ### Enums Usage
