@@ -46,4 +46,6 @@ package.lock
 /CLAUDE.md
 /GEMINI.md
 /opencode.json
-/.ai/guidelines/analysis-and-security.md
+/.ai/guidelines/*.md
+!.ai/guidelines/core.md
+!.ai/guidelines/project.md
