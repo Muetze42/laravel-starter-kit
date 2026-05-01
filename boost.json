@@ -9,8 +9,10 @@
         "opencode",
         "junie"
     ],
+    "cloud": false,
     "guidelines": true,
     "mcp": true,
+    "nightwatch": false,
     "nightwatch_mcp": false,
     "packages": [
         "spatie/laravel-ray"
