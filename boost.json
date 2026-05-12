@@ -7,7 +7,8 @@
         "gemini",
         "copilot",
         "opencode",
-        "junie"
+        "junie",
+        "kiro"
     ],
     "cloud": false,
     "guidelines": true,

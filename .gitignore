@@ -41,6 +41,7 @@ package.lock
 /.github/skills/
 /.junie
 /.junie/mcp/mcp.json
+/.kiro/
 /.mcp.json
 /AGENTS.md
 /CLAUDE.md

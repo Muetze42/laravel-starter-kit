@@ -26,5 +26,5 @@ trim_trailing_whitespace = false
 [*.{yml,yaml}]
 indent_size = 2
 
-[{docker-compose.yml,composer.json,composer.lock,package.json,package-lock.json,pnpm-lock.yaml,mcp.json,.mcp.json}]
+[{docker-compose.yml,composer.json,composer.lock,package.json,package-lock.json,pnpm-lock.yaml,mcp.json,.mcp.json,boost.json}]
 indent_size = 4
