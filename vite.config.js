@@ -9,12 +9,12 @@ export default defineConfig({
     laravel({
       input: ['resources/css/app.css', 'resources/js/app.js'],
       fonts: [
-        bunny('Inter Sans', {
-          weights: [100, 200, 300, 400, 500, 600, 700, 800, 900],
-        }),
-        bunny('JetBrains Mono', {
-          weights: [100, 200, 300, 400, 500, 600, 700, 800],
-        }),
+        // bunny('Inter', {
+        //   weights: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+        // }),
+        // bunny('JetBrains Mono', {
+        //   weights: [100, 200, 300, 400, 500, 600, 700, 800],
+        // }),
       ],
       refresh: true
     }),
