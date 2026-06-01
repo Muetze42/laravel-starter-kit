@@ -18,6 +18,7 @@ use Rector\Transform\Rector\FuncCall\FuncCallToStaticCallRector;
 use RectorLaravel\Rector\Class_\AppendsPropertyToAppendsAttributeRector;
 use RectorLaravel\Rector\Class_\BackoffPropertyToBackoffAttributeRector;
 use RectorLaravel\Rector\Class_\ConnectionPropertyToConnectionAttributeRector;
+use RectorLaravel\Rector\Class_\DescriptionPropertyToDescriptionAttributeRector;
 use RectorLaravel\Rector\Class_\FailOnTimeoutPropertyToFailOnTimeoutAttributeRector;
 use RectorLaravel\Rector\Class_\FillablePropertyToFillableAttributeRector;
 use RectorLaravel\Rector\Class_\GuardedPropertyToGuardedAttributeRector;
@@ -25,6 +26,7 @@ use RectorLaravel\Rector\Class_\HiddenPropertyToHiddenAttributeRector;
 use RectorLaravel\Rector\Class_\JobConnectionPropertyToJobConnectionAttributeRector;
 use RectorLaravel\Rector\Class_\MaxExceptionsPropertyToMaxExceptionsAttributeRector;
 use RectorLaravel\Rector\Class_\QueuePropertyToQueueAttributeRector;
+use RectorLaravel\Rector\Class_\SignaturePropertyToSignatureAttributeRector;
 use RectorLaravel\Rector\Class_\TablePropertyToTableAttributeRector;
 use RectorLaravel\Rector\Class_\TimeoutPropertyToTimeoutAttributeRector;
 use RectorLaravel\Rector\Class_\TouchesPropertyToTouchesAttributeRector;
@@ -207,6 +209,7 @@ return RectorConfig::configure()
         AppendsPropertyToAppendsAttributeRector::class,
         BackoffPropertyToBackoffAttributeRector::class,
         ConnectionPropertyToConnectionAttributeRector::class,
+        DescriptionPropertyToDescriptionAttributeRector::class,
         FailOnTimeoutPropertyToFailOnTimeoutAttributeRector::class,
         FillablePropertyToFillableAttributeRector::class,
         GuardedPropertyToGuardedAttributeRector::class,
@@ -214,6 +217,7 @@ return RectorConfig::configure()
         JobConnectionPropertyToJobConnectionAttributeRector::class,
         MaxExceptionsPropertyToMaxExceptionsAttributeRector::class,
         QueuePropertyToQueueAttributeRector::class,
+        SignaturePropertyToSignatureAttributeRector::class,
         TablePropertyToTableAttributeRector::class,
         TimeoutPropertyToTimeoutAttributeRector::class,
         TouchesPropertyToTouchesAttributeRector::class,
