@@ -24,6 +24,14 @@
 ### Tables
 - **NEVER use `align` on `<flux:table.column>`** - only use `align` on `<flux:table.cell>`
 
+### Modals
+- Use `<flux:modal.trigger name="...">` with a matching `<flux:modal name="...">` for opening modals
+- Modal names MUST be unique when modals are rendered inside loops
+- Prefer Flux modal events like `@close="someLivewireAction"` and `@cancel="someLivewireAction"` for cleanup, reset, or cancellation logic
+- Use `<flux:modal.close>` for cancel/close buttons inside modal content
+- Use `:dismissible="false"` when clicking outside must not close the modal
+- Do not use browser confirmations such as `wire:confirm` for destructive actions when a Flux confirmation modal is appropriate
+
 ### Livewire Integration
 - Flux components work seamlessly with Livewire
 - Use `wire:model`, `wire:click` etc. as shown in component examples
