@@ -20,6 +20,13 @@
 - Only use attributes that are listed in the reference table
 - Follow the documented examples exactly - syntax matters
 - If a feature isn't in the reference table, it doesn't exist - ask before assuming
+- Use `variant="listbox"` for `<flux:select>` unless another variant is explicitly required or specified
+
+### Forms
+- For complete forms, do not build fields with shorthand label props or inline-only form elements
+- Wrap each real form control in `<flux:field>` and include an explicit `<flux:label>`, the input/select/textarea/checkbox control, and `<flux:error name="...">`
+- Use `variant="inline"` only for small single-row controls such as one checkbox or switch with its label; do not use inline fields as the general structure for full forms
+- Place form action buttons below the form fields, typically in a trailing `<div class="flex justify-end gap-2">`
 
 ### Tables
 - **NEVER use `align` on `<flux:table.column>`** - only use `align` on `<flux:table.cell>`
