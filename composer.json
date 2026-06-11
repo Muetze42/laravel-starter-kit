@@ -11,14 +11,14 @@
     "require": {
         "php": "^8.4",
         "ext-pdo": "*",
-        "laravel/framework": "^13.12",
+        "laravel/framework": "^13.15",
         "laravel/tinker": "^3.0",
-        "sentry/sentry-laravel": "^4.25"
+        "sentry/sentry-laravel": "^4.26"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.7",
         "brianium/paratest": "^7.20",
-        "driftingly/rector-laravel": "^2.4",
+        "driftingly/rector-laravel": "^2.5",
         "fakerphp/faker": "^1.24",
         "itsgoingd/clockwork": "^5.3",
         "larastan/larastan": "^3.10",
