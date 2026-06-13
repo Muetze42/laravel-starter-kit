@@ -16,6 +16,11 @@
 - Use the configured tab size for indentation
 - Never assume or override indentation settings
 
+## Frontend Tests
+
+- Do not test exact font sizes, spacing values, margins, padding, or other visual distance measurements in frontend tests.
+- Prefer testing behavior, accessibility, visible states, and meaningful layout outcomes instead of brittle styling details.
+
 ## Project Documentation
 
 ### Location
