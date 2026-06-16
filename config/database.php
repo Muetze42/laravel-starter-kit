@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Illuminate\Support\Str;
 use Pdo\Mysql;
 
+$defaultDatabase = Str::slug((string) env('APP_NAME', 'laravel'), '_');
+
 return [
 
     /*
@@ -51,7 +53,7 @@ return [
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'laravel'),
+            'database' => env('DB_DATABASE', $defaultDatabase),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', 'forge'),
             'unix_socket' => env('DB_SOCKET', ''),
@@ -66,12 +68,35 @@ return [
             ]) : [],
         ],
 
+        // 'logging' => [
+        //     'driver' => 'mysql',
+        //     'url' => env('DB_URL'),
+        //     'host' => env('DB_HOST', '127.0.0.1'),
+        //     'port' => env('DB_PORT', '3306'),
+        //     'database' => env(
+        //         'LOGGING_DB_DATABASE',
+        //         env('DB_DATABASE', $defaultDatabase) . '_logging'
+        //     ),
+        //     'username' => env('DB_USERNAME', 'forge'),
+        //     'password' => env('DB_PASSWORD', 'forge'),
+        //     'unix_socket' => env('DB_SOCKET', ''),
+        //     'charset' => env('DB_CHARSET', 'utf8mb4'),
+        //     'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
+        //     'prefix' => '',
+        //     'prefix_indexes' => true,
+        //     'strict' => true,
+        //     'engine' => null,
+        //     'options' => extension_loaded('pdo_mysql') ? array_filter([
+        //         Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+        //     ]) : [],
+        // ],
+
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'laravel'),
+            'database' => env('DB_DATABASE', $defaultDatabase),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', 'forge'),
             'unix_socket' => env('DB_SOCKET', ''),
@@ -91,7 +116,7 @@ return [
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'laravel'),
+            'database' => env('DB_DATABASE', $defaultDatabase),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', 'forge'),
             'charset' => env('DB_CHARSET', 'utf8'),
@@ -101,12 +126,30 @@ return [
             'sslmode' => env('DB_SSLMODE', 'prefer'),
         ],
 
+        // 'logging' => [
+        //     'driver' => 'pgsql',
+        //     'url' => env('DB_URL'),
+        //     'host' => env('DB_HOST', '127.0.0.1'),
+        //     'port' => env('DB_PORT', '5432'),
+        //     'database' => env(
+        //         'LOGGING_DB_DATABASE',
+        //         env('DB_DATABASE', $defaultDatabase) . '_logging'
+        //     ),
+        //     'username' => env('DB_USERNAME', 'forge'),
+        //     'password' => env('DB_PASSWORD', 'forge'),
+        //     'charset' => env('DB_CHARSET', 'utf8'),
+        //     'prefix' => '',
+        //     'prefix_indexes' => true,
+        //     'search_path' => 'public',
+        //     'sslmode' => env('DB_SSLMODE', 'prefer'),
+        // ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'laravel'),
+            'database' => env('DB_DATABASE', $defaultDatabase),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', 'forge'),
             'charset' => env('DB_CHARSET', 'utf8'),
