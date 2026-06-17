@@ -2,6 +2,7 @@
 
 namespace App\Models\Concerns;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,6 +16,14 @@ trait PrunableTrait
     use SoftDeletes;
 
     /**
+     * Get the cutoff date for pruning models.
+     */
+    protected function prunableCutoff(): CarbonInterface
+    {
+        return now()->subMonths(12);
+    }
+
+    /**
      * Get the prunable model query.
      *
      * @return Builder<TModel>
@@ -22,6 +31,6 @@ trait PrunableTrait
     public function prunable(): Builder
     {
         return static::onlyTrashed()
-            ->where('deleted_at', '<=', now()->subMonths(12));
+            ->where('deleted_at', '<=', $this->prunableCutoff());
     }
 }
