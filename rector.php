@@ -232,11 +232,5 @@ return RectorConfig::configure()
         // __DIR__ . '/database/seeders/*',
     ])
     ->withImportNames(
-        // importDocBlockNames: false,
-        removeUnusedImports: true
+        importDocBlockNames: false
     );
-// ->withTypeCoverageLevel(0)
-// ->withDeadCodeLevel(0)
-// ->withPhpLevel(0)
-// ->withCodeQualityLevel(0)
-// ->withCodingStyleLevel(0)
