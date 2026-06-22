@@ -10,7 +10,28 @@ use Override;
 
 class MigrationCreator extends Creator
 {
-    protected string $formattedToday;
+    /**
+     * The path to the migrations directory.
+     */
+    protected string $migrationsPath;
+
+    /**
+     * Create a new migration at the given path.
+     *
+     * @param  string  $name
+     * @param  string  $path
+     * @param  string|null  $table
+     * @param  bool  $create
+     *
+     * @throws \Exception
+     */
+    #[Override]
+    public function create($name, $path, $table = null, $create = false): string
+    {
+        $this->migrationsPath = rtrim($path, '/');
+
+        return parent::create($name, $path, $table, $create);
+    }
 
     /**
      * Create a new migration creator instance.
@@ -30,17 +51,17 @@ class MigrationCreator extends Creator
     #[Override]
     protected function getDatePrefix(): string
     {
-        return static::getFormattedDatePrefix();
+        return $this->getFormattedDatePrefix();
     }
 
     /**
      * Get a formatted date prefix for the migration.
      */
-    public static function getFormattedDatePrefix(): string
+    public function getFormattedDatePrefix(): string
     {
-        $files = File::glob(database_path('migrations/*'));
+        $files = File::glob($this->migrationsPath . '/*');
         $today = now()->format('Y_m_d_');
-        $files = array_filter($files, static fn (string $file): bool => static::isFileFromToday($file, $today));
+        $files = array_filter($files, fn (string $file): bool => $this->isFileFromToday($file, $today));
         $max = 0;
 
         $lastFile = last($files);
@@ -60,7 +81,7 @@ class MigrationCreator extends Creator
     /**
      * Determine if the given file corresponds to today's date and does not start with a specific suffix.
      */
-    protected static function isFileFromToday(string $file, string $today): bool
+    protected function isFileFromToday(string $file, string $today): bool
     {
         return str_starts_with(basename($file), $today) && ! str_starts_with(basename($file), $today . '00000');
     }
