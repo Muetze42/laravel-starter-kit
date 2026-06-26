@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Contracts\LauncherCommandInterface;
-use App\Contracts\LauncherJobInterface;
+use App\Console\Commands\Contracts\LauncherCommandInterface;
+use App\Jobs\Contracts\LauncherJobInterface;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Foundation\Bus\Dispatchable;
