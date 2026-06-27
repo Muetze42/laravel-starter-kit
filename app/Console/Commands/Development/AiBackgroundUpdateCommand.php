@@ -462,11 +462,13 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
     protected function getComposerLockPackages(string $lockFile): array
     {
         $lockData = $this->getComposerLockData($lockFile);
+        $packages = [];
 
-        return array_merge(
-            collect($lockData['packages'])->pluck('version', 'name')->all(),
-            collect($lockData['packages-dev'])->pluck('version', 'name')->all(),
-        );
+        foreach (array_merge($lockData['packages'], $lockData['packages-dev']) as $package) {
+            $packages[$package['name']] = $package['version'];
+        }
+
+        return $packages;
     }
 
     /**

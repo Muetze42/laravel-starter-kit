@@ -59,14 +59,14 @@ class MigrationCreator extends Creator
      */
     public function getFormattedDatePrefix(): string
     {
-        $files = File::glob($this->migrationsPath . '/*');
+        $files = File::glob($this->migrationsPath . '/*') ?: [];
         $today = now()->format('Y_m_d_');
         $files = array_filter($files, fn (string $file): bool => $this->isFileFromToday($file, $today));
         $max = 0;
 
-        $lastFile = last($files);
-        if ($lastFile) {
-            $parts = explode('_', basename((string) $lastFile));
+        $lastFile = end($files);
+        if (is_string($lastFile)) {
+            $parts = explode('_', basename($lastFile));
 
             if (isset($parts[3]) && is_numeric($parts[3])) {
                 $max = (int) $parts[3];

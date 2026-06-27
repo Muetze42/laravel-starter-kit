@@ -8,10 +8,8 @@ use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Foundation\Bus\Dispatchable;
 use ReflectionClass;
-use ReflectionException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Finder\Finder;
-use Throwable;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\search;
@@ -347,14 +345,14 @@ class LauncherCommand extends Command implements PromptsForMissingInput
      */
     protected function hasInterface(string $className, string $interface): bool
     {
-        try {
-            $reflection = new ReflectionClass($className);
-
-            return $reflection->implementsInterface($interface)
-                && $reflection->isInstantiable();
-        } catch (ReflectionException) {
+        if (! class_exists($className)) {
             return false;
         }
+
+        $reflection = new ReflectionClass($className);
+
+        return $reflection->implementsInterface($interface)
+            && $reflection->isInstantiable();
     }
 
     /**
@@ -365,13 +363,13 @@ class LauncherCommand extends Command implements PromptsForMissingInput
      */
     protected function hasTrait(string $className, string $trait): bool
     {
-        try {
-            $traits = class_uses_recursive($className);
-
-            return in_array($trait, $traits, true);
-        } catch (Throwable) {
+        if (! class_exists($className)) {
             return false;
         }
+
+        $traits = class_uses_recursive($className);
+
+        return in_array($trait, $traits, true);
     }
 
     /**
@@ -382,10 +380,10 @@ class LauncherCommand extends Command implements PromptsForMissingInput
      */
     protected function hasParentClass(string $className, string $parentClass): bool
     {
-        try {
-            return is_subclass_of($className, $parentClass);
-        } catch (Throwable) {
+        if (! class_exists($className)) {
             return false;
         }
+
+        return is_subclass_of($className, $parentClass);
     }
 }
