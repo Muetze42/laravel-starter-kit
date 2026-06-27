@@ -169,16 +169,9 @@ class SystemCheckCommand extends Command
         if (class_exists(Livewire::class) && class_exists(FileUploadConfiguration::class)) {
             $rules = FileUploadConfiguration::rules();
 
-            $maxFileSize = $this->extractMaxFileSizes($rules);
+            $maxFileSize = is_array($rules) ? $this->extractMaxFileSizes($rules) : null;
 
-            if ($maxFileSize < $minUploadSize) {
-                $this->error('The Livewire `temporary_file_upload.rules` configuration is too low.');
-                $this->hasError = true;
-            }
-
-            $maxFileSize = $this->extractMaxFileSizes($rules);
-
-            if ($maxFileSize < $minUploadSize) {
+            if ($maxFileSize !== null && $maxFileSize < $minUploadSize) {
                 $this->error('The Livewire `temporary_file_upload.rules` configuration is too low.');
                 $this->hasError = true;
             }
@@ -197,7 +190,7 @@ class SystemCheckCommand extends Command
     /**
      * Extracts the smallest maximum file size defined in the provided validation rules.
      *
-     * @param  array<string, mixed>  $rules
+     * @param  array<array-key, mixed>  $rules
      */
     protected function extractMaxFileSizes(?array $rules): ?int
     {

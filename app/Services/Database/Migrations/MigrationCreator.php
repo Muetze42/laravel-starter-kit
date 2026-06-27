@@ -61,10 +61,21 @@ class MigrationCreator extends Creator
     {
         $files = File::glob($this->migrationsPath . '/*') ?: [];
         $today = now()->format('Y_m_d_');
-        $files = array_filter($files, fn (string $file): bool => $this->isFileFromToday($file, $today));
+        $matchingFiles = [];
+
+        foreach ($files as $file) {
+            if (! is_string($file)) {
+                continue;
+            }
+
+            if ($this->isFileFromToday($file, $today)) {
+                $matchingFiles[] = $file;
+            }
+        }
+
         $max = 0;
 
-        $lastFile = end($files);
+        $lastFile = end($matchingFiles);
         if (is_string($lastFile)) {
             $parts = explode('_', basename($lastFile));
 

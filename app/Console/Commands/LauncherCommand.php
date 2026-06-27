@@ -43,12 +43,12 @@ class LauncherCommand extends Command implements PromptsForMissingInput
     protected array $launcherOptions = [];
 
     /**
-     * @var class-string[]
+     * @var list<class-string<LauncherJobInterface>>
      */
     protected array $jobs = [];
 
     /**
-     * @var class-string[]
+     * @var list<class-string<LauncherCommandInterface>>
      */
     protected array $commands = [];
 
@@ -98,8 +98,12 @@ class LauncherCommand extends Command implements PromptsForMissingInput
         }
 
         foreach ($this->commands as $command) {
-            /** @var Command $instance */
             $instance = resolve($command);
+
+            if (! $instance instanceof Command) {
+                continue;
+            }
+
             $this->launcherOptions[$command] = ($instance->getDescription() ?: $command) . ' [Command]';
         }
     }
@@ -223,34 +227,34 @@ class LauncherCommand extends Command implements PromptsForMissingInput
     /**
      * Get all job classes that implement LauncherJobInterface.
      *
-     * @return class-string[]
+     * @return list<class-string<LauncherJobInterface>>
      */
     protected function getConsoleDispatchableJobs(): array
     {
-        return $this->getClassesByInterface(
+        return array_values($this->getClassesByInterface(
             app_path('Jobs'),
             $this->applicationNamespace . 'Jobs',
             LauncherJobInterface::class,
             ['Contracts'],
             Dispatchable::class
-        );
+        ));
     }
 
     /**
      * Get all command classes that implement LauncherCommandInterface.
      *
-     * @return class-string[]
+     * @return list<class-string<LauncherCommandInterface>>
      */
     protected function getLauncherCommands(): array
     {
-        return $this->getClassesByInterface(
+        return array_values($this->getClassesByInterface(
             app_path('Console/Commands'),
             $this->applicationNamespace . 'Console\Commands',
             LauncherCommandInterface::class,
             ['Contracts'],
             null,
             Command::class
-        );
+        ));
     }
 
     /**

@@ -185,34 +185,33 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
     protected function discoverPackageSkills(string $package): array
     {
         $skillsPath = base_path(sprintf('vendor/%s/resources/boost/skills', $package));
-
         if (! File::isDirectory($skillsPath)) {
             return [];
         }
 
-        return collect(File::directories($skillsPath))
-            ->map(function (string $skillDir): ?string {
-                $skillFile = collect(['SKILL.blade.php', 'SKILL.md'])
-                    ->map(fn (string $filename): string => $skillDir . '/' . $filename)
-                    ->first(fn (string $path): bool => File::exists($path));
+        $skills = [];
+        foreach (File::directories($skillsPath) as $skillDir) {
+            if (! is_string($skillDir)) {
+                continue;
+            }
 
-                if ($skillFile === null) {
-                    return null;
+            foreach (['SKILL.blade.php', 'SKILL.md'] as $filename) {
+                $skillFile = $skillDir . '/' . $filename;
+                if (! File::exists($skillFile)) {
+                    continue;
                 }
 
-                /** @noinspection PhpParamsInspection */
                 $content = File::get($skillFile);
-
                 if (preg_match('/^---\s*\n(.*?)\n---\s*\n/s', $content, $matches)
                     && preg_match('/^name:\s*(.+)$/m', $matches[1], $nameMatch)) {
-                    return Str::trim($nameMatch[1]);
+                    $skills[] = Str::trim($nameMatch[1]);
                 }
 
-                return null;
-            })
-            ->filter()
-            ->values()
-            ->all();
+                break;
+            }
+        }
+
+        return $skills;
     }
 
     /**

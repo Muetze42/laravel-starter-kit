@@ -16,7 +16,7 @@ parameters:
 #    - Illuminate\Database\Eloquent\Relations\Pivot
 #    - Illuminate\Http\Resources\Json\JsonResource
 
-  level: 9
+  level: 10
 
   ignoreErrors:
     -
