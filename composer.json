@@ -11,9 +11,9 @@
     "require": {
         "php": "^8.4",
         "ext-pdo": "*",
-        "laravel/framework": "^13.17",
+        "laravel/framework": "^13.20",
         "laravel/tinker": "^3.0",
-        "sentry/sentry-laravel": "^4.26"
+        "sentry/sentry-laravel": "^4.27"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.7",
