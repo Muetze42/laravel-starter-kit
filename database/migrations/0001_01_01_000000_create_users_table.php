@@ -18,7 +18,7 @@ return new class() extends Migration
             $table->timestamp('email_verified_at', precision: 3)->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->timestamp('active_at', precision: 3);
+            $table->timestamp('active_at', precision: 3)->nullable();
             $table->timestamps(precision: 3);
         });
 
