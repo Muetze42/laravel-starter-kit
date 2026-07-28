@@ -6,8 +6,10 @@ includes:
 parameters:
   paths:
     - app/
-    - bootstrap/
-    - database/migrations/
+    - bootstrap/app.php
+    - config/
+    - database/
+    - routes/
 #  reportUnmatchedIgnoredErrors: false
 
 #  treatPhpDocTypesAsCertain: false
