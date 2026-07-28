@@ -98,6 +98,14 @@
 
 ### Laravel Helpers
 - Use Laravel helpers instead of `use` section classes whenever possible. Examples: use `auth()->id()` instead of `Auth::id()` and adding `Auth` in the `use` section. Another example: use `redirect()->route()` instead of `Redirect::route()`.
+- Prefer Laravel's helper classes over raw PHP string, array, number, and URI functions whenever a suitable helper exists.
+- Always use `Illuminate\Support\Str` for string operations such as `Str::substr()`, `Str::limit()`, `Str::contains()`, `Str::before()`, `Str::after()`, `Str::between()`, `Str::squish()`, `Str::slug()`, `Str::of()`, and fluent string chains.
+- Never write custom regular expressions for common string transformations when a Laravel `Str` method already expresses the intent, such as using `Str::squish()` to normalize whitespace.
+- Use `Illuminate\Support\Arr` for nested array access and array transformations instead of manual `isset()` chains or fragile array traversal.
+- Use `Illuminate\Support\Number` for display formatting of numbers, currencies, percentages, and file sizes.
+- Use `Illuminate\Support\Uri` for URI and query-string manipulation instead of manually concatenating or parsing URLs.
+- Import helper classes with `use` statements and reference their short names, for example `use Illuminate\Support\Str;` followed by `Str::substr($text, 0, 100);`.
+- Raw PHP functions such as `substr()`, `strlen()`, `strtolower()`, `trim()`, `preg_replace()`, `parse_url()`, and manual query-string concatenation are only allowed when no Laravel helper provides the needed behavior.
 
 ### Routing
 - Always constrain numeric route parameters with `->where('parameter', '[0-9]+')` to prevent conflicts with other routes and avoid unexpected behavior.
