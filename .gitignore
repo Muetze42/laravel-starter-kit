@@ -30,7 +30,6 @@ Thumbs.db
 npm-debug.log
 yarn-error.log
 .php-cs-fixer.cache
-pnpm-workspace.yaml
 package.lock
 
 # AI Agents (Files generate by Laravel Boost)
