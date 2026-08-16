@@ -20,6 +20,7 @@
     ],
     "sail": false,
     "skills": [
+        "infer-conventions",
         "laravel-best-practices",
         "tailwindcss-development",
         "debugging-output-and-previewing-html-using-ray"
