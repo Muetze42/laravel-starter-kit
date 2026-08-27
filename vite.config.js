@@ -1,10 +1,24 @@
+// import {realpathSync} from 'node:fs'
+// import {basename} from 'node:path'
+
 // import {sentryVitePlugin} from '@sentry/vite-plugin'
+// import {loadEnv} from 'vite'
 import {defineConfig} from 'vite'
 import laravel from 'laravel-vite-plugin'
 import tailwindcss from '@tailwindcss/vite'
-import { bunny } from 'laravel-vite-plugin/fonts'
+// import { bunny } from 'laravel-vite-plugin/fonts'
+
+// To enable Sentry, switch defineConfig to a callback and uncomment these lines.
+//   const env = loadEnv(mode, process.cwd(), '')
+//   const sentryRelease = basename(realpathSync(process.cwd()))
 
 export default defineConfig({
+  // build: {
+  //   sourcemap: 'hidden',
+  // },
+  // define: {
+  //   'import.meta.env.VITE_SENTRY_RELEASE': JSON.stringify(sentryRelease),
+  // },
   plugins: [
     laravel({
       input: ['resources/css/app.css', 'resources/js/app.js'],
@@ -21,14 +35,17 @@ export default defineConfig({
     // inertia(),
     tailwindcss(),
     // sentryVitePlugin({
-    //   org: 'norman-huth',
-    //   project: env.VITE_SENTRY_PROJECT,
-    //   telemetry: false,
+    //   authToken: env.SENTRY_AUTH_TOKEN?.trim(),
+    //   org: env.SENTRY_ORG?.trim(),
+    //   project: env.SENTRY_PROJECT?.trim(),
     //   release: {
-    //     name: new Date().toISOString()
+    //     name: sentryRelease,
     //   },
-    //   authToken: env.VITE_SENTRY_AUTH_TOKEN.trim()
-    // })
+    //   sourcemaps: {
+    //     filesToDeleteAfterUpload: ['public/build/**/*.map', 'bootstrap/ssr/**/*.map'],
+    //   },
+    //   telemetry: false,
+    // }),
     // vue({
     //   template: {
     //     transformAssetUrls: {
