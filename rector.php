@@ -5,7 +5,6 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Rector\EarlyReturn\Rector\Return_\ReturnBinaryOrToEarlyReturnRector;
 use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
@@ -148,13 +147,6 @@ return RectorConfig::configure()
          * @see https://getrector.com/rule-detail/rename-variable-to-match-new-type-rector
          */
         RenameVariableToMatchNewTypeRector::class,
-
-        /**
-         * Changes Single return of || to early returns.
-         *
-         * @see https://getrector.com/rule-detail/return-binary-or-to-early-return-rector
-         */
-        ReturnBinaryOrToEarlyReturnRector::class,
 
         /**
          * Change if throw to throw_if
