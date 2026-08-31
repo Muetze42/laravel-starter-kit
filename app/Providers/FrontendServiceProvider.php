@@ -13,9 +13,8 @@ class FrontendServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
         $this->configureUrlGenerator();
-        $this->configureVitePrefetchingStrategy();
+        // $this->configureVitePrefetchingStrategy();
     }
 
     /**
