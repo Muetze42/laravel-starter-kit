@@ -4,6 +4,7 @@
 
 declare(strict_types=1);
 
+use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\Config\RectorConfig;
 use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
@@ -58,7 +59,7 @@ return RectorConfig::configure()
         earlyReturn: true,
         // strictBooleans: true,
         carbon: true,
-        // rectorPreset: true,
+        rectorPreset: true,
         phpunitCodeQuality: true
     )
     ->withSets([
@@ -126,7 +127,7 @@ return RectorConfig::configure()
          */
         LaravelSetList::LARAVEL_TESTING,
     ])
-    ->withSkip([
+    ->withSkip(skip: [
         /**
          * Rename variable to match method return type.
          *
@@ -194,6 +195,14 @@ return RectorConfig::configure()
          * Adds type hints and generic return types to improve Laravel code type safety.
          */
         LaravelSetList::LARAVEL_TYPE_DECLARATIONS,
+
+        /**
+         * Use ++$value or --$value instead of $value++ or $value--
+         *
+         * @see https://getrector.com/rule-detail/post-inc-dec-to-pre-inc-dec-rector
+         */
+        PostIncDecToPreIncDecRector::class,
+
 
         /**
          * Laravel Attributes
