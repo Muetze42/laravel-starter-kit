@@ -14,13 +14,13 @@ class MailServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->configureDevAlwaysToMail();
+        $this->configureAlwaysToMail();
     }
 
     /**
      * Configure the application's global email receiver for development environment.
      */
-    protected function configureDevAlwaysToMail(): void
+    protected function configureAlwaysToMail(): void
     {
         if (! $this->app->environment(['local', 'staging'])) {
             return;
