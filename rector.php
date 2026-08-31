@@ -64,7 +64,7 @@ return RectorConfig::configure()
     )
     ->withSets([
         LevelSetList::UP_TO_PHP_84,
-        PHPUnitSetList::PHPUNIT_120,
+        PHPUnitSetList::COMPOSER_BASED,
         LaravelLevelSetList::UP_TO_LARAVEL_130,
 
         /**
