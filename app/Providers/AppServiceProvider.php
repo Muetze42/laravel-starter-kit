@@ -24,9 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureModels();
-        $this->configureRateLimiter();
-
-        $this->definingDefaultPasswordRules();
+        $this->configurePasswordRules();
 
         // \Illuminate\Support\Facades\Date::use(\Carbon\CarbonImmutable::class);
     }
@@ -41,20 +39,9 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Configure the application's Rate Limiter.
-     */
-    protected function configureRateLimiter(): void
-    {
-        // \Illuminate\Support\Facades\RateLimiter::for('api', function (\Illuminate\Http\Request $request) {
-        //     return \Illuminate\Cache\RateLimiting\Limit::perMinute(60)
-        //         ->by($request->user()?->id ?: $request->ip());
-        // });
-    }
-
-    /**
      * Specify the default validation rules for passwords.
      */
-    protected function definingDefaultPasswordRules(): void
+    protected function configurePasswordRules(): void
     {
         Password::defaults(static function () {
             return Password::min(12)
