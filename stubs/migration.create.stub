@@ -10,6 +10,15 @@ use Illuminate\Support\Facades\Schema;
 
 return new class() extends Migration
 {
+    // use \Tpetry\PostgresqlEnhanced\Schema\Concerns\ZeroDowntimeMigration;
+
+    /**
+     * Indicates whether the migration should run within a transaction.
+     *
+     * @var bool
+     */
+    public $withinTransaction = true;
+
     /**
      * Run the migrations.
      */

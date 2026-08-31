@@ -15,7 +15,8 @@
         "laravel/tinker": "^3.0",
         "sentry/sentry-laravel": "^4.27",
         "symfony/http-client": "^8.1",
-        "symfony/postmark-mailer": "^8.1"
+        "symfony/postmark-mailer": "^8.1",
+        "tpetry/laravel-postgresql-enhanced": "^3.7"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.7",

@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Model;
 class {{ class }} extends Model
 {
     /** use HasFactory<\Database\Factories\{{ class }}Factory> */
-    //use HasFactory;
+    // use HasFactory;
 
-    //use \Illuminate\Database\Eloquent\SoftDeletes;
+    // use \Illuminate\Database\Eloquent\SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

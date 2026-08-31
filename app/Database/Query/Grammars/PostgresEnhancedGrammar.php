@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Database\Query\Grammars;
 
 use App\Database\Query\Grammars\Concerns\UsesMicrosecondDateFormatTrait;
-use Illuminate\Database\Query\Grammars\PostgresGrammar as Grammar;
+use Tpetry\PostgresqlEnhanced\Query\Grammar;
 
-class PostgresGrammar extends Grammar
+class PostgresEnhancedGrammar extends Grammar
 {
     use UsesMicrosecondDateFormatTrait;
 }

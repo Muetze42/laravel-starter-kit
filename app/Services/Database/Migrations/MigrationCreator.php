@@ -2,6 +2,7 @@
 
 namespace App\Services\Database\Migrations;
 
+use Exception;
 use Illuminate\Database\Migrations\MigrationCreator as Creator;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
@@ -23,7 +24,7 @@ class MigrationCreator extends Creator
      * @param  string|null  $table
      * @param  bool  $create
      *
-     * @throws \Exception
+     * @throws Exception
      */
     #[Override]
     public function create($name, $path, $table = null, $create = false): string

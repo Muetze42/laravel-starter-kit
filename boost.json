@@ -4,17 +4,20 @@
         "codex",
         "amp",
         "cursor",
-        "gemini",
         "copilot",
         "opencode",
         "junie",
-        "kiro"
+        "kiro",
+        "antigravity",
+        "factory",
+        "grok_build",
+        "pi",
+        "zed"
     ],
     "cloud": false,
     "guidelines": true,
     "mcp": true,
     "nightwatch": false,
-    "nightwatch_mcp": false,
     "packages": [
         "spatie/laravel-ray"
     ],
