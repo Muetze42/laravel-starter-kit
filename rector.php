@@ -203,7 +203,6 @@ return RectorConfig::configure()
          */
         PostIncDecToPreIncDecRector::class,
 
-
         /**
          * Laravel Attributes
          */
