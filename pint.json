@@ -9,6 +9,10 @@
     "no_unused_imports": true,
     "concat_space": {
       "spacing": "one"
+    },
+    "fully_qualified_strict_types": {
+      "import_symbols": false,
+      "phpdoc_tags": []
     }
   }
 }

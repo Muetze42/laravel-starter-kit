@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Commands\Development\Overrides;
 
 use App\Console\Commands\Concerns\ArgumentNameSuffixTrait;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Foundation\Console\EventMakeCommand as Command;
 use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -26,7 +25,7 @@ class EventMakeCommand extends Command
     /**
      * Execute the console command.
      *
-     * @throws FileNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     #[Override]
     public function handle(): ?bool

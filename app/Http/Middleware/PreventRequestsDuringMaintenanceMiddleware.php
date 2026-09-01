@@ -6,9 +6,7 @@ namespace App\Http\Middleware;
 
 use App\Exceptions\MaintenanceException;
 use Closure;
-use ErrorException;
 use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance;
-use Illuminate\Http\Request;
 use Override;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -17,10 +15,10 @@ class PreventRequestsDuringMaintenanceMiddleware extends PreventRequestsDuringMa
     /**
      * Handle an incoming request.
      *
-     * @param  Request  $request
+     * @param  \Illuminate\Http\Request  $request
      *
-     * @throws HttpException
-     * @throws ErrorException
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     * @throws \ErrorException
      */
     #[Override]
     public function handle($request, Closure $next): mixed

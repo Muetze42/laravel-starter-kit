@@ -6,7 +6,6 @@ namespace App\Console\Commands\Development\Overrides;
 
 use App\Console\Commands\Concerns\ArgumentNameSuffixTrait;
 use Illuminate\Console\GeneratorCommand;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Foundation\Console\ConsoleMakeCommand as Command;
 use Illuminate\Support\Str;
 use Override;
@@ -28,7 +27,7 @@ class ConsoleMakeCommand extends Command
     /**
      * Execute the console command.
      *
-     * @throws FileNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     #[Override]
     public function handle(): ?bool

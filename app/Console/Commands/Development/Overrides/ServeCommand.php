@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands\Development\Overrides;
 
-use Exception;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Foundation\Console\ServeCommand as Command;
 use Illuminate\Support\Str;
@@ -18,7 +17,7 @@ class ServeCommand extends Command
     /**
      * Execute the console command.
      *
-     * @throws Exception
+     * @throws \Exception
      */
     #[Override]
     public function handle(): int
@@ -40,6 +39,8 @@ class ServeCommand extends Command
 
     /**
      * Determines if the application URL is serveable based on specified criteria.
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function hasServeableAppUrl(): bool
     {

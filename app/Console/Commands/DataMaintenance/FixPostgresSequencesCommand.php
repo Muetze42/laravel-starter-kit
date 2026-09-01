@@ -57,7 +57,7 @@ class FixPostgresSequencesCommand extends Command
     /**
      * Get all sequences with their associated tables.
      *
-     * @return Collection<int, object{tablename: string, sequence_name: string, column_name: string}>
+     * @return \Illuminate\Support\Collection<int, object{tablename: string, sequence_name: string, column_name: string}>
      */
     protected function getSequences(string $connectionName, ?string $specificTable): Collection
     {
@@ -82,7 +82,7 @@ class FixPostgresSequencesCommand extends Command
 
         $query .= ' ORDER BY t.relname';
 
-        /** @var Collection<int, object{tablename: string, sequence_name: string, column_name: string}> */
+        /** @var \Illuminate\Support\Collection<int, object{tablename: string, sequence_name: string, column_name: string}> */
         return collect(DB::connection($connectionName)->select($query));
     }
 
@@ -258,10 +258,7 @@ class FixPostgresSequencesCommand extends Command
             return null;
         }
 
-        /** @var class-string<Model> $activityModel */
-        $model = new $activityModel();
-
-        return $model->getConnectionName();
+        return new $activityModel()->getConnectionName();
     }
 
     /**

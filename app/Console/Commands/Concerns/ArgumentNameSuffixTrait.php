@@ -11,6 +11,9 @@ trait ArgumentNameSuffixTrait
      */
     abstract public function getSuffix(): string;
 
+    /**
+     * Ensures that the provided name argument includes the required suffix.
+     */
     protected function ensureNameHasPrefix(): void
     {
         $name = $this->argument('name');

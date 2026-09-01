@@ -14,7 +14,7 @@ use Override;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
+    /** @use \Illuminate\Database\Eloquent\Factories\HasFactory<UserFactory> */
     use HasFactory;
 
     use Notifiable;

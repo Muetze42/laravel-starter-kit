@@ -28,7 +28,7 @@ trait PrunableTrait
     /**
      * Get the prunable model query.
      *
-     * @return Builder<TModel>
+     * @return \Illuminate\Database\Eloquent\Builder<TModel>
      */
     public function prunable(): Builder
     {

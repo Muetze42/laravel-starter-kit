@@ -21,7 +21,11 @@ use function Illuminate\Filesystem\join_paths;
 #[AsCommand(name: 'development:ai-background-update')]
 class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInput
 {
-    /** @var array<string, string> The MCP configuration files mapped to their server key path. */
+    /**
+     * The MCP configuration files mapped to their server key path.
+     *
+     * @var array<string, string>
+     */
     protected array $mcpFiles = [
         '.mcp.json' => 'mcpServers',
         '.junie/mcp/mcp.json' => 'mcpServers',
@@ -31,17 +35,29 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
         '.amp/settings.json' => 'amp.mcpServers',
     ];
 
-    /** @var list<string> The config context files to customize. */
+    /**
+     * The config context files to customize.
+     *
+     * @var list<string>
+     */
     protected array $agentsMarkdownFiles = [
         'AGENTS.md',
         'CLAUDE.md',
         'GEMINI.md',
     ];
 
-    /** @var string The name and signature of the console command. */
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
     protected $signature = 'development:ai-background-update';
 
-    /** @var string The console command description. */
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
     protected $description = 'Sync AI guidelines and MCP server data';
 
     /**
@@ -57,7 +73,9 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
         'livewire' => ['livewire/livewire'],
     ];
 
-    /** The Composer instance. */
+    /**
+     * The Composer instance.
+     */
     protected Composer $composer;
 
     /**
@@ -95,7 +113,9 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
         $this->runningBoost();
     }
 
-    /** Determine whether the command should run based on environment prerequisites. */
+    /**
+     * Determine whether the command should run based on environment prerequisites.
+     */
     protected function shouldRunCommand(): bool
     {
         if (! class_exists(Boost::class)) {
@@ -183,6 +203,8 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
      * Discover skill names from a package's Boost skills directory.
      *
      * @return string[]
+     *
+     * @throws FileNotFoundException
      */
     protected function discoverPackageSkills(string $package): array
     {
