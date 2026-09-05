@@ -2,7 +2,6 @@
 
 namespace {{ namespace }};
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\JsonApi\JsonApiResource;
 
 /**
@@ -16,15 +15,19 @@ class {{ class }} extends JsonApiResource
 {
     /**
      * The resource's attributes.
+     *
+     * @var list<string>
      */
-    public $attributes = [
+    public array $attributes = [
         // ...
     ];
 
     /**
      * The resource's relationships.
+     *
+     * @var list<string>|array<string, \Closure|string|null>
      */
-    public $relationships = [
+    public array $relationships = [
         // ...
     ];
 }

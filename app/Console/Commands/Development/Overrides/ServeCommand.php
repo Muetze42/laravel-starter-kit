@@ -17,6 +17,7 @@ class ServeCommand extends Command
     /**
      * Execute the console command.
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      * @throws \Exception
      */
     #[Override]
