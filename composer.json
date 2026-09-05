@@ -11,7 +11,7 @@
     "require": {
         "php": "^8.4",
         "ext-pdo": "*",
-        "laravel/framework": "^13.29",
+        "laravel/framework": "^13.30",
         "laravel/tinker": "^3.0",
         "sentry/sentry-laravel": "^4.27",
         "symfony/http-client": "^8.1",
@@ -24,7 +24,7 @@
         "driftingly/rector-laravel": "^2.6",
         "fakerphp/faker": "^1.24",
         "itsgoingd/clockwork": "^5.3",
-        "larastan/larastan": "^3.10",
+        "larastan/larastan": "^3.11",
         "laravel/boost": "^2.7",
         "laravel/pail": "^1.2",
         "laravel/pao": "^1.1",
