@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Override;
@@ -26,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->configureMail();
         $this->configureModels();
         $this->configurePasswordRules();
         $this->prohibitDestructiveCommands();
@@ -34,11 +36,21 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Prohibit destructive database commands in production.
+     * Configure the application's mail settings.
      */
-    protected function prohibitDestructiveCommands(): void
+    protected function configureMail(): void
     {
-        DB::prohibitDestructiveCommands($this->app->isProduction());
+        if (! $this->app->environment(['local', 'staging'])) {
+            return;
+        }
+
+        if (! $address = config('mail.always_to')) {
+            return;
+        }
+
+        if (is_string($address)) {
+            Mail::alwaysTo($address);
+        }
     }
 
     /**
@@ -63,5 +75,13 @@ class AppServiceProvider extends ServiceProvider
                 ->numbers()
                 ->symbols();
         });
+    }
+
+    /**
+     * Prohibit destructive database commands in production.
+     */
+    protected function prohibitDestructiveCommands(): void
+    {
+        DB::prohibitDestructiveCommands($this->app->isProduction());
     }
 }
