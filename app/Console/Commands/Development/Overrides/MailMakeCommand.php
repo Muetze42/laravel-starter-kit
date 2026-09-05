@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands\Development\Overrides;
 
 use App\Console\Commands\Concerns\ArgumentNameSuffixTrait;
@@ -27,10 +29,10 @@ class MailMakeCommand extends Command
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     #[Override]
-    public function handle(): ?bool
+    public function handle(): void
     {
         $this->ensureNameHasSuffix();
 
-        return parent::handle();
+        parent::handle();
     }
 }

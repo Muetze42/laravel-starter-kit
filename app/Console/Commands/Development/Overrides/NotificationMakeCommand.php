@@ -26,10 +26,10 @@ class NotificationMakeCommand extends Command
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     #[Override]
-    public function handle(): ?bool
+    public function handle(): void
     {
         $this->ensureNameHasSuffix();
 
-        return parent::handle();
+        parent::handle();
     }
 }
