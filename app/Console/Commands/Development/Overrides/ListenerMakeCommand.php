@@ -30,7 +30,7 @@ class ListenerMakeCommand extends Command
     #[Override]
     public function handle(): ?bool
     {
-        $this->ensureNameHasPrefix();
+        $this->ensureNameHasSuffix();
 
         return parent::handle();
     }

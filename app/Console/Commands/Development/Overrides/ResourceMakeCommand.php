@@ -21,7 +21,7 @@ class ResourceMakeCommand extends Command
     #[Override]
     public function handle(): void
     {
-        $this->ensureNameHasPrefix();
+        $this->ensureNameHasSuffix();
 
         // @todo: Force use JSON:API for resources or remove.
         // $this->input->setOption('json-api', true);
