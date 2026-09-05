@@ -5,7 +5,9 @@ namespace App\Console\Commands\Development\Overrides;
 use App\Console\Commands\Concerns\ArgumentNameSuffixTrait;
 use Illuminate\Foundation\Console\RuleMakeCommand as Command;
 use Override;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'make:rule')]
 class RuleMakeCommand extends Command
 {
     use ArgumentNameSuffixTrait;
