@@ -1,10 +1,10 @@
 <?php
+/** @noinspection AutoloadingIssuesInspection */
 
 // phpcs:ignoreFile
 
 declare(strict_types=1);
 
-use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\Config\RectorConfig;
 use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
@@ -17,21 +17,27 @@ use Rector\Set\ValueObject\LevelSetList;
 use Rector\Transform\Rector\FuncCall\FuncCallToStaticCallRector;
 use RectorLaravel\Rector\Class_\AppendsPropertyToAppendsAttributeRector;
 use RectorLaravel\Rector\Class_\BackoffPropertyToBackoffAttributeRector;
-use RectorLaravel\Rector\Class_\ConnectionPropertyToConnectionAttributeRector;
+use RectorLaravel\Rector\Class_\CollectsPropertyToCollectsAttributeRector;
+use RectorLaravel\Rector\Class_\DateFormatPropertyToDateFormatAttributeRector;
+use RectorLaravel\Rector\Class_\DelayPropertyToDelayAttributeRector;
+use RectorLaravel\Rector\Class_\DeleteWhenMissingModelsPropertyToDeleteWhenMissingModelsAttributeRector;
 use RectorLaravel\Rector\Class_\DescriptionPropertyToDescriptionAttributeRector;
+use RectorLaravel\Rector\Class_\ErrorBagPropertyToErrorBagAttributeRector;
 use RectorLaravel\Rector\Class_\FailOnTimeoutPropertyToFailOnTimeoutAttributeRector;
 use RectorLaravel\Rector\Class_\FillablePropertyToFillableAttributeRector;
 use RectorLaravel\Rector\Class_\GuardedPropertyToGuardedAttributeRector;
 use RectorLaravel\Rector\Class_\HiddenPropertyToHiddenAttributeRector;
 use RectorLaravel\Rector\Class_\JobConnectionPropertyToJobConnectionAttributeRector;
 use RectorLaravel\Rector\Class_\MaxExceptionsPropertyToMaxExceptionsAttributeRector;
+use RectorLaravel\Rector\Class_\PreserveKeysPropertyToPreserveKeysAttributeRector;
 use RectorLaravel\Rector\Class_\QueuePropertyToQueueAttributeRector;
 use RectorLaravel\Rector\Class_\SignaturePropertyToSignatureAttributeRector;
-use RectorLaravel\Rector\Class_\TablePropertyToTableAttributeRector;
+use RectorLaravel\Rector\Class_\StopOnFirstFailurePropertyToStopOnFirstFailureAttributeRector;
 use RectorLaravel\Rector\Class_\TimeoutPropertyToTimeoutAttributeRector;
 use RectorLaravel\Rector\Class_\TouchesPropertyToTouchesAttributeRector;
 use RectorLaravel\Rector\Class_\TriesPropertyToTriesAttributeRector;
 use RectorLaravel\Rector\Class_\UniqueForPropertyToUniqueForAttributeRector;
+use RectorLaravel\Rector\Class_\VisiblePropertyToVisibleAttributeRector;
 use RectorLaravel\Rector\If_\ThrowIfRector;
 use RectorLaravel\Rector\StaticCall\DispatchToHelperFunctionsRector;
 use RectorLaravel\Set\LaravelLevelSetList;
@@ -51,15 +57,14 @@ return RectorConfig::configure()
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
-        codingStyle: true, // Todo: https://getrector.com/find-rule?rectorSet=core-coding-style
+        codingStyle: true, // @see https://getrector.com/find-rule?rectorSet=core-coding-style
         typeDeclarations: true,
-        privatization: true,
+        // privatization: true,
         naming: true,
-        instanceOf: true,
         earlyReturn: true,
         // strictBooleans: true,
-        carbon: true,
-        rectorPreset: true,
+        // carbon: true,
+        // rectorPreset: true,
         phpunitCodeQuality: true
     )
     ->withSets([
@@ -127,110 +132,188 @@ return RectorConfig::configure()
          */
         LaravelSetList::LARAVEL_TESTING,
     ])
-    ->withSkip(skip: [
-        /**
-         * Rename variable to match method return type.
-         *
-         * @see https://getrector.com/rule-detail/rename-variable-to-match-method-call-return-type-rector
-         */
-        RenameVariableToMatchMethodCallReturnTypeRector::class,
+    ->withSkip(
+        skip: array_merge(
+            [
+                /**
+                 * Rename variable to match method return type.
+                 *
+                 * @see https://getrector.com/rule-detail/rename-variable-to-match-method-call-return-type-rector
+                 */
+                RenameVariableToMatchMethodCallReturnTypeRector::class,
 
-        /**
-         * Use the event or dispatch helpers instead of the static dispatch method.
-         *
-         * @see https://getrector.com/rule-detail/dispatch-to-helper-functions-rector
-         */
-        DispatchToHelperFunctionsRector::class,
+                /**
+                 * Use the event or dispatch helpers instead of the static dispatch method.
+                 *
+                 * @see https://getrector.com/rule-detail/dispatch-to-helper-functions-rector
+                 */
+                DispatchToHelperFunctionsRector::class,
 
-        /**
-         * Rename variable to match new ClassType.
-         *
-         * @see https://getrector.com/rule-detail/rename-variable-to-match-new-type-rector
-         */
-        RenameVariableToMatchNewTypeRector::class,
+                /**
+                 * Rename variable to match new ClassType.
+                 *
+                 * @see https://getrector.com/rule-detail/rename-variable-to-match-new-type-rector
+                 */
+                RenameVariableToMatchNewTypeRector::class,
 
-        /**
-         * Change if throw to throw_if
-         *
-         * @see https://getrector.com/rule-detail/throw-if-rector
-         */
-        ThrowIfRector::class,
+                /**
+                 * Change if throw to throw_if
+                 *
+                 * @see https://getrector.com/rule-detail/throw-if-rector
+                 */
+                ThrowIfRector::class,
 
-        /**
-         * Rename param to match ClassType
-         *
-         * @see https://getrector.com/rule-detail/rename-param-to-match-type-rector
-         */
-        RenameParamToMatchTypeRector::class,
+                /**
+                 * Rename param to match ClassType
+                 *
+                 * @see https://getrector.com/rule-detail/rename-param-to-match-type-rector
+                 */
+                RenameParamToMatchTypeRector::class,
 
-        /**
-         * Renames value variable name in foreach loop to match method type
-         *
-         * @see https://getrector.com/rule-detail/rename-foreach-value-variable-to-match-method-call-return-type-rector
-         */
-        RenameForeachValueVariableToMatchMethodCallReturnTypeRector::class,
+                /**
+                 * Renames value variable name in foreach loop to match method type
+                 *
+                 * @see https://getrector.com/rule-detail/rename-foreach-value-variable-to-match-method-call-return-type-rector
+                 */
+                RenameForeachValueVariableToMatchMethodCallReturnTypeRector::class,
 
-        /**
-         * Use the static factory method instead of global factory function.
-         *
-         * @see https://getrector.com/rule-detail/factory-func-call-to-static-call-rector
-         */
-        FuncCallToStaticCallRector::class,
+                /**
+                 * Use the static factory method instead of global factory function.
+                 *
+                 * @see https://getrector.com/rule-detail/factory-func-call-to-static-call-rector
+                 */
+                FuncCallToStaticCallRector::class,
 
-        /**
-         * Change closure to arrow function.
-         *
-         * @see https://getrector.com/rule-detail/closure-to-arrow-function-rector
-         */
-        ClosureToArrowFunctionRector::class,
+                /**
+                 * Change closure to arrow function.
+                 *
+                 * @see https://getrector.com/rule-detail/closure-to-arrow-function-rector
+                 */
+                ClosureToArrowFunctionRector::class,
 
-        /**
-         * Change simple property init and assign to constructor promotion.
-         *
-         * @see https://getrector.com/rule-detail/class-property-assign-to-constructor-promotion-rector
-         */
-        ClassPropertyAssignToConstructorPromotionRector::class,
+                /**
+                 * Adds type hints and generic return types to improve Laravel code type safety.
+                 */
+                // LaravelSetList::LARAVEL_TYPE_DECLARATIONS,
 
-        /**
-         * Adds type hints and generic return types to improve Laravel code type safety.
-         */
-        LaravelSetList::LARAVEL_TYPE_DECLARATIONS,
+                /**
+                 * Change simple property init and assign to constructor promotion.
+                 *
+                 * @see https://getrector.com/rule-detail/class-property-assign-to-constructor-promotion-rector
+                 */
+                ClassPropertyAssignToConstructorPromotionRector::class,
 
-        /**
-         * Use ++$value or --$value instead of $value++ or $value--
-         *
-         * @see https://getrector.com/rule-detail/post-inc-dec-to-pre-inc-dec-rector
-         */
-        PostIncDecToPreIncDecRector::class,
+            ],
+            LaravelAttributes::except(),
+            [
 
-        /**
-         * Laravel Attributes
-         */
-        AppendsPropertyToAppendsAttributeRector::class,
-        BackoffPropertyToBackoffAttributeRector::class,
-        ConnectionPropertyToConnectionAttributeRector::class,
-        DescriptionPropertyToDescriptionAttributeRector::class,
-        FailOnTimeoutPropertyToFailOnTimeoutAttributeRector::class,
-        FillablePropertyToFillableAttributeRector::class,
-        GuardedPropertyToGuardedAttributeRector::class,
-        HiddenPropertyToHiddenAttributeRector::class,
-        JobConnectionPropertyToJobConnectionAttributeRector::class,
-        MaxExceptionsPropertyToMaxExceptionsAttributeRector::class,
-        QueuePropertyToQueueAttributeRector::class,
-        SignaturePropertyToSignatureAttributeRector::class,
-        TablePropertyToTableAttributeRector::class,
-        TimeoutPropertyToTimeoutAttributeRector::class,
-        TouchesPropertyToTouchesAttributeRector::class,
-        TriesPropertyToTriesAttributeRector::class,
-        UniqueForPropertyToUniqueForAttributeRector::class,
-
-        /**
-         * Files.
-         */
-        __DIR__ . '/bootstrap/providers.php',
-        __DIR__ . '/bootstrap/cache/*',
-        // __DIR__ . '/database/seeders/*',
-    ])
+                /**
+                 * Files.
+                 */
+                __DIR__ . '/bootstrap/providers.php',
+                __DIR__ . '/bootstrap/cache/*',
+                // __DIR__ . '/database/seeders/*',
+            ]
+        )
+    )
     ->withImportNames(
         importDocBlockNames: false
     );
+
+/**
+ * Alternative disable all attributes: https://github.com/driftingly/rector-laravel/pull/494
+ */
+class LaravelAttributes
+{
+    /**
+     * @return class-string[]
+     */
+    public static function except(): array
+    {
+        return [
+            ...static::consoleAttributes(),
+            ...static::eloquentAttributes(),
+            ...static::formRequestAttributes(),
+            ...static::queueAttributes(),
+            ...static::resourcesAttributes(),
+        ];
+    }
+
+    /**
+     * @return class-string[]
+     */
+    public static function consoleAttributes(): array
+    {
+        return [
+            // \RectorLaravel\Rector\Class_\AliasesPropertyToAliasesAttributeRector::class,
+            // \RectorLaravel\Rector\Class_\CommandHiddenPropertyToHiddenAttributeRector::class,
+            DescriptionPropertyToDescriptionAttributeRector::class,
+            // \RectorLaravel\Rector\Class_\HelpPropertyToHelpAttributeRector::class,
+            SignaturePropertyToSignatureAttributeRector::class,
+        ];
+    }
+
+    /**
+     * @return class-string[]
+     */
+    public static function eloquentAttributes(): array
+    {
+        return [
+            AppendsPropertyToAppendsAttributeRector::class,
+            // \RectorLaravel\Rector\Class_\CollectedByPropertyToCollectedByAttributeRector::class,
+            // \RectorLaravel\Rector\Class_\ConnectionPropertyToConnectionAttributeRector::class,
+            DateFormatPropertyToDateFormatAttributeRector::class,
+            // \RectorLaravel\Rector\Class_\EmptyGuardedPropertyToUnguardedAttributeRector::class,
+            FillablePropertyToFillableAttributeRector::class,
+            GuardedPropertyToGuardedAttributeRector::class,
+            HiddenPropertyToHiddenAttributeRector::class,
+            // \RectorLaravel\Rector\Class_\RouteKeyMethodToRouteKeyAttributeRector::class,
+            // \RectorLaravel\Rector\Class_\TablePropertyToTableAttributeRector::class,
+            TouchesPropertyToTouchesAttributeRector::class,
+            VisiblePropertyToVisibleAttributeRector::class,
+            // \RectorLaravel\Rector\Class_\WithoutIncrementingPropertyToWithoutIncrementingAttributeRector::class,
+            // \RectorLaravel\Rector\Class_\WithoutTimestampsPropertyToWithoutTimestampsAttributeRector::class,
+        ];
+    }
+
+    /**
+     * @return class-string[]
+     */
+    public static function formRequestAttributes(): array
+    {
+        return [
+            ErrorBagPropertyToErrorBagAttributeRector::class,
+            StopOnFirstFailurePropertyToStopOnFirstFailureAttributeRector::class,
+        ];
+    }
+
+    /**
+     * @return class-string[]
+     */
+    public static function queueAttributes(): array
+    {
+        return [
+            BackoffPropertyToBackoffAttributeRector::class,
+            DelayPropertyToDelayAttributeRector::class,
+            DeleteWhenMissingModelsPropertyToDeleteWhenMissingModelsAttributeRector::class,
+            FailOnTimeoutPropertyToFailOnTimeoutAttributeRector::class,
+            JobConnectionPropertyToJobConnectionAttributeRector::class,
+            MaxExceptionsPropertyToMaxExceptionsAttributeRector::class,
+            QueuePropertyToQueueAttributeRector::class,
+            TimeoutPropertyToTimeoutAttributeRector::class,
+            TriesPropertyToTriesAttributeRector::class,
+            UniqueForPropertyToUniqueForAttributeRector::class,
+        ];
+    }
+
+    /**
+     * @return class-string[]
+     */
+    public static function resourcesAttributes(): array
+    {
+        return [
+            CollectsPropertyToCollectsAttributeRector::class,
+            PreserveKeysPropertyToPreserveKeysAttributeRector::class,
+        ];
+    }
+}
