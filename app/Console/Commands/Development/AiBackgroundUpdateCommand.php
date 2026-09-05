@@ -226,8 +226,11 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
                 }
 
                 $content = File::get($skillFile);
-                if (preg_match('/^---\s*\n(.*?)\n---\s*\n/s', $content, $matches)
-                    && preg_match('/^name:\s*(.+)$/m', $matches[1], $nameMatch)) {
+
+                if (
+                    preg_match('/^---\s*\n(.*?)\n---\s*\n/s', $content, $matches)
+                    && preg_match('/^name:\s*(.+)$/m', $matches[1], $nameMatch)
+                ) {
                     $skills[] = Str::trim($nameMatch[1]);
                 }
 
@@ -326,7 +329,8 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
         }
 
         if ($phpStan) {
-            $checks[] = $i++ . '`vendor/bin/phpstan analyse --error-format=json` - Static analysis to catch type errors and bugs';
+            $checks[] = $i++ . '`vendor/bin/phpstan analyse --error-format=json`' .
+                ' - Static analysis to catch type errors and bugs';
         }
 
         if ($this->hasAnyApplicationComposerPackage('laravel/pint')) {
@@ -334,11 +338,13 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
         }
 
         if ($this->hasAnyComposerPackage('ai-provide/warden')) {
-            $checks[] = $i . '`ai-warden check app --format=json` - Detect AI slop patterns and AI-generated anti-patterns';
+            $checks[] = $i . '`ai-warden check app --format=json` ' .
+                '- Detect AI slop patterns and AI-generated anti-patterns';
         }
 
         if ($checks === []) {
-            $this->components->warn('No analysis and security tools found. Do not use this app productively or publish the code.');
+            $this->components->warn('No analysis and security tools found.' .
+                ' Do not use this app productively or publish the code.');
 
             return;
         }

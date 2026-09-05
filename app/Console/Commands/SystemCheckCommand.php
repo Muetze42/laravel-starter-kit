@@ -109,7 +109,9 @@ class SystemCheckCommand extends Command
     protected function checkBinaries(): void
     {
         foreach ($this->requiredBinaries as $requiredBinary) {
-            $result = Process::run(PHP_OS_FAMILY === 'Windows' ? 'where ' . $requiredBinary : 'command -v ' . $requiredBinary);
+            $result = Process::run(
+                PHP_OS_FAMILY === 'Windows' ? 'where ' . $requiredBinary : 'command -v ' . $requiredBinary
+            );
 
             if (! $result->successful()) {
                 $this->error(

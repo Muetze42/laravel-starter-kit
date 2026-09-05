@@ -35,7 +35,8 @@
         "phpunit/phpunit": "^12.5",
         "rector/rector": "^2.6",
         "roave/security-advisories": "@dev",
-        "spatie/laravel-ray": "^1.43"
+        "spatie/laravel-ray": "^1.43",
+        "squizlabs/php_codesniffer": "*"
     },
     "autoload": {
         "psr-4": {
@@ -46,6 +47,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "PHPStanRules\\": "phpstan/",
             "Tests\\": "tests/"
         }
     },
@@ -94,13 +96,15 @@
         "rector": "./vendor/bin/rector --ansi",
         "analyse": "./vendor/bin/phpstan analyse -v --ansi",
         "mutation": "@php vendor/bin/infection --configuration=.infection.json --threads=$(nproc) --ansi",
+        "phpcs": "./vendor/bin/phpcs",
         "lint": [
             "@pint"
         ],
         "checks": [
             "@rector",
             "@lint",
-            "@analyse"
+            "@analyse",
+            "@phpcs"
         ],
         "full-checks": [
             "@checks",

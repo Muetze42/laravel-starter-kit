@@ -37,3 +37,9 @@ parameters:
 #        - app/Support/*
 #        - app/ValueObjects/*
 #        - app/*/Concerns/*
+
+services:
+  -
+    class: PHPStanRules\Rules\PsrNamingConventionRule
+    tags:
+      - phpstan.rules.rule

@@ -240,7 +240,10 @@ class FixPostgresSequencesCommand extends Command
 
         $connections = is_string($defaultConnection) ? [$defaultConnection] : [];
 
-        if ($activityLogConnection !== null && $activityLogConnection !== '' && ! in_array($activityLogConnection, $connections, true)) {
+        if (
+            $activityLogConnection !== null && $activityLogConnection !== '' &&
+            ! in_array($activityLogConnection, $connections, true)
+        ) {
             $connections[] = $activityLogConnection;
         }
 
@@ -275,7 +278,9 @@ class FixPostgresSequencesCommand extends Command
         }
 
         return collect($connections)
-            ->filter(fn (mixed $connection): bool => is_array($connection) && ($connection['driver'] ?? null) === 'pgsql')
+            ->filter(function (mixed $connection): bool {
+                return is_array($connection) && ($connection['driver'] ?? null) === 'pgsql';
+            })
             ->keys()
             ->filter(fn (mixed $connection): bool => is_string($connection))
             ->values()
