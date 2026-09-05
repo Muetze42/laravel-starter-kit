@@ -34,8 +34,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function configureUrlGenerator(): void
     {
-        if (! $this->app->isLocal()) {
-            URL::forceScheme('https');
-        }
+        URL::forceHttps(! $this->app->isLocal());
     }
 }
