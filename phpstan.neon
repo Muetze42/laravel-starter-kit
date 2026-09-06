@@ -43,3 +43,7 @@ services:
     class: PHPStanRules\Rules\PsrNamingConventionRule
     tags:
       - phpstan.rules.rule
+  -
+    class: PHPStanRules\Extensions\ReadableQueryPaginatorMethodsExtension
+    tags:
+      - phpstan.broker.methodsClassReflectionExtension

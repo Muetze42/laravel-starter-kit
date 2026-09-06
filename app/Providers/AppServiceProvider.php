@@ -7,9 +7,13 @@ namespace App\Providers;
 use App\Services\Foundation\MacroRegistryService;
 use App\Support\Macros\JsonApiCursorPaginateMacro;
 use App\Support\Macros\JsonApiPaginateMacro;
+use App\Support\Pagination\ReadableQueryCursorPaginator;
+use App\Support\Pagination\ReadableQueryLengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Pagination\CursorPaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider;
@@ -24,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
     #[Override]
     public function register(): void
     {
-        //
+        $this->configurePagination();
     }
 
     /**
@@ -50,6 +54,15 @@ class AppServiceProvider extends ServiceProvider
         $macroRegistryService->macro(JsonApiCursorPaginateMacro::class, EloquentBuilder::class);
         $macroRegistryService->macro(JsonApiPaginateMacro::class, QueryBuilder::class);
         $macroRegistryService->macro(JsonApiPaginateMacro::class, EloquentBuilder::class);
+    }
+
+    /**
+     * Configure the application's paginator implementations.
+     */
+    protected function configurePagination(): void
+    {
+        $this->app->bind(LengthAwarePaginator::class, ReadableQueryLengthAwarePaginator::class);
+        $this->app->bind(CursorPaginator::class, ReadableQueryCursorPaginator::class);
     }
 
     /**
