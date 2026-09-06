@@ -54,3 +54,4 @@ _ide_helper.php
 npm-debug.log
 package.lock
 yarn-error.log
+/.phpstorm.meta.php
