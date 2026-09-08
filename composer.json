@@ -120,6 +120,7 @@
         "lint": "Fix code style issues",
         "mutation": "Run mutation testing using Infection with parallel threads",
         "pint": "Run Laravel Pint CS Fixer",
+        "phpcs": "Run PHP CodeSniffer",
         "rector": "Instant Upgrades and Automated Refactoring Code",
         "test": "Run the application tests"
     },
