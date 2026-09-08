@@ -11,7 +11,8 @@
     "require": {
         "php": "^8.4",
         "ext-pdo": "*",
-        "laravel/framework": "^13.30",
+        "laravel/agent-detector": "^2.0",
+        "laravel/framework": "^13.31",
         "laravel/tinker": "^3.0",
         "sentry/sentry-laravel": "^4.27",
         "symfony/http-client": "^8.1",
@@ -25,10 +26,10 @@
         "fakerphp/faker": "^1.24",
         "itsgoingd/clockwork": "^5.3",
         "larastan/larastan": "^3.11",
-        "laravel/boost": "^2.7",
+        "laravel/boost": "^2.8",
         "laravel/pail": "^1.2",
         "laravel/pao": "^1.1",
-        "laravel/pint": "^1.30",
+        "laravel/pint": "^1.31",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.9",
         "phpstan/phpstan-deprecation-rules": "^2.0",
@@ -36,7 +37,7 @@
         "rector/rector": "^2.6",
         "roave/security-advisories": "@dev",
         "spatie/laravel-ray": "^1.43",
-        "squizlabs/php_codesniffer": "*"
+        "squizlabs/php_codesniffer": "^4.0"
     },
     "autoload": {
         "psr-4": {
