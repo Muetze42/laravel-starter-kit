@@ -7,14 +7,13 @@ namespace App\Console\Commands\Development;
 use App\Console\Commands\Development\Concerns\ConfiguresMcpServersTrait;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Composer;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
-use JsonException;
 use Laravel\Boost\Boost;
 use Laravel\Boost\Install\ThirdPartyPackage;
+use Laravel\Roster\ProjectManager;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Illuminate\Filesystem\join_paths;
@@ -94,8 +93,8 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
     /**
      * Execute the console command.
      *
-     * @throws JsonException
-     * @throws FileNotFoundException
+     * @throws \JsonException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function handle(Composer $composer): void
     {
@@ -103,6 +102,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
             return;
         }
 
+        $project = resolve(ProjectManager::class);
         $this->composer = $composer;
         $this->composer->setWorkingPath(base_path());
 
@@ -112,7 +112,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
 
         $this->addAnalysisAndSecurityChecks();
         $this->resolvePackageGuidelines();
-        $this->resolveBoostPackageGuidelines();
+        $this->resolveBoostPackageGuidelines($project);
         $this->runningBoost();
     }
 
@@ -137,8 +137,8 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
             return false;
         }
 
-        if (app()->isProduction()) {
-            $this->components->warn('This command is not intended for production environments.');
+        if (! app()->isLocal()) {
+            $this->comment('Skip AI background command for this environment.');
 
             return false;
         }
@@ -149,10 +149,10 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
     /**
      * Sync third-party packages and their skills in boost.json.
      *
-     * @throws FileNotFoundException
-     * @throws JsonException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws \JsonException
      */
-    protected function resolveBoostPackageGuidelines(): void
+    protected function resolveBoostPackageGuidelines(ProjectManager $project): void
     {
         $file = base_path('boost.json');
 
@@ -168,7 +168,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
         $initPackages = $packages;
         $initSkills = $skills;
 
-        $discoveredPackages = ThirdPartyPackage::discover();
+        $discoveredPackages = ThirdPartyPackage::discover($project);
 
         /** @var string[] $excludedGuidelines */
         $excludedGuidelines = config('boost.guidelines.exclude', []);
@@ -207,7 +207,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
      *
      * @return string[]
      *
-     * @throws FileNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function discoverPackageSkills(string $package): array
     {
@@ -247,7 +247,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
     /**
      * Sync package-specific guideline files based on installed dependencies.
      *
-     * @throws FileNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function resolvePackageGuidelines(): void
     {
@@ -265,8 +265,8 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
     /**
      * Run Boost update and configure MCP servers.
      *
-     * @throws JsonException
-     * @throws FileNotFoundException
+     * @throws \JsonException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function runningBoost(): void
     {
@@ -283,7 +283,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
     /**
      * Replace the generated build and dev command hint with the preferred pnpm dev command.
      *
-     * @throws FileNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function updateAgentMarkdownFiles(): void
     {
@@ -311,7 +311,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
     /**
      * Generate the analysis and security guidelines from the stub.
      *
-     * @throws FileNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function addAnalysisAndSecurityChecks(): void
     {
@@ -370,7 +370,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
     /**
      * Read and return the trimmed contents of a stub file.
      *
-     * @throws FileNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function getStubContents(string $stub): string|false
     {
@@ -436,7 +436,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
     /**
      * Resolve packages from both application and global Composer lock files.
      *
-     * @throws FileNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function resolveComposerPackages(): void
     {
@@ -447,7 +447,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
     /**
      * Resolve packages from the application's composer.lock file.
      *
-     * @throws FileNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function resolveApplicationComposerPackages(): void
     {
@@ -465,7 +465,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
     /**
      * Resolve packages from the global Composer lock file.
      *
-     * @throws FileNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function resolveGlobalComposerPackages(): void
     {
@@ -489,7 +489,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
      *
      * @return array<string, string>
      *
-     * @throws FileNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function getComposerLockPackages(string $lockFile): array
     {
@@ -511,7 +511,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
      *     packages-dev: array<int, array{name: string, version: string}>
      * }
      *
-     * @throws FileNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function getComposerLockData(string $lockFile): array
     {
@@ -540,7 +540,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
      *
      * @param  string|string[]  $packages
      *
-     * @throws FileNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function packageGuideline(string $guideline, string|array $packages): void
     {
