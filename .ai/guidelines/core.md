@@ -89,9 +89,6 @@
 - Don't add `::query()` when running Eloquent `create()` statements. Use `User::create()` instead of `User::query()->create()`.
 - NEVER use `where()` with `like` or `ilike` operators. Always use the `whereLike()` method instead. Use `User::whereLike('name', '%norman%')` instead of `User::where('name', 'like', '%norman%')` or `User::where('name', 'ilike', '%norman%')`.
 
-### Eloquent Observers
-- Eloquent Observers should be registered in Eloquent Models with PHP Attributes, and not in AppServiceProvider. Example: `#[ObservedBy([UserObserver::class])]` with `use Illuminate\Database\Eloquent\Attributes\ObservedBy;` on top.
-
 ### Eloquent Models - Fillable Properties
 - NEVER add foreign key columns to the `$fillable` array. Foreign keys should only be set through relationships or explicit assignment, not mass assignment.
 - Example: For a `user_id` foreign key, do NOT include it in `$fillable`. Instead, use `$model->user()->associate($user)` or `$model->user_id = $user->id`.
