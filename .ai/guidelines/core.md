@@ -93,6 +93,9 @@
 - NEVER add foreign key columns to the `$fillable` array. Foreign keys should only be set through relationships or explicit assignment, not mass assignment.
 - Example: For a `user_id` foreign key, do NOT include it in `$fillable`. Instead, use `$model->user()->associate($user)` or `$model->user_id = $user->id`.
 
+### Validation Rules & Model Casts
+- Always use `int` instead of `integer` and `bool` instead of `boolean` in validation rules and Eloquent model casts.
+
 ### Laravel Helpers
 - Use Laravel helpers instead of `use` section classes whenever possible. Examples: use `auth()->id()` instead of `Auth::id()` and adding `Auth` in the `use` section. Another example: use `redirect()->route()` instead of `Redirect::route()`.
 - Prefer Laravel's helper classes over raw PHP string, array, number, and URI functions whenever a suitable helper exists.
