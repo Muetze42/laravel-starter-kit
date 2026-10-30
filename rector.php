@@ -62,7 +62,7 @@ return RectorConfig::configure()
         phpunitCodeQuality: true
     )
     ->withSets([
-        LevelSetList::UP_TO_PHP_84,
+        LevelSetList::UP_TO_PHP_85,
         PHPUnitSetList::COMPOSER_BASED,
 
         /**
