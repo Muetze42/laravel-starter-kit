@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Foundation\Http\HealthCheck;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', static fn () => response()->json(['message' => 'It works!']));
+Route::get('/', HealthCheck::class);

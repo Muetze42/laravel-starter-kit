@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Middleware\ForceJsonMiddleware;
 use App\Http\Middleware\PreventRequestsDuringMaintenanceMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -17,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
         then: function (): void {
-            Route::middleware(['api'])
+            Route::middleware(['api', ForceJsonMiddleware::class])
                 ->prefix('api')
                 ->name('api.')
                 ->group(base_path('routes/api.php'));
