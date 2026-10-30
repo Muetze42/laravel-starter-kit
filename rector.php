@@ -7,15 +7,10 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
-use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
-use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
-use Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchMethodCallReturnTypeRector;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\LevelSetList;
-use Rector\Transform\Rector\FuncCall\FuncCallToStaticCallRector;
 use RectorLaravel\Rector\Class_\AppendsPropertyToAppendsAttributeRector;
 use RectorLaravel\Rector\Class_\BackoffPropertyToBackoffAttributeRector;
 use RectorLaravel\Rector\Class_\CollectsPropertyToCollectsAttributeRector;
@@ -41,7 +36,6 @@ use RectorLaravel\Rector\Class_\UniqueForPropertyToUniqueForAttributeRector;
 use RectorLaravel\Rector\Class_\VisiblePropertyToVisibleAttributeRector;
 use RectorLaravel\Rector\If_\ThrowIfRector;
 use RectorLaravel\Rector\StaticCall\DispatchToHelperFunctionsRector;
-use RectorLaravel\Set\LaravelLevelSetList;
 use RectorLaravel\Set\LaravelSetList;
 
 return RectorConfig::configure()
@@ -61,7 +55,6 @@ return RectorConfig::configure()
         codingStyle: true, // @see https://getrector.com/find-rule?rectorSet=core-coding-style
         typeDeclarations: true,
         // privatization: true,
-        naming: true,
         earlyReturn: true,
         // strictBooleans: true,
         // carbon: true,
@@ -71,7 +64,6 @@ return RectorConfig::configure()
     ->withSets([
         LevelSetList::UP_TO_PHP_84,
         PHPUnitSetList::COMPOSER_BASED,
-        LaravelLevelSetList::UP_TO_LARAVEL_130,
 
         /**
          * Converts uses of things like `$app['config']` to `$app->make('config')`.
@@ -137,13 +129,6 @@ return RectorConfig::configure()
         skip: array_merge(
             [
                 /**
-                 * Rename variable to match method return type.
-                 *
-                 * @see https://getrector.com/rule-detail/rename-variable-to-match-method-call-return-type-rector
-                 */
-                RenameVariableToMatchMethodCallReturnTypeRector::class,
-
-                /**
                  * Use the event or dispatch helpers instead of the static dispatch method.
                  *
                  * @see https://getrector.com/rule-detail/dispatch-to-helper-functions-rector
@@ -151,39 +136,11 @@ return RectorConfig::configure()
                 DispatchToHelperFunctionsRector::class,
 
                 /**
-                 * Rename variable to match new ClassType.
-                 *
-                 * @see https://getrector.com/rule-detail/rename-variable-to-match-new-type-rector
-                 */
-                RenameVariableToMatchNewTypeRector::class,
-
-                /**
                  * Change if throw to throw_if
                  *
                  * @see https://getrector.com/rule-detail/throw-if-rector
                  */
                 ThrowIfRector::class,
-
-                /**
-                 * Rename param to match ClassType
-                 *
-                 * @see https://getrector.com/rule-detail/rename-param-to-match-type-rector
-                 */
-                RenameParamToMatchTypeRector::class,
-
-                /**
-                 * Renames value variable name in foreach loop to match method type
-                 *
-                 * @see https://getrector.com/rule-detail/rename-foreach-value-variable-to-match-method-call-return-type-rector
-                 */
-                RenameForeachValueVariableToMatchMethodCallReturnTypeRector::class,
-
-                /**
-                 * Use the static factory method instead of global factory function.
-                 *
-                 * @see https://getrector.com/rule-detail/factory-func-call-to-static-call-rector
-                 */
-                FuncCallToStaticCallRector::class,
 
                 /**
                  * Change closure to arrow function.
