@@ -16,6 +16,20 @@
 - Use the configured tab size for indentation
 - Never assume or override indentation settings
 
+### Empty Constructors
+
+- Empty constructors MUST use a multiline body containing `//`, matching the existing application and Laravel framework style. Never write an empty constructor body as `{}`.
+- When constructor parameters span multiple lines, put each parameter on its own line and use a trailing comma.
+
+```php
+public function __construct(
+    protected ProcessRunner $runner,
+    protected Filesystem $files,
+) {
+    //
+}
+```
+
 ## Frontend Tests
 
 - Do not test exact font sizes, spacing values, margins, padding, or other visual distance measurements in frontend tests.
