@@ -13,6 +13,7 @@
         "ext-pdo": "*",
         "laravel/agent-detector": "^2.0",
         "laravel/framework": "^13.39",
+        "laravel/prompts": "^0.3.26",
         "laravel/tinker": "^3.0",
         "sentry/sentry-laravel": "^4.29",
         "symfony/http-client": "^8.1",

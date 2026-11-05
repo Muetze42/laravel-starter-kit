@@ -9,6 +9,7 @@ use App\Jobs\Contracts\LauncherJobInterface;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Override;
 use ReflectionClass;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Finder\Finder;
@@ -25,6 +26,7 @@ class LauncherCommand extends Command implements PromptsForMissingInput
      *
      * @var string
      */
+    #[Override]
     protected $signature = 'app:launcher';
 
     /**
@@ -32,6 +34,7 @@ class LauncherCommand extends Command implements PromptsForMissingInput
      *
      * @var string
      */
+    #[Override]
     protected $description = 'Interactive launcher for commands and jobs';
 
     /**
@@ -174,7 +177,7 @@ class LauncherCommand extends Command implements PromptsForMissingInput
             hint: trim(str_replace('[Job]', '', $this->launcherOptions[$jobClass]))
         );
 
-        /* @var Dispatchable $jobClass */
+        /** @var class-string $jobClass */
         match ($action) {
             'dispatch' => $jobClass::dispatch(),
             'dispatchSync' => $this->dispatchJobSync($jobClass),

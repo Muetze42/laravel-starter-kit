@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Laravel\Boost\Boost;
 use Laravel\Boost\Install\ThirdPartyPackage;
 use Laravel\Roster\ProjectManager;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Illuminate\Filesystem\join_paths;
@@ -53,6 +54,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
      *
      * @var string
      */
+    #[Override]
     protected $signature = 'development:ai-background-update';
 
     /**
@@ -60,6 +62,7 @@ class AiBackgroundUpdateCommand extends Command implements PromptsForMissingInpu
      *
      * @var string
      */
+    #[Override]
     protected $description = 'Sync AI guidelines and MCP server data';
 
     /**

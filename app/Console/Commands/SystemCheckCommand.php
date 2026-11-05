@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 use Livewire\Features\SupportFileUploads\FileUploadConfiguration;
 use Livewire\Livewire;
+use Override;
 use RuntimeException;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -30,6 +31,7 @@ class SystemCheckCommand extends Command
      *
      * @var string
      */
+    #[Override]
     protected $signature = 'system:check-requirements';
 
     /**
@@ -37,6 +39,7 @@ class SystemCheckCommand extends Command
      *
      * @var string
      */
+    #[Override]
     protected $description = 'Verifies that all system prerequisites for the application have been satisfied.';
 
     /**

@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'data-maintenance:db:fix-sequences')]
@@ -18,6 +19,7 @@ class FixPostgresSequencesCommand extends Command
      *
      * @var string
      */
+    #[Override]
     protected $signature = 'data-maintenance:db:fix-sequences
                             {--table= : Fix only a specific table}
                             {--connection=* : Fix specific connection(s), or all PostgreSQL connections}
@@ -28,6 +30,7 @@ class FixPostgresSequencesCommand extends Command
      *
      * @var string
      */
+    #[Override]
     protected $description = 'Fix PostgreSQL sequences to match the current max ID in each table';
 
     /**
