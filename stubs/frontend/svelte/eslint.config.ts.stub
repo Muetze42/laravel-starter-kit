@@ -1,0 +1,29 @@
+import js from '@eslint/js'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
+import prettier from 'eslint-config-prettier'
+import svelte from 'eslint-plugin-svelte'
+
+export default tseslint.config(
+  { ignores: ['vendor/**', 'node_modules/**', 'public/**', 'storage/**', 'stubs/**'] },
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    languageOptions: { globals: { ...globals.browser, ...globals.node } },
+    rules: { '@typescript-eslint/no-unused-vars': 'error' }
+  },
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    extends: [...tseslint.configs.recommendedTypeChecked],
+    languageOptions: {
+      parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname }
+    }
+  },
+  ...svelte.configs.recommended,
+  {
+    files: ['**/*.svelte'],
+    languageOptions: { parserOptions: { parser: tseslint.parser } }
+  },
+  prettier,
+  ...svelte.configs.prettier
+)

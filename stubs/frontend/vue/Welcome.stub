@@ -1,0 +1,13 @@
+<script setup lang="ts">
+import { Head } from '@inertiajs/vue3'
+</script>
+
+<template>
+  <Head title="Welcome" />
+  <main class="grid min-h-screen place-items-center bg-white p-8 text-gray-900 dark:bg-gray-950 dark:text-white">
+    <section class="max-w-xl space-y-4">
+      <h1 class="text-3xl font-semibold">Welcome</h1>
+      <p>Your Vue frontend is ready.</p>
+    </section>
+  </main>
+</template>

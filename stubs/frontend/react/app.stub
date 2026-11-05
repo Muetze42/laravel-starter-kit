@@ -1,0 +1,37 @@
+import { createInertiaApp } from '@inertiajs/react'
+import type { RootOptions } from 'react-dom/client'
+import { sentryOptions } from './sentry'
+
+const Sentry = !import.meta.env.SSR && sentryOptions.dsn ? await import('@sentry/react') : null
+const client = !import.meta.env.SSR ? await import('react-dom/client') : null
+
+Sentry?.init({ ...sentryOptions, integrations: [Sentry.browserTracingIntegration()] })
+
+if (!import.meta.env.SSR) {
+  await import('./browser')
+}
+
+void createInertiaApp({
+  setup({ el, App, props }) {
+    const app = <App {...props} />
+    if (!el || !client) return app
+
+    const onError: NonNullable<RootOptions['onUncaughtError']> = (error, errorInfo) => {
+      Sentry?.reactErrorHandler()(error, { componentStack: errorInfo.componentStack ?? null })
+    }
+    const options = Sentry
+      ? {
+          onUncaughtError: onError,
+          onCaughtError: onError,
+          onRecoverableError: onError
+        }
+      : {}
+
+    if (el.dataset.serverRendered === 'true') {
+      client.hydrateRoot(el, app, options)
+      return
+    }
+
+    client.createRoot(el, options).render(app)
+  }
+})

@@ -1,0 +1,17 @@
+export const sentryOptions = {
+  dsn: String(import.meta.env.VITE_SENTRY_DSN_PUBLIC ?? '').trim(),
+  release: String(import.meta.env.VITE_SENTRY_RELEASE),
+  tracesSampleRate: Number(import.meta.env.VITE_SENTRY_TRACES_SAMPLE_RATE || 0)
+}
+
+if (import.meta.env.SSR && sentryOptions.dsn) {
+  const Sentry = await import('@sentry/node')
+
+  // The SDK client survives Vite SSR module reloads in the same process.
+  if (!Sentry.getClient()) {
+    Sentry.init({
+      ...sentryOptions,
+      integrations: [Sentry.captureConsoleIntegration({ levels: ['error'] })]
+    })
+  }
+}

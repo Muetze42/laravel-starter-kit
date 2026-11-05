@@ -1,0 +1,15 @@
+import { Head } from '@inertiajs/react'
+
+export default function Welcome() {
+  return (
+    <>
+      <Head title="Welcome" />
+      <main className="grid min-h-screen place-items-center bg-white p-8 text-gray-900 dark:bg-gray-950 dark:text-white">
+        <section className="max-w-xl space-y-4">
+          <h1 className="text-3xl font-semibold">Welcome</h1>
+          <p>Your React frontend is ready.</p>
+        </section>
+      </main>
+    </>
+  )
+}

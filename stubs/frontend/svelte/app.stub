@@ -1,0 +1,13 @@
+import { createInertiaApp } from '@inertiajs/svelte'
+import { sentryOptions } from './sentry'
+
+if (!import.meta.env.SSR) {
+  if (sentryOptions.dsn) {
+    const Sentry = await import('@sentry/svelte')
+    Sentry.init({ ...sentryOptions, integrations: [Sentry.browserTracingIntegration()] })
+  }
+
+  await import('./browser')
+}
+
+void createInertiaApp()

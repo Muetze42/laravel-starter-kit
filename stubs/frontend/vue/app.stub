@@ -1,0 +1,14 @@
+import { createInertiaApp } from '@inertiajs/vue3'
+import { sentryOptions } from './sentry'
+
+const Sentry = !import.meta.env.SSR && sentryOptions.dsn ? await import('@sentry/vue') : null
+
+if (!import.meta.env.SSR) {
+  await import('./browser')
+}
+
+void createInertiaApp({
+  withApp(app) {
+    Sentry?.init({ ...sentryOptions, app, integrations: [Sentry.browserTracingIntegration()] })
+  }
+})
