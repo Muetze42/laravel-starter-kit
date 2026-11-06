@@ -87,10 +87,6 @@ const setProperty = (target, name, value) => {
 }
 if (build) setProperty(build, 'sourcemap', "'hidden'")
 else setProperty(object, 'build', "{ sourcemap: 'hidden' }")
-const define = property(object, 'define', viteFile)
-const releaseDefine = 'JSON.stringify(sentryRelease)'
-if (define) setProperty(define, 'import.meta.env.VITE_SENTRY_RELEASE', releaseDefine)
-else setProperty(object, 'define', `{ 'import.meta.env.VITE_SENTRY_RELEASE': ${releaseDefine} }`)
 edits.push([laravelCalls[0].end, laravelCalls[0].end, `,\n    inertia()`])
 // Append last so Sentry sees the output from all existing build plugins.
 edits.push([
@@ -107,15 +103,9 @@ edits.push([
     }
     ${options.pluginExpression},
     sentryVitePlugin({
-      authToken: env.SENTRY_AUTH_TOKEN?.trim() ?? '',
-      org: env.SENTRY_ORG?.trim() ?? '',
-      project: env.SENTRY_PROJECT?.trim() ?? '',
-      release: { name: sentryRelease, create: uploadSourcemaps, finalize: uploadSourcemaps },
+      release: { name: release },
       sourcemaps: {
-        disable: uploadSourcemaps ? false : 'disable-upload',
-        assets: [outputDirectory + '/**'],
-        filesToDeleteAfterUpload: uploadSourcemaps
-          ? [outputDirectory + '/**/*.map'] : []
+        filesToDeleteAfterUpload: ['public/build/**/*.map', 'bootstrap/ssr/**/*.map']
       },
       telemetry: false
     })
@@ -124,11 +114,10 @@ edits.push([
 edits.push([
     object.start,
     object.start,
-    `({ mode, isSsrBuild }) => {
-  const env = loadEnv(mode, process.cwd(), '')
-  const outputDirectory = isSsrBuild ? 'bootstrap/ssr' : 'public/build'
-  const sentryRelease = env.SENTRY_RELEASE?.trim() || basename(realpathSync(process.cwd()))
-  const uploadSourcemaps = Boolean(env.SENTRY_AUTH_TOKEN?.trim() && env.SENTRY_ORG?.trim() && env.SENTRY_PROJECT?.trim())
+    `({ mode }) => {
+  Object.assign(process.env, loadEnv(mode, process.cwd(), 'SENTRY_'))
+  const directory = basename(realpathSync(process.cwd()))
+  const release = /^\\d+$/.test(directory) ? directory : String(Date.now())
 
   return `
 ])
@@ -139,14 +128,12 @@ walk(ast, (n) => {
         [
             ...parse('framework.js', options.pluginImport).body[0].specifiers.map((specifier) => specifier.local.name),
             'inertia',
-            'env',
-            'outputDirectory',
             'sentryVitePlugin',
-            'sentryRelease',
-            'uploadSourcemaps',
             'loadEnv',
             'basename',
-            'realpathSync'
+            'realpathSync',
+            'directory',
+            'release',
         ].includes(n.name)
     )
         fail(viteFile, `Reserved installer binding ${n.name} already exists.`)
