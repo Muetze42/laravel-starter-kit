@@ -64,7 +64,7 @@ class ReactPreset extends AbstractInertiaPreset
      */
     public function pluginImport(): string
     {
-        return "import frontendFramework from '@vitejs/plugin-react'";
+        return "import react from '@vitejs/plugin-react'";
     }
 
     /**
@@ -72,7 +72,7 @@ class ReactPreset extends AbstractInertiaPreset
      */
     public function pluginExpression(): string
     {
-        return 'frontendFramework()';
+        return 'react()';
     }
 
     /**

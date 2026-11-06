@@ -62,7 +62,7 @@ class SveltePreset extends AbstractInertiaPreset
      */
     public function pluginImport(): string
     {
-        return "import { svelte as frontendFramework } from '@sveltejs/vite-plugin-svelte'";
+        return "import { svelte } from '@sveltejs/vite-plugin-svelte'";
     }
 
     /**
@@ -70,7 +70,7 @@ class SveltePreset extends AbstractInertiaPreset
      */
     public function pluginExpression(): string
     {
-        return 'frontendFramework()';
+        return 'svelte()';
     }
 
     /**

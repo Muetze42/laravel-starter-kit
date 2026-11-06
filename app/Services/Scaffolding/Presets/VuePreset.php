@@ -62,7 +62,7 @@ class VuePreset extends AbstractInertiaPreset
      */
     public function pluginImport(): string
     {
-        return "import frontendFramework from '@vitejs/plugin-vue'";
+        return "import vue from '@vitejs/plugin-vue'";
     }
 
     /**
@@ -70,7 +70,7 @@ class VuePreset extends AbstractInertiaPreset
      */
     public function pluginExpression(): string
     {
-        return 'frontendFramework({ template: { transformAssetUrls: { base: null, includeAbsolute: false } } })';
+        return 'vue({ template: { transformAssetUrls: { base: null, includeAbsolute: false } } })';
     }
 
     /**

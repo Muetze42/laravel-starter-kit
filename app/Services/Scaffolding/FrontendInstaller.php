@@ -48,7 +48,7 @@ class FrontendInstaller
         $this->runner->run([PHP_BINARY, 'artisan', 'inertia:middleware', '--no-interaction'], $root, $output);
 
         $formatPaths = array_keys(array_filter($changes, fn (?string $contents,
-            string $path): bool => $contents !== null && preg_match('/\\.(ts|tsx|vue|svelte|json)$/',
+            string $path): bool => $contents !== null && preg_match('/\\.(js|ts|tsx|vue|svelte|json)$/',
                 $path) === 1, ARRAY_FILTER_USE_BOTH));
         $this->runner->run(['pnpm', 'exec', 'prettier', '--write', ...$formatPaths], $root, $output);
         if (! $skipVerification) {

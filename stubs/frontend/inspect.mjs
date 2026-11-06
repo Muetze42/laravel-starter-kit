@@ -1,5 +1,5 @@
 import { createRequire } from 'node:module'
-import { readFileSync, existsSync, readdirSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
 import { resolve, relative, dirname } from 'node:path'
 
 // Use the parser shipped with the project's Vite 8 installation, without evaluating configuration.
@@ -40,6 +40,7 @@ const walk = (node, visit) => {
 const viteFile = 'vite.config.js'
 // Remove the starter's obsolete Sentry examples before adding working configuration.
 const source = readFileSync(viteFile, 'utf8')
+    .replace(/^  \/\/ server: \{\n  \/\/   watch: \{\n  \/\/     ignored: \['\*\*\/storage\/framework\/views\/\*\*'\]\n  \/\/   \}\n  \/\/ \}\n/m, '')
     .replace(/^\/\/ import \{(?:realpathSync|basename|sentryVitePlugin|loadEnv)\}.*\n/gm, '')
     .replace(/^\/\/ To enable Sentry.*\n(?:\/\/.*\n)*/m, '')
     .replace(/^  \/\/ build: \{\n  \/\/   sourcemap: 'hidden',\n  \/\/ \},\n/m, '')
@@ -73,20 +74,24 @@ const inputs = input?.type === 'ArrayExpression' ? input.elements : [input]
 if (inputs.some((n) => n?.type !== 'Literal' || typeof n.value !== 'string')) fail(viteFile, 'Laravel input must be a string or an array of string literals.')
 if (inputs.filter((n) => n.value === 'resources/js/app.js').length !== 1) fail(viteFile, 'Expected resources/js/app.js exactly once in Laravel inputs.')
 let edits = inputs.filter((n) => n.value === 'resources/js/app.js').map((n) => [n.start, n.end, JSON.stringify(options.entry)])
-edits.push([plugins.start + 1, plugins.start + 1, `\n    ${options.pluginExpression},\n    frontendInertia({ ssr: { host: '127.0.0.1' } }),`])
+
+const additions = new Map()
 const setProperty = (target, name, value) => {
     const existing = property(target, name, viteFile)
-    edits.push(existing ? [existing.start, existing.end, value] : [target.start + 1, target.start + 1, `\n${JSON.stringify(name)}: ${value},`])
+    if (existing) {
+        edits.push([existing.start, existing.end, value])
+        return
+    }
+    if (!additions.has(target)) additions.set(target, [])
+    additions.get(target).push(`${JSON.stringify(name)}: ${value}`)
 }
 if (build) setProperty(build, 'sourcemap', "'hidden'")
 else setProperty(object, 'build', "{ sourcemap: 'hidden' }")
-const server = property(object, 'server', viteFile)
-if (server) setProperty(server, 'host', "'127.0.0.1'")
-else setProperty(object, 'server', "{ host: '127.0.0.1' }")
 const define = property(object, 'define', viteFile)
-const releaseDefine = 'JSON.stringify(frontendSentryRelease)'
+const releaseDefine = 'JSON.stringify(sentryRelease)'
 if (define) setProperty(define, 'import.meta.env.VITE_SENTRY_RELEASE', releaseDefine)
 else setProperty(object, 'define', `{ 'import.meta.env.VITE_SENTRY_RELEASE': ${releaseDefine} }`)
+edits.push([laravelCalls[0].end, laravelCalls[0].end, `,\n    inertia()`])
 // Append last so Sentry sees the output from all existing build plugins.
 edits.push([
     plugins.end - 1,
@@ -100,16 +105,17 @@ edits.push([
             ? ','
             : ''
     }
-    frontendSentry({
-      authToken: frontendEnv.SENTRY_AUTH_TOKEN?.trim() ?? '',
-      org: frontendEnv.SENTRY_ORG?.trim() ?? '',
-      project: frontendEnv.SENTRY_PROJECT?.trim() ?? '',
-      release: { name: frontendSentryRelease, create: frontendSentryUpload, finalize: frontendSentryUpload },
+    ${options.pluginExpression},
+    sentryVitePlugin({
+      authToken: env.SENTRY_AUTH_TOKEN?.trim() ?? '',
+      org: env.SENTRY_ORG?.trim() ?? '',
+      project: env.SENTRY_PROJECT?.trim() ?? '',
+      release: { name: sentryRelease, create: uploadSourcemaps, finalize: uploadSourcemaps },
       sourcemaps: {
-        disable: frontendSentryUpload ? false : 'disable-upload',
-        assets: [isSsrBuild ? 'bootstrap/ssr/**' : 'public/build/**'],
-        filesToDeleteAfterUpload: frontendSentryUpload
-          ? [isSsrBuild ? 'bootstrap/ssr/**/*.map' : 'public/build/**/*.map'] : []
+        disable: uploadSourcemaps ? false : 'disable-upload',
+        assets: [outputDirectory + '/**'],
+        filesToDeleteAfterUpload: uploadSourcemaps
+          ? [outputDirectory + '/**/*.map'] : []
       },
       telemetry: false
     })
@@ -119,52 +125,76 @@ edits.push([
     object.start,
     object.start,
     `({ mode, isSsrBuild }) => {
-  const frontendEnv = frontendLoadEnv(mode, process.cwd(), '')
-  const frontendSentryRelease = frontendEnv.SENTRY_RELEASE?.trim() || frontendBasename(frontendRealpath(process.cwd()))
-  const frontendSentryUpload = Boolean(frontendEnv.SENTRY_AUTH_TOKEN?.trim() && frontendEnv.SENTRY_ORG?.trim() && frontendEnv.SENTRY_PROJECT?.trim())
+  const env = loadEnv(mode, process.cwd(), '')
+  const outputDirectory = isSsrBuild ? 'bootstrap/ssr' : 'public/build'
+  const sentryRelease = env.SENTRY_RELEASE?.trim() || basename(realpathSync(process.cwd()))
+  const uploadSourcemaps = Boolean(env.SENTRY_AUTH_TOKEN?.trim() && env.SENTRY_ORG?.trim() && env.SENTRY_PROJECT?.trim())
+
   return `
 ])
 edits.push([object.end, object.end, '\n}'])
-const resolveConfig = property(object, 'resolve', viteFile)
-const alias = resolveConfig && property(resolveConfig, 'alias', viteFile)
-const aliasValue = "frontendFilePath(new URL('./resources/js', import.meta.url))"
-if (!resolveConfig) edits.push([object.start + 1, object.start + 1, `\n  resolve: { alias: { '@': ${aliasValue} } },`])
-else if (!alias) edits.push([resolveConfig.start + 1, resolveConfig.start + 1, `alias: { '@': ${aliasValue} },`])
-else {
-    const existing = property(alias, '@', viteFile)
-    if (existing) {
-        const text = source.slice(existing.start, existing.end)
-        if (![aliasValue, "new URL('./resources/js', import.meta.url).pathname"].includes(text))
-            fail(viteFile, 'The @ alias must point to resources/js; reconcile it before installing.')
-    } else edits.push([alias.start + 1, alias.start + 1, `'@': ${aliasValue},`])
-}
 walk(ast, (n) => {
     if (
         n.type === 'Identifier' &&
         [
-            'frontendFramework',
-            'frontendInertia',
-            'frontendFilePath',
-            'frontendEnv',
-            'frontendSentry',
-            'frontendSentryRelease',
-            'frontendSentryUpload',
-            'frontendLoadEnv',
-            'frontendBasename',
-            'frontendRealpath'
+            ...parse('framework.js', options.pluginImport).body[0].specifiers.map((specifier) => specifier.local.name),
+            'inertia',
+            'env',
+            'outputDirectory',
+            'sentryVitePlugin',
+            'sentryRelease',
+            'uploadSourcemaps',
+            'loadEnv',
+            'basename',
+            'realpathSync'
         ].includes(n.name)
     )
         fail(viteFile, `Reserved installer binding ${n.name} already exists.`)
 })
-const pathImport = alias && property(alias, '@', viteFile) ? '' : "import { fileURLToPath as frontendFilePath } from 'node:url'\n"
+const viteImport = imports.find((entry) => entry.source.value === 'vite')
+if (!viteImport || !viteImport.specifiers.some((specifier) => specifier.imported?.name === 'defineConfig')) {
+    fail(viteFile, 'Expected a named defineConfig import from Vite.')
+}
+const viteImports = viteImport.specifiers.map((specifier) => {
+    if (specifier.type === 'ImportDefaultSpecifier') return specifier.local.name
+    if (specifier.type !== 'ImportSpecifier') fail(viteFile, 'Namespace Vite imports require manual integration.')
+    return specifier.imported.name === specifier.local.name
+        ? specifier.local.name
+        : `${specifier.imported.name} as ${specifier.local.name}`
+})
+if (viteImport.specifiers.some((specifier) => specifier.type !== 'ImportSpecifier')) {
+    fail(viteFile, 'Use named Vite imports before installing.')
+}
+edits.push([viteImport.start, viteImport.end, `import { ${[...viteImports, 'loadEnv'].join(', ')} } from 'vite'`])
+for (const [target, properties] of additions) {
+    const last = target.properties.at(-1)
+    if (last && !source.slice(last.end, target.end - 1).trimStart().startsWith(',')) {
+        edits.push([last.end, last.end, ','])
+    }
+    edits.push([target.end - 1, target.end - 1, `\n${properties.join(',\n')},\n`])
+}
 changes['vite.config.ts'] =
-    "import { realpathSync as frontendRealpath } from 'node:fs'\n" +
-    "import { basename as frontendBasename } from 'node:path'\n" +
-    "import { loadEnv as frontendLoadEnv } from 'vite'\n" +
-    "import { sentryVitePlugin as frontendSentry } from '@sentry/vite-plugin'\n" +
-    `${pathImport}${options.pluginImport}\nimport frontendInertia from '@inertiajs/vite'\n` +
+    "import { realpathSync } from 'node:fs'\n" +
+    "import { basename } from 'node:path'\n" +
+    "import { sentryVitePlugin } from '@sentry/vite-plugin'\n" +
+    `${options.pluginImport}\nimport inertia from '@inertiajs/vite'\n` +
     apply(source, edits)
-parse('vite.config.ts', changes['vite.config.ts'])
+const generated = changes['vite.config.ts']
+const objectEdits = []
+const generatedAst = parse('vite.config.ts', generated)
+const generatedImports = generatedAst.body.filter((node) => node.type === 'ImportDeclaration' && node.specifiers.length > 0)
+const sortedImports = [...generatedImports].sort((left, right) => left.source.value.localeCompare(right.source.value))
+for (const [index, node] of generatedImports.entries()) {
+    const sorted = sortedImports[index]
+    objectEdits.push([node.start, node.end, generated.slice(sorted.start, sorted.end)])
+}
+walk(generatedAst, (node) => {
+    if (node.type === 'ObjectExpression' && node.properties.length > 0) {
+        objectEdits.push([node.start + 1, node.start + 1, '\n'])
+        objectEdits.push([node.end - 1, node.end - 1, '\n'])
+    }
+})
+changes['vite.config.ts'] = apply(generated, objectEdits)
 changes[viteFile] = null
 const entryFile = 'resources/js/app.js'
 const entrySource = readFileSync(entryFile, 'utf8')

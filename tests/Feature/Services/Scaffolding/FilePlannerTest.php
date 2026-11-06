@@ -29,10 +29,14 @@ final class FilePlannerTest extends TestCase
         foreach (['resources/js', 'resources/views', 'bootstrap', 'routes'] as $directory) {
             $files->ensureDirectoryExists($this->root . '/' . $directory);
         }
-        foreach (['package.json', '.prettierrc', 'bootstrap/app.php', 'routes/web.php'] as $path) {
+
+        foreach (['package.json', '.prettierrc'] as $path) {
             $files->copy(base_path($path), $this->root . '/' . $path);
         }
-        $files->copy(base_path('tests/Fixtures/Frontend/vite.config.js'), $this->root . '/vite.config.js');
+
+        $files->copy(base_path('tests/Fixtures/Frontend/vite.config.stub'), $this->root . '/vite.config.js');
+        $files->put($this->root . '/bootstrap/app.php', '<?php use Illuminate\\Foundation\\Configuration\\Middleware; return $app->withMiddleware(function (Middleware $middleware): void {});');
+        $files->put($this->root . '/routes/web.php', "<?php use Illuminate\\Support\\Facades\\Route; Route::view('/', 'welcome');");
         $files->put($this->root . '/resources/js/app.js', '');
         $files->link(base_path('node_modules'), $this->root . '/node_modules');
     }
@@ -91,10 +95,14 @@ final class FilePlannerTest extends TestCase
         };
         $changes = $this->app->make(FilePlanner::class)->plan($this->root, $preset);
         $this->app->make(ProjectFiles::class)->writeChanges($this->root, $changes);
-        $files->copy(base_path('tests/Fixtures/Frontend/shared-types.ts'), $this->root . '/resources/js/shared-types.ts');
+        $files->copy(base_path('tests/Fixtures/Frontend/shared-types.stub'), $this->root . '/resources/js/shared-types.ts');
         if ($framework === 'vue') {
-            $files->copy(base_path('tests/Fixtures/Frontend/vue-types.ts'), $this->root . '/resources/js/vue-types.ts');
+            $files->copy(base_path('tests/Fixtures/Frontend/vue-types.stub'), $this->root . '/resources/js/vue-types.ts');
         }
+
+        $runner = $this->app->make(ProcessRunner::class);
+        $runner->run([$this->root . '/node_modules/.bin/prettier', '--write', 'vite.config.ts'], $this->root);
+        $runner->run([$this->root . '/node_modules/.bin/prettier', '--check', 'vite.config.ts'], $this->root);
 
         // Exclude the entry point so declarations cannot depend on its incidental imports.
         $project = $this->app->make(ProjectFiles::class);

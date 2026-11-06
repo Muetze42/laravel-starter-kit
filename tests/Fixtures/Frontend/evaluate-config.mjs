@@ -37,11 +37,12 @@ for (const credentials of [false, true, 'partial']) {
         assert.deepEqual(plugin('laravel'), {
             input: ['resources/css/app.css', `resources/js/app.${framework === 'react' ? 'tsx' : 'ts'}`], refresh: true
         })
-        assert.deepEqual(plugin('inertia'), { ssr: { host: '127.0.0.1' } })
+        assert.equal(plugin('inertia'), undefined)
         assert.deepEqual(config.build, { cssCodeSplit: false, sourcemap: 'hidden' })
         assert.deepEqual(config.server.watch, { ignored: ['**/storage/**'] })
         assert.equal(config.resolve.alias.existing, '/existing')
-        assert.equal(config.resolve.alias['@'], new URL('./resources/js', pathToFileURL(configPath)).pathname)
+        assert.deepEqual(config.resolve.alias, { existing: '/existing' })
+        assert.equal(config.server.host, undefined)
         assert.equal(config.define.EXISTING_FLAG, 'true')
         const sentry = plugin('sentry')
         assert.equal(plugins.at(-1).name, 'sentry')
