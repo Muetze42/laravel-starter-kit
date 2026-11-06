@@ -1,0 +1,2 @@
+// Load Inertia's Vue augmentations for $inertia, $page, and $headManager.
+import '@inertiajs/vue3'

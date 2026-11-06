@@ -70,7 +70,7 @@ class VuePreset extends AbstractInertiaPreset
      */
     public function pluginExpression(): string
     {
-        return 'frontendFramework()';
+        return 'frontendFramework({ template: { transformAssetUrls: { base: null, includeAbsolute: false } } })';
     }
 
     /**

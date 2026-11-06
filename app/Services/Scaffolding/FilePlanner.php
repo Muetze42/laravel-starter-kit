@@ -55,6 +55,11 @@ class FilePlanner
 
         $changes['resources/js/sentry.ts'] = $this->template('shared/sentry.ts.stub');
         $changes['resources/js/types/global.d.ts'] = $this->template('shared/global.d.ts.stub');
+        $frameworkTypes = $preset->identifier() . '/global.d.ts.stub';
+        if ($this->files->exists(base_path('stubs/frontend/' . $frameworkTypes))) {
+            $changes['resources/js/types/global.d.ts'] .= "\n" . $this->template($frameworkTypes);
+        }
+
         $changes[$page] = $this->template($preset->identifier() . '/Welcome.stub');
         $changes = [...$changes, ...$this->server($root, $preset, $entry, $changes)];
         $changes['package.json'] = $this->package($root, $preset, $entry, $changes);
