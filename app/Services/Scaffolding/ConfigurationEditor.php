@@ -5,11 +5,18 @@ declare(strict_types=1);
 namespace App\Services\Scaffolding;
 
 use App\Services\Scaffolding\Contracts\PresetInterface;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
+use Inertia\Response;
 use JsonException;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
+use PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Stmt\Expression;
 use PhpParser\Node\Stmt\Return_;
 use PhpParser\NodeFinder;
 use PhpParser\ParserFactory;
@@ -87,5 +94,54 @@ class ConfigurationEditor
         }
 
         throw new RuntimeException('bootstrap/app.php: expected top-level imports.');
+    }
+
+    /**
+     * Replace the root route while preserving the surrounding route definitions.
+     *
+     * @throws RuntimeException
+     */
+    public function routes(string $source): string
+    {
+        $tree = new ParserFactory()->createForNewestSupportedVersion()->parse($source) ?? [];
+        $matches = [];
+        foreach ($tree as $statement) {
+            if (! $statement instanceof Expression) {
+                continue;
+            }
+
+            $call = $statement->expr;
+            while ($call instanceof MethodCall) {
+                $call = $call->var;
+            }
+
+            if ($call instanceof StaticCall && $call->class instanceof Name
+                && $call->class->toString() === 'Route' && $call->name instanceof Identifier
+                && in_array($call->name->name, ['get', 'view'], true)) {
+                $uri = $call->getArgs()[0]->value ?? null;
+                if ($uri instanceof String_ && $uri->value === '/') {
+                    $matches[] = $statement;
+                }
+            }
+        }
+
+        if (count($matches) !== 1 || ! Str::contains($source, 'use Illuminate\\Support\\Facades\\Route;')) {
+            throw new RuntimeException('routes/web.php must import Route and contain exactly one top-level GET or view route for /.');
+        }
+
+        $route = $matches[0];
+        // Parser offsets are bytes, so multibyte string helpers would corrupt non-ASCII source.
+        $source = substr_replace($source,
+            "Route::get('/', fn (): Response => Inertia::render('Welcome'))->name('home');",
+            $route->getStartFilePos(), $route->getEndFilePos() - $route->getStartFilePos() + 1);
+
+        foreach ([Inertia::class, Response::class] as $import) {
+            if (! Str::contains($source, 'use ' . $import . ';')) {
+                $source = Str::replace('use Illuminate\\Support\\Facades\\Route;',
+                    'use ' . $import . ";\nuse Illuminate\\Support\\Facades\\Route;", $source);
+            }
+        }
+
+        return $source;
     }
 }

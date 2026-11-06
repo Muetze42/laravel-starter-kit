@@ -39,7 +39,7 @@ class FilePlanner
             'eslint.config.js', 'eslint.config.mjs', '.eslintrc', '.eslintrc.json', '.prettierrc.js',
             'prettier.config.js', 'svelte.config.js', 'resources/views/app.blade.php',
             'app/Http/Middleware/HandleInertiaRequests.php', 'resources/js/sentry.ts',
-            'resources/js/browser.ts'] as $destination) {
+            'resources/js/types/global.d.ts'] as $destination) {
             if ($this->files->exists($root . '/' . $destination)) {
                 throw new RuntimeException($destination . ' already exists; integrate it manually before installing.');
             }
@@ -54,6 +54,7 @@ class FilePlanner
         }
 
         $changes['resources/js/sentry.ts'] = $this->template('shared/sentry.ts.stub');
+        $changes['resources/js/types/global.d.ts'] = $this->template('shared/global.d.ts.stub');
         $changes[$page] = $this->template($preset->identifier() . '/Welcome.stub');
         $changes = [...$changes, ...$this->server($root, $preset, $entry, $changes)];
         $changes['package.json'] = $this->package($root, $preset, $entry, $changes);
@@ -74,7 +75,7 @@ class FilePlanner
         return $changes;
     }
 
-    /** Plan server integration without replacing existing registrations.
+    /** Plan server integration and replace the starter's root route.
      * @param  array<string, string|null>  $changes
      * @return array<string, string|null>
      *
@@ -82,8 +83,8 @@ class FilePlanner
      */
     protected function server(string $root, PresetInterface $preset, string $entry, array $changes): array
     {
-        $changes['resources/views/app.blade.php'] = Str::replace(['{{ refresh }}', '{{ entry }}'],
-            [$preset->identifier() === 'react' ? '@viteReactRefresh' : '', $entry],
+        $changes['resources/views/app.blade.php'] = Str::replace(["        {{ refresh }}\n", '{{ entry }}'],
+            [$preset->identifier() === 'react' ? "        @viteReactRefresh\n" : '', $entry],
             $this->template('shared/app.blade.php.stub'));
         $bootstrap = $this->files->get($root . '/bootstrap/app.php');
         if (Str::contains($bootstrap, ['HandleInertiaRequests', 'Inertia\\'])) {
@@ -91,16 +92,7 @@ class FilePlanner
         }
 
         $changes['bootstrap/app.php'] = $this->editor->middleware($bootstrap);
-        $routes = $this->files->get($root . '/routes/web.php');
-        if (! Str::contains($routes, 'use Illuminate\\Support\\Facades\\Route;') || Str::contains($routes, '?>')) {
-            throw new RuntimeException(
-                'routes/web.php must import Route without an alias and have no closing PHP tag.');
-        }
-
-        $routes = Str::replace('use Illuminate\\Support\\Facades\\Route;',
-            "use Illuminate\\Support\\Facades\\Route;\nuse Inertia\\Inertia;\nuse " . 'Inertia\\Response;', $routes);
-        $changes['routes/web.php'] = $routes . "\nRoute::get('/frontend', fn (): Response => "
-            . "Inertia::render('Welcome'))->name('frontend.index');\n";
+        $changes['routes/web.php'] = $this->editor->routes($this->files->get($root . '/routes/web.php'));
         foreach ($this->files->allFiles($root . '/resources/views') as $view) {
             $contents = $view->getContents();
             $updated = $contents;

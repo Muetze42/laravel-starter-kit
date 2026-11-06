@@ -7,10 +7,6 @@ const client = !import.meta.env.SSR ? await import('react-dom/client') : null
 
 Sentry?.init({ ...sentryOptions, integrations: [Sentry.browserTracingIntegration()] })
 
-if (!import.meta.env.SSR) {
-  await import('./browser')
-}
-
 void createInertiaApp({
   setup({ el, App, props }) {
     const app = <App {...props} />

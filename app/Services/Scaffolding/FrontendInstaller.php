@@ -57,6 +57,8 @@ class FrontendInstaller
             }
         }
 
+        $this->runner->run([PHP_BINARY, 'vendor/bin/pint'], $root, $output);
+
         $output($skipVerification
             ? "Frontend installed. Verification SKIPPED (--skip-verification).\n"
             : "Frontend installed. Build, lint, formatting, and type checks passed.\n");

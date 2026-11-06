@@ -1,0 +1,24 @@
+import '@inertiajs/core'
+import 'vite/client'
+
+declare module '@inertiajs/core' {
+    export interface InertiaConfig {
+        sharedPageProps: {
+            [key: string]: unknown
+        }
+    }
+}
+
+declare global {
+    interface ViteTypeOptions {
+        strictImportMetaEnv: unknown
+    }
+
+    interface ImportMetaEnv {
+        readonly VITE_APP_NAME?: string
+        readonly VITE_APP_DEBUG?: string
+        readonly VITE_SENTRY_DSN_PUBLIC?: string
+        readonly VITE_SENTRY_RELEASE: string
+        readonly VITE_SENTRY_TRACES_SAMPLE_RATE?: string
+    }
+}

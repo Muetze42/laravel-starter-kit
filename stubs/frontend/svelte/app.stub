@@ -6,8 +6,6 @@ if (!import.meta.env.SSR) {
     const Sentry = await import('@sentry/svelte')
     Sentry.init({ ...sentryOptions, integrations: [Sentry.browserTracingIntegration()] })
   }
-
-  await import('./browser')
 }
 
 void createInertiaApp()

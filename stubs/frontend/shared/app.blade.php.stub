@@ -3,14 +3,11 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        @fonts
         {{ refresh }}
         @vite(['resources/css/app.css', '{{ entry }}'])
-        <x-inertia::head>
-            <title>{{ config('app.name') }}</title>
-        </x-inertia::head>
+        <x-inertia::head />
     </head>
-    <body>
+    <body class="antialiased">
         <x-inertia::app />
     </body>
 </html>
