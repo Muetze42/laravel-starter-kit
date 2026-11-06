@@ -98,7 +98,10 @@ class FilePlanner
 
         $changes['bootstrap/app.php'] = $this->editor->middleware($bootstrap);
         $changes['routes/web.php'] = $this->editor->routes($this->files->get($root . '/routes/web.php'));
-        foreach ($this->files->allFiles($root . '/resources/views') as $view) {
+        $views = $this->files->isDirectory($root . '/resources/views')
+            ? $this->files->allFiles($root . '/resources/views')
+            : [];
+        foreach ($views as $view) {
             $contents = $view->getContents();
             $updated = $contents;
             foreach ($changes as $oldPath => $replacement) {

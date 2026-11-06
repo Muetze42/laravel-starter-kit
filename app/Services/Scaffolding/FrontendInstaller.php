@@ -38,6 +38,7 @@ class FrontendInstaller
     {
         $originalLocks = $this->locks->versions($root);
         $dependencies = $this->dependencies->resolve($root, $preset);
+        $this->pnpm->installExistingDependencies($root, $output);
         $changes = $this->planner->plan($root, $preset);
         $this->project->writeChanges($root, $changes);
 
