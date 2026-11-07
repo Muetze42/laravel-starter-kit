@@ -69,6 +69,8 @@ return [
 
     'timezone' => 'UTC',
 
+    // 'schedule_timezone' => 'Europe/Berline',
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
