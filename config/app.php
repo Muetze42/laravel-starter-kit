@@ -69,7 +69,7 @@ return [
 
     'timezone' => 'UTC',
 
-    // 'schedule_timezone' => 'Europe/Berline',
+    // 'schedule_timezone' => 'Europe/Berlin',
 
     /*
     |--------------------------------------------------------------------------
