@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Middleware\ForceJson;
+use App\Http\Middleware\LowercaseEmailAddresses;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -25,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->append(LowercaseEmailAddresses::class);
         $middleware->replace(
             OriginalPreventRequestsDuringMaintenance::class,
             PreventRequestsDuringMaintenance::class
