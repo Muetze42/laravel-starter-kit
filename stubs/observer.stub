@@ -47,6 +47,14 @@ class {{ class }}
     }
 
     /**
+     * Handle the User "saving" event.
+     */
+    public function saving(User $user): void
+    {
+        //
+    }
+
+    /**
      * Handle the {{ model }} "saved" event.
      */
     public function saved({{ model }} ${{ modelVariable }}): void
