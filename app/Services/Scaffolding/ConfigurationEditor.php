@@ -135,8 +135,11 @@ class ConfigurationEditor
 
         foreach (['Inertia\\Inertia', 'Inertia\\Response'] as $import) {
             if (! Str::contains($source, 'use ' . $import . ';')) {
-                $source = Str::replace('use Illuminate\\Support\\Facades\\Route;',
-                    'use ' . $import . ";\nuse Illuminate\\Support\\Facades\\Route;", $source);
+                $source = Str::replace(
+                    'use Illuminate\\Support\\Facades\\Route;',
+                    'use ' . $import . ";\nuse Illuminate\\Support\\Facades\\Route;",
+                    $source
+                );
             }
         }
 

@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Middleware;
+declare(strict_types=1);
+
+namespace App\Http\Middleware\Transformers;
 
 use Illuminate\Foundation\Http\Middleware\TransformsRequest;
 use Illuminate\Support\Str;
 
-class SquishStrings extends TransformsRequest
+class LowercaseEmailAddresses extends TransformsRequest
 {
     /**
      * Transform the given value.
@@ -15,6 +17,10 @@ class SquishStrings extends TransformsRequest
      */
     protected function transform($key, $value): mixed
     {
-        return is_string($value) ? Str::squish($value) : $value;
+        if ($key !== 'email') {
+            return $value;
+        }
+
+        return is_string($value) ? Str::lower($value) : $value;
     }
 }
