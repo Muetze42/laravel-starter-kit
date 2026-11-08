@@ -6,8 +6,6 @@ namespace App\Services\Scaffolding;
 
 use App\Services\Scaffolding\Contracts\PresetInterface;
 use Illuminate\Support\Str;
-use Inertia\Inertia;
-use Inertia\Response;
 use JsonException;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\MethodCall;
@@ -135,7 +133,7 @@ class ConfigurationEditor
             "Route::get('/', fn (): Response => Inertia::render('Welcome'))->name('home');",
             $route->getStartFilePos(), $route->getEndFilePos() - $route->getStartFilePos() + 1);
 
-        foreach ([Inertia::class, Response::class] as $import) {
+        foreach (['Inertia\\Inertia', 'Inertia\\Response'] as $import) {
             if (! Str::contains($source, 'use ' . $import . ';')) {
                 $source = Str::replace('use Illuminate\\Support\\Facades\\Route;',
                     'use ' . $import . ";\nuse Illuminate\\Support\\Facades\\Route;", $source);
