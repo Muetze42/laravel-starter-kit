@@ -6,11 +6,11 @@ namespace App\Http\Middleware;
 
 use App\Exceptions\MaintenanceException;
 use Closure;
-use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance;
+use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance as Middleware;
 use Override;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class PreventRequestsDuringMaintenanceMiddleware extends PreventRequestsDuringMaintenance
+class PreventRequestsDuringMaintenance extends Middleware
 {
     /**
      * Handle an incoming request.

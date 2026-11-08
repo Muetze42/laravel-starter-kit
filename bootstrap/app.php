@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Http\Middleware\ForceJsonMiddleware;
-use App\Http\Middleware\PreventRequestsDuringMaintenanceMiddleware;
+use App\Http\Middleware\ForceJson;
+use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance;
+use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance as OriginalPreventRequestsDuringMaintenance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Sentry\Laravel\Integration;
@@ -18,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
         then: function (): void {
-            Route::middleware(['api', ForceJsonMiddleware::class])
+            Route::middleware(['api', ForceJson::class])
                 ->prefix('api')
                 ->name('api.')
                 ->group(base_path('routes/api.php'));
@@ -26,8 +26,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->replace(
-            PreventRequestsDuringMaintenance::class,
-            PreventRequestsDuringMaintenanceMiddleware::class
+            OriginalPreventRequestsDuringMaintenance::class,
+            PreventRequestsDuringMaintenance::class
         );
     })
     ->withExceptions(function (Exceptions $exceptions): void {

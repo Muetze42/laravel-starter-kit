@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
-class LogUserActivityMiddleware
+class LogUserActivity
 {
     /**
      * Handle an incoming request.
